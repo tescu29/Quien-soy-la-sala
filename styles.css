@@ -32,3 +32,12 @@
 @media(max-width:980px) and (min-width:761px){.lobby-layout--topics{grid-template-columns:minmax(225px,.7fr) minmax(0,1.3fr)}.topic-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:760px){.lobby-layout--topics{grid-template-columns:1fr}.topic-panel{padding:17px}.topic-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.topic-card{min-height:132px}.topic-panel-head{gap:8px}.topic-panel-head h2{font-size:25px}}
 @media(max-width:360px){.topic-card{padding:12px 10px;min-height:135px}.topic-name{font-size:13px}.topic-count{font-size:10.5px}.topic-host-label{display:none}}
+
+/* Seis temáticas amplias. Dos columnas en móvil, tres en pantallas grandes. */
+.topic-card{min-height:158px}
+.topic-card.is-partial{background:var(--topic-tint);border-color:var(--topic-color);border-style:dashed}
+.topic-card.is-partial .topic-icon{background:#fff}
+.topic-card.is-partial .topic-check{background:var(--topic-color);color:#fff;border-color:var(--topic-color)}
+.topic-partial{display:block;margin-top:5px;font-size:10px;font-weight:850;color:var(--topic-color);line-height:1.2}
+@media(max-width:760px){.topic-card{min-height:165px}}
+@media(max-width:360px){.topic-card{min-height:176px}}
