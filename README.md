@@ -33,4 +33,6 @@ El valor `sb_publishable_...` incluido en `app.js` es una clave **publicable** p
 
 ## Selección cultural para partidas rápidas
 
-El catálogo tiene 332 personajes, incluyendo 32 nuevos de Pokémon, Dragon Ball, Naruto, One Piece, Oliver y Benji, Digimon y otros animes de amplia difusión en España. El modo Mixto favorece las referencias conocidas; los niveles y las categorías se pueden seleccionar manualmente.
+El catálogo ha sido auditado personaje por personaje para el público objetivo español de 20 a 35 años. Se conservan 280 fichas originales y se sustituyen 52 referencias más especializadas por iconos de televisión, música, películas, animación y videojuegos ampliamente conocidos. El total sigue siendo 332. El modo Mixto favorece las referencias conocidas; las categorías y la dificultad son configurables.
+
+La auditoría editorial completa está en [AUDITORIA_CATALOGO.md](AUDITORIA_CATALOGO.md). La selección es una estimación y debe validarse con partidas reales.
