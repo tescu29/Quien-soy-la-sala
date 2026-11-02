@@ -4,7 +4,7 @@ Juego social multijugador para navegador. Cada jugador debe descubrir su persona
 
 ## Estado
 
-- 268 personajes en 12 categorías (videojuegos, ficción, música, influencers, historia y más).
+- 300 personajes en 12 categorías (videojuegos, ficción, música, influencers, historia y más).
 - Salas de 2 a 12 jugadores con código de seis caracteres.
 - Sin registro; acceso desde móviles y ordenadores.
 - Dificultad fácil, media o mixta.
