@@ -7,7 +7,7 @@ Juego social multijugador para navegador. Cada jugador debe descubrir su persona
 - 332 personajes en 12 categorías (videojuegos, ficción, música, influencers, historia y más).
 - Salas de 2 a 12 jugadores con código de seis caracteres.
 - Sin registro; acceso desde móviles y ordenadores.
-- Una sola experiencia de juego, sin niveles de dificultad; el anfitrión elige únicamente las categorías.
+- Una sola experiencia de juego, sin niveles de dificultad. El anfitrión elige entre seis temáticas visuales amplias.
 - Base de datos compartida en Supabase (conexión pública para la interfaz, reglas y autenticación por tokens aplicadas en el servidor).
 
 ## Publicación con GitHub Pages
@@ -34,5 +34,7 @@ El valor `sb_publishable_...` incluido en `app.js` es una clave **publicable** p
 ## Selección cultural para partidas rápidas
 
 El catálogo ha sido auditado personaje por personaje para el público objetivo español de 20 a 35 años. Se conservan 280 fichas originales y se sustituyen 52 referencias más especializadas por iconos de televisión, música, películas, animación y videojuegos ampliamente conocidos. El total sigue siendo 332. No hay niveles de dificultad ni filtros ocultos por nivel. Todos los personajes de las categorías activadas pueden aparecer; se equilibra el sorteo por grupos temáticos.
+
+La interfaz combina doce categorías internas en seis temáticas: **Cine, series y animación** (cine + ficción); **Videojuegos**; **Música**; **Deportes**; **Internet**; y **Cultura general** (historia, ciencia, arte, política, exploración y mitología). Las salas previas conservan sus categorías, incluso si tenían una selección parcial dentro de una temática.
 
 La auditoría editorial completa está en [AUDITORIA_CATALOGO.md](AUDITORIA_CATALOGO.md). La selección es una estimación y debe validarse con partidas reales.
