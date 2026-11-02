@@ -4,7 +4,7 @@ Juego social multijugador para navegador. Cada jugador debe descubrir su persona
 
 ## Estado
 
-- 300 personajes en 12 categorías (videojuegos, ficción, música, influencers, historia y más).
+- 332 personajes en 12 categorías (videojuegos, ficción, música, influencers, historia y más).
 - Salas de 2 a 12 jugadores con código de seis caracteres.
 - Sin registro; acceso desde móviles y ordenadores.
 - Dificultad fácil, media o mixta.
@@ -30,3 +30,7 @@ Las funciones RPC y las tablas permanecen en la instancia Supabase del proyecto 
 ## Privacidad y seguridad
 
 El valor `sb_publishable_...` incluido en `app.js` es una clave **publicable** para el navegador, no una clave administrativa. La seguridad debe mantenerse en los permisos y las funciones RPC del servidor. No almacenar secretos administrativos, contraseñas ni service role keys en este repositorio.
+
+## Selección cultural para partidas rápidas
+
+El catálogo tiene 332 personajes, incluyendo 32 nuevos de Pokémon, Dragon Ball, Naruto, One Piece, Oliver y Benji, Digimon y otros animes de amplia difusión en España. El modo Mixto favorece las referencias conocidas; los niveles y las categorías se pueden seleccionar manualmente.
