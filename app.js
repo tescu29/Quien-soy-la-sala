@@ -211,31 +211,27 @@ function error(){return game.error?`<div role="alert" class="error">${esc(game.e
 function roomBar(d){return `<div class="room-header"><div><div class="room-title">${d.room.status==='lobby'?'Sala de espera':'Ronda '+d.room.round} · Código compartido</div><span class="room-code">${esc(d.room.code)}</span> <span class="chip ${realtimeReady?'':'grey'}" title="${realtimeReady?'Los cambios se reciben en directo':'Sincronización automática activa'}">${realtimeReady?'● En directo':'↻ Sincronizando'}</span></div><div class="room-actions"><button class="btn btn-small" data-action="copy">Copiar código</button><button class="btn btn-small" data-action="share">Compartir enlace</button></div></div>`;}
 function playerList(d){return `<ul class="player-list">${(d.players||[]).map(p=>`<li><div class="avatar">${esc(initials(p.name))}</div><div class="player-main"><strong>${esc(p.name)} ${p.id===d.me.id?'<span class="muted text-small">(tú)</span>':''}</strong><small>${p.is_active?'Le toca adivinar · ':''}${p.online?'Conectado':'Sin actividad reciente'}</small></div>${p.is_active?'<span class="chip coral">Turno actual</span>':p.finished?'<span class="chip">✓ Jugó</span>':p.is_host?'<span class="chip gold">Anfitrión</span>':''}</li>`).join('')}</ul>`;}
 function entry(){const pre=new URLSearchParams(location.search).get('sala')||'';return `<div class="shell">${header()}<main><section class="hero"><div class="max"><div><span class="hero-tag">MULTIJUGADOR · SIN REGISTRO</span><h1>¿QUIÉN <em>SOY?</em></h1><p>Adivina quién eres en 10 preguntas. Cultura pop, videojuegos, música y mucho más: crea una sala y juega con tus amigos.</p></div><div class="hero-cards"><div class="mystery-back"></div><div class="mystery-card"><div class="mystery-icon">?</div><span>Identidad oculta</span></div></div></div></section><div class="max entry-grid"><section class="panel"><span class="eyebrow">01 · Organiza</span><h2>Crea una sala</h2><p>Comparte un código de seis caracteres para jugar todos juntos.</p><form id="create-form"><div class="field"><label class="input-label" for="create-name">Tu nombre o apodo</label><input id="create-name" name="name" class="text-input" maxlength="20" value="${esc(game.name)}" placeholder="Ej.: Ana" required autocomplete="nickname"></div><button class="btn btn-primary btn-wide" ${game.busy?'disabled':''}>Crear sala</button></form></section><section class="panel"><span class="eyebrow">02 · Participa</span><h2>Únete a tus amigos</h2><p>Entra desde cualquier móvil utilizando el código compartido.</p><form id="join-form"><div class="field"><label class="input-label" for="join-name">Tu nombre o apodo</label><input id="join-name" name="name" maxlength="20" class="text-input" value="${esc(game.name)}" placeholder="Ej.: Luis" required autocomplete="nickname"></div><div class="field"><label class="input-label" for="join-code">Código de sala</label><input id="join-code" name="code" maxlength="6" minlength="6" value="${esc(pre.toUpperCase())}" class="text-input code-input" placeholder="ABC123" required autocapitalize="characters"></div><button class="btn btn-dark btn-wide" ${game.busy?'disabled':''}>Entrar en sala</button></form></section></div>${error()}</main>${footer()}</div>`;}
-/* Elementos puramente visuales; las fichas y nombres de personajes permanecen ocultos. */
-const TOPIC_VISUALS={
- historia:{icon:'🏛️',color:'#8a663f',tint:'#f6ebdb'},
- ciencia:{icon:'🔬',color:'#317e8b',tint:'#e4f3f5'},
- musica:{icon:'🎵',color:'#9d4e88',tint:'#f7e8f2'},
- cine:{icon:'🎬',color:'#93603e',tint:'#fff0e2'},
- deporte:{icon:'⚽',color:'#398367',tint:'#e4f4e8'},
- arte:{icon:'🎨',color:'#a35f50',tint:'#faeae4'},
- politica:{icon:'🗳️',color:'#5273a3',tint:'#e9eef9'},
- exploradores:{icon:'🧭',color:'#5d7e63',tint:'#ebf1e6'},
- videojuegos:{icon:'🎮',color:'#6554ab',tint:'#efebff'},
- ficcion:{icon:'🦸',color:'#b36b41',tint:'#fff0df'},
- mitologia:{icon:'⚡',color:'#92721e',tint:'#fff4d5'},
- influencers:{icon:'📱',color:'#417e97',tint:'#e6f2f8'}
-};
-const POP_CATEGORIES=['videojuegos','ficcion','cine','musica','influencers'];
-const TOPIC_COUNTS=Object.fromEntries(CATEGORIES.map(id=>[id,CHARACTERS.filter(ch=>ch.category===id).length]));
+/* Seis tarjetas visibles para doce categorías internas existentes.
+   Los grupos solo afectan a la selección; las fichas y las salas no cambian. */
+const TOPIC_GROUPS=[
+ {id:'pantalla',label:'Cine, series y animación',icon:'🎬',color:'#93603e',tint:'#fff0e2',categories:['cine','ficcion']},
+ {id:'videojuegos',label:'Videojuegos',icon:'🎮',color:'#6554ab',tint:'#efebff',categories:['videojuegos']},
+ {id:'musica',label:'Música',icon:'🎵',color:'#9d4e88',tint:'#f7e8f2',categories:['musica']},
+ {id:'deporte',label:'Deportes',icon:'⚽',color:'#398367',tint:'#e4f4e8',categories:['deporte']},
+ {id:'internet',label:'Internet',icon:'📱',color:'#417e97',tint:'#e6f2f8',categories:['influencers']},
+ {id:'general',label:'Cultura general',icon:'🌍',color:'#8a663f',tint:'#f6ebdb',categories:['historia','ciencia','arte','politica','exploradores','mitologia']}
+];
+const POP_CATEGORIES=TOPIC_GROUPS.filter(group=>['pantalla','videojuegos','musica','internet'].includes(group.id)).flatMap(group=>group.categories);
+const TOPIC_COUNTS=Object.fromEntries(TOPIC_GROUPS.map(group=>[group.id,CHARACTERS.filter(ch=>group.categories.includes(ch.category)).length]));
 function topicPicker(d,host,cats){
  const all=CATEGORIES.every(id=>cats.includes(id));
  const pop=cats.length===POP_CATEGORIES.length&&POP_CATEGORIES.every(id=>cats.includes(id));
  const disabled=!host||game.busy?'disabled':'';
+ const active=TOPIC_GROUPS.filter(group=>group.categories.some(id=>cats.includes(id))).length;
  return `<div class="topic-panel-head"><div><span class="eyebrow">LA PARTIDA, A VUESTRO GUSTO</span><h2>Elegid temáticas</h2><p>Tocad las que queráis incluir.</p></div><span class="topic-host-label">${host?'Tú eliges':'Elige el anfitrión'}</span></div>
  <div class="topic-presets" role="group" aria-label="Selección rápida"><button type="button" class="topic-preset ${all?'active':''}" data-action="category-preset" data-value="all" aria-pressed="${all}" ${disabled}>Todas</button><button type="button" class="topic-preset ${pop?'active':''}" data-action="category-preset" data-value="pop" aria-pressed="${pop}" ${disabled}>Cultura pop</button></div>
- <div class="topic-grid" role="group" aria-label="Temáticas disponibles">${CATEGORIES.map(id=>{const visual=TOPIC_VISUALS[id],selected=cats.includes(id);return `<button type="button" class="topic-card ${selected?'is-selected':''}" data-action="category" data-value="${id}" aria-label="${esc(CATEGORY_LABELS[id])}, ${TOPIC_COUNTS[id]} personajes" aria-pressed="${selected}" style="--topic-color:${visual.color};--topic-tint:${visual.tint}" ${disabled}><span class="topic-check" aria-hidden="true">✓</span><span class="topic-icon" aria-hidden="true">${visual.icon}</span><span class="topic-name">${esc(CATEGORY_LABELS[id])}</span><span class="topic-count">${TOPIC_COUNTS[id]} personajes</span></button>`;}).join('')}</div>
- <div class="topic-foot" aria-live="polite"><span class="topic-summary"><strong>${cats.length} de ${CATEGORIES.length}</strong> temáticas activas</span><span class="topic-total">${availableCharacters(cats).length} personajes posibles</span></div>`;
+ <div class="topic-grid" role="group" aria-label="Temáticas disponibles">${TOPIC_GROUPS.map(group=>{const included=group.categories.filter(id=>cats.includes(id)).length;const selected=included===group.categories.length;const partial=included>0&&!selected;return `<button type="button" class="topic-card ${selected?'is-selected':partial?'is-partial':''}" data-action="category" data-value="${group.id}" aria-label="${esc(group.label)}, ${TOPIC_COUNTS[group.id]} personajes${partial?', selección parcial':''}" aria-pressed="${partial?'mixed':selected}" style="--topic-color:${group.color};--topic-tint:${group.tint}" ${disabled}><span class="topic-check" aria-hidden="true">${partial?'−':'✓'}</span><span class="topic-icon" aria-hidden="true">${group.icon}</span><span class="topic-name">${esc(group.label)}</span><span class="topic-count">${TOPIC_COUNTS[group.id]} personajes</span>${partial?'<span class="topic-partial">Selección parcial</span>':''}</button>`;}).join('')}</div>
+ <div class="topic-foot" aria-live="polite"><span class="topic-summary"><strong>${active} de ${TOPIC_GROUPS.length}</strong> temáticas activas${active<TOPIC_GROUPS.length?'':''}</span><span class="topic-total">${availableCharacters(cats).length} personajes posibles</span></div>`;
 }
 async function applyCategories(next){
  if(!game.data||game.busy||game.data.me.id!==game.data.room.host_player_id)return;
@@ -262,7 +258,15 @@ function render(){if(game.view==='rules'){el.innerHTML=rules();return;}if(!game.
 async function copy(text){try{await navigator.clipboard.writeText(text);toast('Copiado.')}catch{prompt('Copia este texto:',text);}}
 async function click(b){const action=b.dataset.action,d=game.data;if(action==='rules'){game.view='rules';render();return;}if(action==='back'){game.view=game.code?'room':'entry';render();return;}if(action==='home'){game.view=game.code?'room':'entry';render();return;}if(action==='copy')return copy(game.code);if(action==='share'){const url=roomUrl();try{if(navigator.share)await navigator.share({title:'¿Quién soy?',url});else await copy(url);}catch{}return;}if(action==='leave'){if(!confirm('¿Salir de la sala?'))return;return run(async()=>{try{await rpc('leave_room',{p_code:game.code,p_token:game.token});}catch(e){console.warn('No se pudo notificar la salida; la sesión local se cerrará.',e);}localStorage.removeItem(sessionKey(game.code));localStorage.removeItem('quienSoy:lastRoom');stopRealtime();game.code='';game.token='';game.data=null;game.view='entry';schedulePoll();history.replaceState(null,'',location.pathname);});}if(!d)return;
  const host=d.me.id===d.room.host_player_id;
- if(action==='category'){if(!host||game.busy)return;const cats=[...d.room.categories],id=b.dataset.value;if(!CATEGORIES.includes(id))return;if(cats.includes(id)){if(cats.length===1){toast('Deja al menos una temática activa.');return;}return applyCategories(cats.filter(c=>c!==id));}cats.push(id);return applyCategories(cats);}
+ if(action==='category'){
+  if(!host||game.busy)return;
+  const group=TOPIC_GROUPS.find(group=>group.id===b.dataset.value);
+  if(!group)return;
+  const cats=[...d.room.categories],selected=group.categories.every(id=>cats.includes(id));
+  const next=selected?cats.filter(id=>!group.categories.includes(id)):[...new Set([...cats,...group.categories])];
+  if(!next.length){toast('Deja al menos una temática activa.');return;}
+  return applyCategories(CATEGORIES.filter(id=>next.includes(id)));
+ }
  if(action==='category-preset'){if(!host||game.busy)return;const next=b.dataset.value==='all'?[...CATEGORIES]:b.dataset.value==='pop'?[...POP_CATEGORIES]:null;return next?applyCategories(next):undefined;}
  if(action==='start'){const pool=buildCandidatePool(d.room.categories);return run(async()=>{await rpc('ts_start',{p_code:game.code,p_token:game.token,p_candidates:pool});await refresh(true);});}
  if(action==='question')return run(()=>playAction('question'));
