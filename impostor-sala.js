@@ -16,7 +16,7 @@ let poll=null;
 function storage(code){try{return JSON.parse(localStorage.getItem(sessionKey(code))||'null')}catch{return null}}
 function save(){localStorage.setItem(sessionKey(state.code),JSON.stringify({name:state.name,token:state.token}));localStorage.setItem('impostor:nombre',state.name);}
 function resetLocal(){if(state.code)localStorage.removeItem(sessionKey(state.code));clearInterval(poll);poll=null;state.code='';state.token='';state.room=null;state.showRole=false;state.error='';history.replaceState(null,'','?juego=impostor&modo=sala');}
-function enter(code,name,token){state.code=code;state.name=name;state.token=token;state.room=null;state.showRole=false;state.error='';history.replaceState(null,'','?juego=impostor&modo=sala&codigo='+code);save();startPolling();}
+function enter(code,name,token){state.code=code;state.name=name;state.token=token;state.room=null;state.showRole=false;state.error='';history.replaceState(null,'','?juego=impostor&modo=sala&codigo='+code);save();window.GroupHub?.ensure().catch(()=>{});startPolling();}
 function notify(msg){const t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);}
 async function rpc(name,args){
  const ctrl=new AbortController();const timeout=setTimeout(()=>ctrl.abort(),15000);
