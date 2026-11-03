@@ -428,3 +428,6 @@
 @keyframes gu-bounce{0%,75%,100%{transform:translateY(0);opacity:.55}38%{transform:translateY(-7px);opacity:1}}
 @media(max-width:690px){.gu-picker{margin:17px 13px 25px;padding:17px}.gu-game-grid{grid-template-columns:1fr;gap:9px}.gu-game-choice{min-height:0;padding:14px 15px;gap:4px}.gu-game-choice strong{font-size:17px}.gu-game-choice small{margin-top:6px}.gu-picker-head{margin-bottom:14px}.gu-picker h2{font-size:25px}}
 @media(prefers-reduced-motion:reduce){.gu-wait-dots span{animation:none}.gu-game-choice{transition:none}}
+
+/* Avisos de migración de sala: visibles sin cuadros modales del navegador */
+.gu-switch-error{margin:0 0 15px;padding:12px 14px;border-radius:12px;background:#fff1e9;border:1px solid #ecc4b3;color:#824837;font-size:13px;font-weight:800;line-height:1.5}
