@@ -30,6 +30,7 @@ function setup(){
  '<button class="party-button party-primary party-start" data-action="start">¡A decidir! <span>→</span></button><p class="party-caption">2–10 jugadores · un único móvil · sin registros</p></section></main>';
 }
 function nextQuestion(){
+ if(s.idx<s.history.length-1){const idx=s.idx+1;set({idx,phase:s.history[idx].votes.length>=s.count?'result':'vote'});return;}
  const list=pool();if(!list.length)return;
  let deck=s.deck.slice();
  if(!deck.length){const last=current()?.id;deck=shuffle(list.filter(id=>id!==last))}
@@ -50,10 +51,10 @@ function voting(){
 function result(){
  const cur=current(),q=question();if(!q)return setup();
  const a=cur.votes.filter(x=>x==='a').length,b=cur.votes.filter(x=>x==='b').length,total=a+b;
- const percent=total?Math.round(a*100/total):0;
+ const percent=total?Math.round(a*100/total):0,percentB=total?100-percent:0;
  return nav()+'<main class="party-container party-main">'+top()+'<section class="party-center qp-result"><span class="party-step">DILEMA '+(s.idx+1)+' · RESULTADOS</span><h1>'+(a===b?'¡Habéis empatado!':a>b?'¡Gana la opción A!':'¡Gana la opción B!')+'</h1><p>'+(total?total+' votos registrados. Ahora contad por qué habéis elegido así.':'Dilema saltado. Podéis pasar al siguiente.')+'</p><div class="qp-result-list">'+
  '<div class="qp-result-card qp-result-a"><div><span>A</span><strong>'+esc(q.a)+'</strong></div><b>'+a+' <small>('+percent+' %)</small></b></div>'+
- '<div class="qp-result-card qp-result-b"><div><span>B</span><strong>'+esc(q.b)+'</strong></div><b>'+b+' <small>('+(100-percent)+' %)</small></b></div></div>'+
+ '<div class="qp-result-card qp-result-b"><div><span>B</span><strong>'+esc(q.b)+'</strong></div><b>'+b+' <small>('+percentB+' %)</small></b></div></div>'+
  '<div class="qp-result-bar"><span style="width:'+percent+'%"></span></div>'+
  '<button class="party-button party-primary" data-action="next">Otro dilema →</button>'+
  '<button class="party-button party-secondary" data-action="summary">Resumen del grupo</button>'+
