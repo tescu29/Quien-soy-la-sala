@@ -15,7 +15,7 @@ if(view==='quien'){
  startScript('cromazo.js?v=14').catch(e=>root.innerHTML='<main class="loading-root">Error cargando Cromazo. Vuelve a abrir el enlace.</main>');
 }else if(view==='impostor'){
  document.title='Impostor · ¿Una partidita?';
- startScript('impostor.js?v=15').catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar Impostor. Comprueba tu conexión.</main>');
+ startScript('impostor.js?v=17').catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar Impostor. Comprueba tu conexión.</main>');
 }else if(view==='yonunca'){
  document.title='Yo nunca · ¿Una partidita?';
  startScript('yonunca.js?v=15').catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar Yo nunca. Comprueba tu conexión.</main>');
