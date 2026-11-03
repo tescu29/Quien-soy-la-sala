@@ -6,13 +6,6 @@ const app=document.getElementById('app');
 const api='https://stpylkumzuqvaioedvvi.supabase.co/rest/v1/rpc/';
 const publicKey='sb_publishable_gVmo2eopYweroU5p0edsxg_J87_ouk6';
 const PARAMS=new URLSearchParams(location.search);
-const GROUPS=[
- {id:'lugares',name:'Lugares',icon:'⌖'},
- {id:'comida',name:'Comida',icon:'◈'},
- {id:'ocio',name:'Ocio',icon:'✧'},
- {id:'objetos',name:'Objetos',icon:'⬡'},
- {id:'pop',name:'Cultura pop',icon:'★'}
-];
 const state={code:'',token:'',name:localStorage.getItem('impostor:nombre')||'',room:null,busy:false,error:'',showRole:false,help:false,loading:false,previousVersion:0};
 const clean=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const secret=()=>Array.from(crypto.getRandomValues(new Uint8Array(32)),b=>b.toString(16).padStart(2,'0')).join('');
@@ -65,7 +58,7 @@ function header(){
 function top(){return '<div class="party-top"><a class="party-back" href="?juego=impostor">← Modos de juego</a><span class="party-top-tag">IMPOSTOR · SALA MULTIJUGADOR</span></div>'}
 function error(){return state.error?'<div class="imp-online-error" role="alert">'+clean(state.error)+'</div>':''}
 function rules(){
- return header()+'<main class="party-container party-main">'+top()+'<section class="party-panel party-rules"><button data-action="help" class="party-back-btn">← Volver</button><h1>Cómo jugar en sala</h1><p>Uno crea la partida y comparte el enlace. Cada persona entra desde su propio móvil y recibe su palabra en privado, sin necesidad de pasar el teléfono.</p><ol><li>Entre 3 y 10 personas entran por el enlace o código.</li><li>El anfitrión elige las temáticas y reparte los papeles. Una persona será el impostor y no sabrá la palabra.</li><li>Cada participante consulta su papel, lo oculta y confirma que está listo.</li><li>Todos dan pistas en voz alta, empezando por la persona indicada. Intentad descubrir quién está improvisando.</li><li>Cada persona vota en secreto a otro jugador desde su móvil. Los resultados solo aparecen al terminar.</li></ol><p>El anfitrión puede cerrar la votación tras dos votos si alguien pierde la conexión.</p><button class="party-button party-primary" data-action="help">Entendido</button></section></main>';
+ return header()+'<main class="party-container party-main">'+top()+'<section class="party-panel party-rules"><button data-action="help" class="party-back-btn">← Volver</button><h1>Cómo jugar en sala</h1><p>Uno crea la partida y comparte el enlace. Cada persona entra desde su propio móvil y recibe su palabra en privado, sin necesidad de pasar el teléfono.</p><ol><li>Entre 3 y 10 personas entran por el enlace o código.</li><li>El anfitrión reparte papeles de un catálogo mezclado automáticamente. Una persona será el impostor y no sabrá la palabra.</li><li>Cada participante consulta su papel, lo oculta y confirma que está listo.</li><li>Todos dan pistas en voz alta, empezando por la persona indicada. Intentad descubrir quién está improvisando.</li><li>Cada persona vota en secreto a otro jugador desde su móvil. Los resultados solo aparecen al terminar.</li></ol><p>El anfitrión puede cerrar la votación tras dos votos si alguien pierde la conexión.</p><button class="party-button party-primary" data-action="help">Entendido</button></section></main>';
 }
 function entry(){
  const requested=(new URLSearchParams(location.search).get('codigo')||'').trim().toUpperCase();
@@ -83,11 +76,11 @@ function playerList(r){
  return '<div class="imp-roster">'+r.players.map((p,i)=>'<div class="imp-roster-player"><span class="imp-avatar">'+clean(p.name.slice(0,1).toUpperCase())+'</span><span class="imp-roster-name">'+clean(p.name)+(p.id===r.me?' <small>(tú)</small>':'')+'</span><span class="imp-player-badge '+(p.ready||p.voted?'done':'')+'">'+(p.host?'★ Anfitrión':r.status==='reveal'?(p.ready?'✓ Listo':'Sin ver'):r.status==='vote'?(p.voted?'✓ Votó':'Sin votar'):p.online?'●':'○')+'</span></div>').join('')+'</div>';
 }
 function lobby(r){
- const host=r.me===r.host,cats=r.categories||GROUPS.map(x=>x.id),count=r.players.length;
+ const host=r.me===r.host,count=r.players.length;
  return header()+'<main class="party-container party-main">'+top()+roomBar(r)+error()+
- '<section class="imp-online-heading"><span class="party-step">SALA DE ESPERA</span><h1>Preparad la partida</h1><p>Compártela y elegid las temáticas antes de repartir.</p></section>'+
+ '<section class="imp-online-heading"><span class="party-step">SALA DE ESPERA</span><h1>Preparad la partida</h1><p>Compartid el enlace. Las palabras se mezclarán automáticamente en cada ronda.</p></section>'+
  '<div class="imp-lobby-grid"><section class="party-panel"><div class="party-label-row"><h2>Jugadores</h2><span class="party-count">'+count+'/10</span></div>'+playerList(r)+(count<3?'<p class="imp-hint">Se necesitan al menos 3 personas.</p>':'')+'</section>'+
- '<section class="party-panel"><h2>Temáticas</h2><div class="imp-online-topics">'+GROUPS.map(g=>'<button class="party-topic '+(cats.includes(g.id)?'active':'')+'" data-action="category" data-id="'+g.id+'" aria-pressed="'+cats.includes(g.id)+'" '+(host&&!state.busy?'':'disabled')+'><span class="party-topic-icon">'+g.icon+'</span><span>'+g.name+'</span><span class="party-check">'+(cats.includes(g.id)?'✓':'+')+'</span></button>').join('')+'</div>'+
+ '<section class="party-panel"><div class="imp-lobby-ready-icon">✦</div><h2>Todo listo para jugar</h2><p class="imp-hint">Lugares, comida, cultura pop y muchas otras palabras están mezcladas. Nadie tiene que configurar categorías.</p>'+
  (host?'<button class="party-button party-primary imp-action-wide" data-action="start" '+(count<3||state.busy?'disabled':'')+'>Repartir papeles →</button>':'<p class="imp-hint">Esperando a que el anfitrión reparta los papeles.</p>')+
  '</section></div></main>';
 }
@@ -145,11 +138,6 @@ async function handleClick(btn){
  if(action==='leave'){if(!confirm('¿Quieres salir de la sala?'))return;await run(async()=>{try{await rpc('im_leave',auth())}catch(e){console.warn('No se pudo notificar la salida',e)}resetLocal()});return}
  if(!state.room)return;
  const r=state.room,host=r.me===r.host;
- if(action==='category'&&host&&r.status==='lobby'){
-  const id=btn.dataset.id,old=r.categories||[];if(!GROUPS.some(x=>x.id===id))return;
-  const newCats=old.includes(id)?old.filter(c=>c!==id):[...old,id];if(!newCats.length){notify('Selecciona al menos una temática');return}
-  await run(async()=>{state.room=await rpc('im_settings',{...auth(),p_categories:newCats})});return;
- }
  if(action==='start'&&host&&r.status==='lobby'){await run(async()=>{state.room=await rpc('im_start',auth());state.showRole=false});return;}
  if(action==='toggle-role'){state.showRole=!state.showRole;render();return}
  if(action==='ready'&&r.status==='reveal'){await run(async()=>{state.room=await rpc('im_ready',auth());state.showRole=false});return;}
