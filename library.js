@@ -17,9 +17,9 @@ if(view==='quien'){
  document.title='Impostor · ¿Una partidita?';
  const impMode=params.get('modo');
  if(impMode==='movil'){
-  startScript('impostor.js?v=18').catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar Impostor. Comprueba tu conexión.</main>');
+  startScript('impostor.js?v=19').catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar Impostor. Comprueba tu conexión.</main>');
  }else if(impMode==='sala'||params.has('codigo')){
-  startScript('impostor-sala.js?v=18').catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar el modo salas de Impostor. Comprueba tu conexión.</main>');
+  startScript('impostor-sala.js?v=19').catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar el modo salas de Impostor. Comprueba tu conexión.</main>');
  }else{
   root.innerHTML=`<div class="party-app imp-mode-app">
    <header class="party-nav"><div class="party-container party-nav-inner"><a class="party-brand" href="${location.pathname}"><span class="party-brand-icon">✦</span>¿Una partidita<span class="party-brand-question">?</span></a><span class="imp-mode-header">Juegos entre amigos</span></div></header>
