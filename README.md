@@ -52,6 +52,7 @@ Juego **original** de descarte de colores y números, con mecánicas familiares,
 - El +4 no se puede usar si tienes alguna carta del color activo.
 - Turnos, manos y jugadas se guardan y validan en Supabase. Cada sesión recibe solo su propia mano; la tabla privada no se expone directamente.
 - Las pantallas actualizan el estado cada 2 segundos mientras están visibles.
+- En la zona superior del tablero, **«Cartas de tus rivales»** muestra el número de cartas restantes de cada contrincante, el turno activo y un aviso destacado cuando alguien se queda con una sola carta. Estos contadores salen de `cp_state` y no exponen el contenido de ninguna mano; no se necesita migración SQL.
 
 El backend de Cromazo se ha desplegado en la base Supabase conectada al proyecto, creando tablas `cp_rooms`, `cp_players` y RPC `cp_create`, `cp_join`, `cp_state`, `cp_start`, `cp_action`, `cp_restart` y `cp_leave`. Los permisos de lectura directa de las tablas se han revocado a `anon`/`authenticated`; solo se exponen funciones autorizadas. **Esta instancia de Supabase es necesaria para jugar**; GitHub Pages solo publica el cliente web.
 
