@@ -36,7 +36,7 @@ if(view==='quien'){
  startScript('yonunca.js?v=15').catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar Yo nunca. Comprueba tu conexión.</main>');
 }else if(view==='queprefieres'){
  document.title='¿Qué prefieres? · ¿Una partidita?';
- startScript('queprefieres.js?v=16').catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar ¿Qué prefieres?. Comprueba tu conexión.</main>');
+ startScript('queprefieres-sala.js?v=21').catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar la sala de ¿Qué prefieres?. Comprueba tu conexión.</main>');
 }else{
  document.title='¿Una partidita? · Juegos para jugar juntos';
  root.innerHTML=`<div class="library">
@@ -62,7 +62,7 @@ if(view==='quien'){
       </a>
       <a class="game-tile qp-tile" href="?juego=queprefieres">
         <div class="game-art qp-art" aria-hidden="true"><span class="qp-art-card qp-art-a">A</span><span class="qp-art-or">O</span><span class="qp-art-card qp-art-b">B</span><span class="qp-art-spark">✳</span></div>
-        <div class="game-tile-bottom"><div><span class="game-tile-type">DECISIONES INCÓMODAS</span><h2>¿Qué prefieres?</h2><p>Dos opciones. Ninguna respuesta fácil.</p><span class="game-players">2–10 jugadores · 1 móvil</span></div><span class="game-arrow" aria-hidden="true">↗</span></div>
+        <div class="game-tile-bottom"><div><span class="game-tile-type">DECISIONES INCÓMODAS</span><h2>¿Qué prefieres?</h2><p>Un lector por turno. Los demás votan A o B.</p><span class="game-players">2–10 jugadores · Sala</span></div><span class="game-arrow" aria-hidden="true">↗</span></div>
       </a>
     </section>
     <p class="library-footnote">Sin descargas. Sin registros. Juega desde el móvil.</p>
