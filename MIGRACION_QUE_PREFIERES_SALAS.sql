@@ -121,7 +121,7 @@ BEGIN
  SELECT coalesce(jsonb_agg(jsonb_build_object(
   'id',p.id,'name',p.nick,'host',p.id=r.host_id,'reader',p.id=r.reader_id,
   'voted',p.vote IS NOT NULL,'online',p.last_seen>now()-interval '35 seconds'
- ) ORDER BY p.joined_at,p.id),'[]'::jsonb)
+ ) ORDER BY CASE WHEN p.id=r.host_id THEN 0 ELSE 1 END,p.joined_at,p.id),'[]'::jsonb)
  INTO players_json FROM public.qp_players p WHERE p.room_id=r.id;
  SELECT vote INTO my_vote FROM public.qp_players WHERE id=me;
  IF r.dilemma_id IS NOT NULL THEN
@@ -165,7 +165,7 @@ BEGIN
  IF r.status<>'lobby' THEN RAISE EXCEPTION 'La partida ya ha comenzado'; END IF;
  SELECT count(*) INTO n FROM public.qp_players WHERE room_id=r.id;
  IF n NOT BETWEEN 2 AND 10 THEN RAISE EXCEPTION 'Se necesitan entre 2 y 10 jugadores'; END IF;
- SELECT p.id INTO reader FROM public.qp_players p WHERE p.room_id=r.id ORDER BY p.joined_at,p.id LIMIT 1;
+ reader:=r.host_id;
  q:=public.qp_pick(r.intensity,r.recent_ids);
  IF q IS NULL THEN RAISE EXCEPTION 'No hay dilemas disponibles'; END IF;
  UPDATE public.qp_players SET vote=NULL WHERE room_id=r.id;
@@ -212,7 +212,7 @@ BEGIN
   RAISE EXCEPTION 'El lector o el anfitrión deben pasar al siguiente dilema';
  END IF;
  IF r.status<>'results' THEN RAISE EXCEPTION 'Esperad a que terminen los votos'; END IF;
- SELECT array_agg(p.id ORDER BY p.joined_at,p.id) INTO people
+ SELECT array_agg(p.id ORDER BY CASE WHEN p.id=r.host_id THEN 0 ELSE 1 END,p.joined_at,p.id) INTO people
  FROM public.qp_players p WHERE p.room_id=r.id;
  IF cardinality(people)<2 THEN RAISE EXCEPTION 'Se necesitan dos jugadores'; END IF;
  pos:=array_position(people,r.reader_id);
@@ -261,11 +261,11 @@ BEGIN
  IF NOT FOUND THEN RETURN jsonb_build_object('left',true); END IF;
  me:=public.qp_auth(p_code,p_token);
  IF me IS NULL THEN RAISE EXCEPTION 'No tienes acceso a esta sala'; END IF;
- SELECT array_agg(p.id ORDER BY p.joined_at,p.id) INTO old_people
+ SELECT array_agg(p.id ORDER BY CASE WHEN p.id=r.host_id THEN 0 ELSE 1 END,p.joined_at,p.id) INTO old_people
  FROM public.qp_players p WHERE p.room_id=r.id;
  old_position:=array_position(old_people,me);
  DELETE FROM public.qp_players WHERE id=me AND room_id=r.id;
- SELECT array_agg(p.id ORDER BY p.joined_at,p.id) INTO people
+ SELECT array_agg(p.id ORDER BY CASE WHEN p.id=r.host_id THEN 0 ELSE 1 END,p.joined_at,p.id) INTO people
  FROM public.qp_players p WHERE p.room_id=r.id;
  n:=coalesce(cardinality(people),0);
  IF n=0 THEN DELETE FROM public.qp_rooms WHERE id=r.id; RETURN jsonb_build_object('left',true); END IF;
