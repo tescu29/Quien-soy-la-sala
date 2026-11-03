@@ -137,7 +137,7 @@ async function handleClick(btn){
  if(state.help)return;
  if(action==='share'){window.GroupHub?.shareInvite(link());return}
  if(action==='copy'){window.GroupHub?.copyCode(state.code);return}
- if(action==='leave'){if(!confirm('¿Quieres salir de la sala?'))return;await run(async()=>{try{await rpc('im_leave',auth())}catch(e){console.warn('No se pudo notificar la salida',e)}resetLocal()});return}
+ if(action==='leave'){if(!await window.PartyDialogs.confirm({title:'¿Salir de la sala?',detail:'Dejarás de participar en Impostor desde este móvil.',confirmText:'Sí, salir',cancelText:'Seguir jugando',tone:'danger'}))return;await run(async()=>{try{await rpc('im_leave',auth())}catch(e){console.warn('No se pudo notificar la salida',e)}resetLocal()});return}
  if(!state.room)return;
  const r=state.room,host=r.me===r.host;
  if(action==='start'&&host&&r.status==='lobby'){await run(async()=>{state.room=await rpc('im_start',auth());state.showRole=false});return;}
@@ -147,7 +147,7 @@ async function handleClick(btn){
  if(action==='vote-open'&&host&&r.status==='debate'){await run(async()=>{state.room=await rpc('im_advance',{...auth(),p_next:'vote'});state.showRole=false});return;}
  if(action==='vote'&&r.status==='vote'&&!r.players.find(p=>p.id===r.me)?.voted){await run(async()=>{state.room=await rpc('im_vote',{...auth(),p_target:btn.dataset.id})});return;}
  if(action==='finish-vote'&&host&&r.status==='vote'&&r.players.filter(p=>p.voted).length>=2){
-   if(!confirm('¿Cerrar la votación aunque falten jugadores?'))return;
+   if(!await window.PartyDialogs.confirm({title:'¿Cerrar la votación?',detail:'Todavía faltan jugadores por votar. Sus votos no contarán en esta ronda.',confirmText:'Mostrar resultados',cancelText:'Seguir votando'}))return;
    await run(async()=>{state.room=await rpc('im_advance',{...auth(),p_next:'result'})});return;
  }
  if(action==='again'&&host&&r.status==='result'){await run(async()=>{state.room=await rpc('im_next',auth());state.showRole=false});}
