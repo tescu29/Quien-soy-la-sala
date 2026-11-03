@@ -33,6 +33,79 @@ function remember(code,me,game,roomCode){
  localStorage.setItem('gu:last',code);
 }
 function inviteUrl(){return group?location.origin+location.pathname+'?grupo='+encodeURIComponent(group):null}
+
+/* Acciones de copia y compartir:
+   NUNCA esperar una petición de red antes de invocar clipboard/share.
+   iOS WebKit puede retirar la activación del gesto tras un await. */
+let noticeTimeout=null;
+function inform(message){
+ const toast=document.getElementById('toast');
+ if(!toast)return;
+ toast.textContent=message;
+ toast.classList.add('show');
+ clearTimeout(noticeTimeout);
+ noticeTimeout=setTimeout(()=>toast.classList.remove('show'),3300);
+}
+function manualCopy(value,reason){
+ let cover=document.getElementById('gu-copy-overlay');
+ if(cover)cover.remove();
+ cover=document.createElement('div');
+ cover.id='gu-copy-overlay';cover.className='gu-copy-overlay';
+ cover.innerHTML='<div class="gu-copy-dialog" role="dialog" aria-modal="true" aria-label="Copiar invitación">'+
+ '<span class="gu-kicker">COMPARTIR CON AMIGOS</span>'+
+ '<h2>Copia este '+(value.startsWith('http')?'enlace':'código')+'</h2>'+
+ '<p>'+esc(reason||'Selecciona el texto para copiarlo o compartirlo manualmente.')+'</p>'+
+ '<input type="text" readonly aria-label="Texto para copiar" value="'+esc(value)+'">'+
+ '<div class="gu-copy-dialog-actions"><button type="button" data-gu-select>Seleccionar texto</button>'+
+ '<button type="button" data-gu-close>Cerrar</button></div></div>';
+ document.body.appendChild(cover);
+ const input=cover.querySelector('input');
+ try{input.focus();input.select();input.setSelectionRange(0,input.value.length)}catch{}
+}
+function nativeCopy(value){
+ try{
+  const input=document.createElement('textarea');
+  input.value=value;input.setAttribute('readonly','');
+  input.style.position='fixed';input.style.opacity='0';input.style.left='-9999px';
+  document.body.appendChild(input);input.focus();input.select();
+  const success=Boolean(document.execCommand?.('copy'));
+  input.remove();return success;
+ }catch{return false}
+}
+function copyValue(value,label){
+ if(!value){inform('Todavía no hay un código para compartir.');return}
+ const success=()=>inform(label||'¡Copiado!');
+ const fail=()=>{if(nativeCopy(value))success();else manualCopy(value,'El navegador no permite copiar automáticamente. Mantén pulsado el texto y elige Copiar.')};
+ // La llamada a writeText debe iniciarse dentro del evento de pulsación.
+ try{
+  if(navigator.clipboard?.writeText){
+   const result=navigator.clipboard.writeText(value);
+   Promise.resolve(result).then(success).catch(fail);
+  }else fail();
+ }catch{fail()}
+}
+function copyCode(fallback){
+ const me=get(),value=group||me?.code||fallback;
+ copyValue(value,group?'¡Código del grupo copiado!':'Código de esta partida copiado. El grupo compartido aún no está sincronizado.');
+ // Reintentar sincronización después de iniciar el gesto de copiar.
+ if(!group)ensure().catch(()=>{});
+}
+function shareInvite(fallbackUrl){
+ const url=inviteUrl()||fallbackUrl;
+ if(!url){inform('Todavía no hay enlace para compartir.');return}
+ const isShared=Boolean(group);
+ const fallbackMessage=isShared?'Enlace del grupo copiado. Ya puedes enviarlo.':
+  'Enlace de la partida copiado. El enlace universal todavía no está disponible.';
+ try{
+  if(typeof navigator.share==='function'){
+   // Web Share también exige que el gesto de usuario siga activo aquí.
+   Promise.resolve(navigator.share({title:'¿Una partidita?',url})).catch(e=>{
+    if(e?.name!=='AbortError')copyValue(url,fallbackMessage);
+   });
+  }else copyValue(url,fallbackMessage);
+ }catch{copyValue(url,fallbackMessage)}
+ if(!group)ensure().catch(()=>{});
+}
 async function ensure(){
  const me=get();
  if(!attached||!me?.code||!me?.token||!me?.name)return null;
@@ -113,13 +186,20 @@ function attach(game,session){
  tick();
 }
 document.addEventListener('click',e=>{
+ if(e.target.closest?.('[data-gu-close]')){document.getElementById('gu-copy-overlay')?.remove();return;}
+ if(e.target.closest?.('[data-gu-select]')){
+  const field=document.querySelector('#gu-copy-overlay input');
+  if(field){field.focus();field.select();try{field.setSelectionRange(0,field.value.length)}catch{}}
+  return;
+ }
+ if(e.target.id==='gu-copy-overlay'){e.target.remove();return;}
  const button=e.target.closest?.('[data-group-target]');if(!button)return;
  e.preventDefault();e.stopPropagation();
  const target=button.dataset.groupTarget;
  if(!GAMES.some(g=>g.id===target)||button.disabled)return;
  switchGame(target);
 },true);
-window.GroupHub={attach,menu,inviteUrl,ensure,switchGame,
+window.GroupHub={attach,menu,inviteUrl,ensure,switchGame,copyCode,shareInvite,
  displayCode:code=>group||code,
  get groupCode(){return group},
  get lastError(){return failed}};
