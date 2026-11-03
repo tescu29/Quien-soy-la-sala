@@ -55,7 +55,7 @@ Juego de conversación para **2–10 jugadores en un mismo móvil**, sin backend
 - Selector de intensidad **Tranquilo / Picante / Sin filtro**; **Picante** es el valor predeterminado. Tranquilo utiliza las frases originales; Picante selecciona las frases adultas, y Sin filtro selecciona exclusivamente las 80 más comprometidas.
 - Las dos modalidades adultas están señalizadas como **18+**; se puede pasar cualquier pregunta sin necesidad de justificarse. No requiere bebidas ni pruebas físicas.
 
-Ambos juegos guardan el estado de la partida en `sessionStorage` del navegador utilizado. Si se cambia de navegador o de dispositivo, **no se transfiere la partida**.
+Los juegos de un solo móvil guardan el estado de la partida en `sessionStorage` del navegador utilizado. Las salas multijugador guardan su estado en Supabase.
 
 
 ### ¿Qué prefieres?
@@ -71,7 +71,7 @@ Ambos juegos guardan el estado de la partida en `sessionStorage` del navegador u
 - Los votos se validan en Supabase: el lector **no puede votar**, nadie puede votar dos veces y no se permite cerrar la votación hasta que todos los votantes activos hayan respondido.
 - Los dilemas no se repiten mientras queden otros disponibles en la intensidad seleccionada.
 
-**Backend**: tablas `qp_rooms`, `qp_players`, `qp_dilemmas`; RPC `qp_create`, `qp_join`, `qp_state`, `qp_settings`, `qp_start`, `qp_vote`, `qp_next`, `qp_skip`, `qp_leave`. Las tablas tienen RLS activa sin acceso directo público y cada jugador tiene un token privado. Migraciones `MIGRACION_QUE_PREFIERES_SALAS.sql` y `MIGRACION_QUE_PREFIERES_DILEMAS.sql` aplicadas en la instancia de Supabase.
+**Backend**: tablas `qp_rooms`, `qp_players`, `qp_dilemmas`; RPC `qp_create`, `qp_join`, `qp_state`, `qp_settings`, `qp_start`, `qp_vote`, `qp_next`, `qp_skip`, `qp_leave`. Las tablas tienen RLS activa sin acceso directo público y cada jugador tiene un token privado. Migraciones `MIGRACION_QUE_PREFIERES_SALAS.sql` y `MIGRACION_QUE_PREFIERES_DILEMAS.sql` aplicadas en la instancia de Supabase. También están aplicados los parches `MIGRACION_QUE_PREFIERES_SALIDAS.sql` (abandono de salas) y `MIGRACION_QUE_PREFIERES_ORDEN.sql` (anfitrión siempre lector 1; orden de entrada del resto).
 
 El archivo `queprefieres.js` antiguo se conserva como referencia del juego de un solo móvil, pero **la ruta pública usa `queprefieres-sala.js`**.
 
@@ -116,11 +116,15 @@ Las URLs se resuelven respecto a la ruta de GitHub Pages del repositorio.
 - `queprefieres-sala.js` — juego de lectura y votación multijugador, conectado a Supabase.
 - `queprefieres.js` — versión anterior de un móvil, mantenida como referencia sin ruta pública.
 - `MIGRACION_QUE_PREFIERES_SALAS.sql`, `MIGRACION_QUE_PREFIERES_DILEMAS.sql` — backend y banco de 180 dilemas.
+- `MIGRACION_QUE_PREFIERES_SALIDAS.sql`, `MIGRACION_QUE_PREFIERES_ORDEN.sql` — parches incrementales de desconexión y rotación, ya aplicados.
 - `party.css` — estilos comunes.
 - `MIGRACION_LIMITE_10.sql` — migración pendiente del máximo real de plazas de ¿Quién soy?
 - `AUDITORIA_CATALOGO.md` — selección editorial de 332 personajes.
 
 ## Verificaciones realizadas
+
+- Pruebas funcionales simuladas de tres clientes de ¿Qué prefieres?: creación de sala, incorporación de jugadores, lector excluido del voto, votos A/B independientes, resultados 50/50 y rotación del lector por los tres jugadores.
+- Las tablas del backend de ¿Qué prefieres? y los 180 dilemas se comprobaron en Supabase. Una prueba SQL transaccional detectó un empate en la ordenación inicial del anfitrión; se aplicó el parche de orden. Su repetición quedó pendiente al agotarse la cuota del conector. La validación end-to-end en varios móviles también sigue pendiente.
 
 - Sintaxis JavaScript comprobada para `app.js`, `library.js`, `cromazo.js`, `impostor.js`, `impostor-sala.js`, `yonunca.js` y `queprefieres.js`, `queprefieres-sala.js`.
 - Pruebas funcionales de las interfaces locales con simulación de eventos: en Impostor, cinco revelaciones con un único impostor, pistas, votación de cinco personas, resultado y revancha; en Yo nunca, frase inicial, contador, siguiente, anterior, resumen y reanudación.
