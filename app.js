@@ -200,7 +200,7 @@ function schedulePoll(delay){
  },delay??pollDelay());
 }
 async function run(fn){if(game.busy)return;game.busy=true;game.error='';render();try{await fn()}catch(e){game.error=e.message||'No se pudo completar la acción.';render();}finally{game.busy=false;render();}}
-function enter(code,name,secret){stopRealtime();game.code=code;game.name=name;game.token=secret;game.data=null;game.view='room';history.replaceState(null,'','?sala='+code);save();schedulePoll();}
+function enter(code,name,secret){stopRealtime();game.code=code;game.name=name;game.token=secret;game.data=null;game.view='room';history.replaceState(null,'','?sala='+code);save();window.GroupHub?.ensure().catch(()=>{});schedulePoll();}
 async function createRoom(name){name=name.trim();if(!name)throw Error('Escribe un nombre o apodo.');const secret=token();const code=await rpc('create_room',{p_name:name,p_token:secret});enter(code,name,secret);await rpc('update_settings',{p_code:code,p_token:secret,p_difficulty:'mixta',p_categories:CATEGORIES});await refresh(true);toast('¡Sala creada! Comparte el código.');}
 async function joinRoom(name,code){name=name.trim();code=code.trim().toUpperCase();if(!name)throw Error('Escribe un nombre o apodo.');if(!/^[A-Z2-9]{6}$/.test(code))throw Error('Introduce un código de seis caracteres.');let prev;try{prev=JSON.parse(localStorage.getItem(sessionKey(code))||'null')}catch{}
  const secret=prev?.token||token();await rpc('join_room',{p_code:code,p_name:name,p_token:secret});enter(code,name,secret);await refresh(true);toast('¡Ya estás en la sala!');}
