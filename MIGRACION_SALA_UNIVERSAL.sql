@@ -68,7 +68,7 @@ CREATE OR REPLACE FUNCTION public.gu_attach(p_game text,p_code text,p_token text
 LANGUAGE plpgsql SECURITY DEFINER SET search_path=public,extensions AS $$
 DECLARE
  d jsonb; orig text:=upper(trim(p_code)); leader boolean; member_hash text;
- party public.gu_parties%ROWTYPE; candidate text; n integer; party_id uuid;
+ party public.gu_parties%ROWTYPE; candidate text; n integer;
 BEGIN
  IF p_game NOT IN ('quien','cromazo','impostor','queprefieres') OR p_game IS NULL THEN
   RAISE EXCEPTION 'Juego no compatible';
