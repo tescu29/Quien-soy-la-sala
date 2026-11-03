@@ -431,3 +431,15 @@
 
 /* Avisos de migración de sala: visibles sin cuadros modales del navegador */
 .gu-switch-error{margin:0 0 15px;padding:12px 14px;border-radius:12px;background:#fff1e9;border:1px solid #ecc4b3;color:#824837;font-size:13px;font-weight:800;line-height:1.5}
+
+/* Copiar y compartir: respaldo accesible para iPhone y navegadores embebidos */
+.gu-copy-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(9,29,40,.72);box-sizing:border-box}
+.gu-copy-dialog{box-sizing:border-box;width:100%;max-width:460px;padding:26px 22px;border-radius:21px;background:#fff;color:#193e4e;box-shadow:0 20px 55px rgba(0,0,0,.24)}
+.gu-copy-dialog h2{font-size:clamp(22px,6vw,28px);letter-spacing:-.04em;font-weight:950;margin:8px 0}
+.gu-copy-dialog p{font-size:14px;line-height:1.5;color:#668086;margin:0 0 19px}
+.gu-copy-dialog input{box-sizing:border-box;display:block;width:100%;height:auto;min-height:54px;line-height:1.35;padding:14px 12px;border:2px solid #b9d6ce;border-radius:12px;background:#f2f8f5;color:#204b55;font-family:inherit;font-size:16px;font-weight:700;user-select:text;-webkit-user-select:text;overflow:auto}
+.gu-copy-dialog-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}
+.gu-copy-dialog-actions button{min-height:48px;border-radius:11px;border:1px solid #bfd9ce;background:#e7f3eb;color:#245d54;font:inherit;font-size:14px;font-weight:900}
+.gu-copy-dialog-actions button:last-child{background:#173d4b;color:#fff;border-color:#173d4b}
+.gu-copy-dialog-actions button:focus-visible{outline:3px solid #619f90;outline-offset:2px}
+@media(max-width:360px){.gu-copy-dialog{padding:20px 15px}.gu-copy-dialog-actions button{font-size:12px}}
