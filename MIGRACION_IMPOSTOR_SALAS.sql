@@ -334,10 +334,10 @@ BEGIN
  SELECT p.id INTO imp FROM public.im_players p WHERE p.room_id=r.id ORDER BY random() LIMIT 1;
  SELECT p.id INTO starter FROM public.im_players p WHERE p.room_id=r.id ORDER BY random() LIMIT 1;
  SELECT w.word INTO secret_word FROM public.im_words w
- WHERE w.category=ANY(r.categories) AND NOT(w.word=ANY(r.recent_words))
+ WHERE NOT(w.word=ANY(r.recent_words))
  ORDER BY random() LIMIT 1;
  IF secret_word IS NULL THEN
-  SELECT w.word INTO secret_word FROM public.im_words w WHERE w.category=ANY(r.categories) ORDER BY random() LIMIT 1;
+  SELECT w.word INTO secret_word FROM public.im_words w ORDER BY random() LIMIT 1;
  END IF;
  IF secret_word IS NULL THEN RAISE EXCEPTION 'No hay palabras disponibles'; END IF;
  UPDATE public.im_players SET ready=false,vote_target=null WHERE room_id=r.id;
