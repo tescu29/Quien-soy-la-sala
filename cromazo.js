@@ -25,7 +25,7 @@ async function rpc(fn,args){
 }
 function auth(){return {p_code:state.code,p_token:state.token};}
 function save(){localStorage.setItem(sessionKey(state.code),JSON.stringify({token:state.token,name:state.name}));localStorage.setItem('cromazo:last',state.code);localStorage.setItem(profileKey,state.name);}
-function enter(code,token,name){state.code=code;state.token=token;state.name=name;state.room=null;state.error='';history.replaceState(null,'','?cartas='+code);save();}
+function enter(code,token,name){state.code=code;state.token=token;state.name=name;state.room=null;state.error='';history.replaceState(null,'','?cartas='+code);save();window.GroupHub?.ensure().catch(()=>{});}
 async function refresh(force=false){
  if(!state.code||!state.token||state.loading)return;
  state.loading=true;
