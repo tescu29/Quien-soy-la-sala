@@ -53,3 +53,12 @@
 .yn-art-confetti{font-size:34px;position:absolute;color:#fff3cf}
 .yn-confetti-one{right:12%;top:12%}.yn-confetti-two{left:17%;bottom:10%}
 @media(max-width:700px){.spy-icon{width:140px;height:147px}.spy-head{width:65px;height:65px;top:19px}.spy-body{width:112px;height:86px;top:94px}.spy-question{font-size:42px;top:19px;right:16px}.yn-art-back{font-size:52px;width:148px;height:133px}.yn-art-front{font-size:40px;padding:18px 15px}}
+
+/* Quinto juego: dilemas A/B */
+.qp-art{background:radial-gradient(circle at 50% 39%,#836caf,#54477f 63%,#332d58)}
+.qp-art-card{display:grid;place-items:center;position:absolute;width:137px;height:176px;border:5px solid rgba(255,255,255,.93);border-radius:19px;font-size:104px;font-weight:950;color:#fff;box-shadow:12px 14px 0 rgba(13,14,41,.22);line-height:1}
+.qp-art-a{background:#417fae;transform:translate(-73px,0) rotate(-14deg)}
+.qp-art-b{background:#d78391;transform:translate(76px,0) rotate(13deg)}
+.qp-art-or{position:absolute;z-index:3;background:#fff;color:#5a5373;border-radius:50%;width:57px;height:57px;display:grid;place-items:center;border:4px solid #c8c9e2;font-size:27px;font-weight:950;box-shadow:0 5px 15px rgba(0,0,0,.16)}
+.qp-art-spark{position:absolute;right:13%;top:12%;color:#fff3bb;font-size:45px}
+@media(max-width:700px){.qp-art-card{width:118px;height:143px;font-size:84px}.qp-art-a{transform:translate(-62px) rotate(-14deg)}.qp-art-b{transform:translate(65px) rotate(13deg)}.qp-art-or{width:48px;height:48px;font-size:23px}}
