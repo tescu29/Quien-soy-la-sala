@@ -10,8 +10,7 @@ const params=new URLSearchParams(location.search);
 const KEY='queprefieres:sala:';
 const levels=[
  {id:'suave',name:'Tranquilo',desc:'Para romper el hielo'},
- {id:'picante',name:'Picante',desc:'Dilemas incómodos · 18+'},
- {id:'sinfiltro',name:'Sin filtro',desc:'Directo al grano · 18+'}
+ {id:'sinmiedo',name:'Sin miedo al éxito',desc:'Dilemas sin cortarse · 18+'}
 ];
 const s={code:'',name:localStorage.getItem('queprefieres:nombre')||'',token:'',room:null,busy:false,loading:false,error:'',help:false};
 let timer=null;
@@ -80,7 +79,7 @@ function top(){return '<div class="party-top"><a class="party-back" href="'+loca
 function error(){return s.error?'<div class="qp-room-error" role="alert">'+esc(s.error)+'</div>':''}
 function loading(){return header()+'<main class="party-container party-main">'+top()+error()+'<section class="party-panel qp-room-loading">Conectando con la sala…</section></main>'}
 function rules(){
- return header()+'<main class="party-container party-main">'+top()+'<section class="party-panel party-rules"><button class="party-back-btn" data-action="rules">← Volver</button><h1>Cómo se juega</h1><p>En cada ronda le toca a una persona leer el dilema y los demás votan A o B desde su móvil. El lector no vota.</p><ol><li>Un jugador crea la sala y pasa el código o el enlace a los demás.</li><li>El anfitrión elige la intensidad y comienza la partida.</li><li>El jugador 1 lee las dos opciones; los demás eligen A o B en secreto.</li><li>Cuando todos han votado, se muestran los porcentajes y se debate la decisión.</li><li>El lector o el anfitrión pulsa «Siguiente turno»: el jugador 2 lee un nuevo dilema, luego el 3, y así sucesivamente.</li></ol><p>Se puede saltar cualquier dilema sin tener que dar explicaciones. Las intensidades Picante y Sin filtro están dirigidas a adultos (18+).</p><button class="party-button party-primary" data-action="rules">Entendido</button></section></main>';
+ return header()+'<main class="party-container party-main">'+top()+'<section class="party-panel party-rules"><button class="party-back-btn" data-action="rules">← Volver</button><h1>Cómo se juega</h1><p>En cada ronda le toca a una persona leer el dilema y los demás votan A o B desde su móvil. El lector no vota.</p><ol><li>Un jugador crea la sala y pasa el código o el enlace a los demás.</li><li>El anfitrión elige la intensidad y comienza la partida.</li><li>El jugador 1 lee las dos opciones; los demás eligen A o B en secreto.</li><li>Cuando todos han votado, se muestran los porcentajes y se debate la decisión.</li><li>El lector o el anfitrión pulsa «Siguiente turno»: el jugador 2 lee un nuevo dilema, luego el 3, y así sucesivamente.</li></ol><p>Se puede saltar cualquier dilema sin tener que dar explicaciones. La intensidad Sin miedo al éxito está dirigida a adultos (18+).</p><button class="party-button party-primary" data-action="rules">Entendido</button></section></main>';
 }
 function entry(){
  const requested=(new URLSearchParams(location.search).get('codigo')||'').trim().toUpperCase();
