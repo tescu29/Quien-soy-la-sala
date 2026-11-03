@@ -120,7 +120,7 @@
 
 
 /* Yo nunca: intensidad y contenido adulto */
-.yn-levels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.yn-levels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .yn-level{display:flex;flex-direction:column;justify-content:center;gap:5px;align-items:center;background:#f4f7f5;border:2px solid #dfe8e4;border-radius:13px;min-height:76px;padding:9px 7px;color:#355360}
 .yn-level.active{background:#fff0e9;border-color:#df7865;color:#8e463d}
 .yn-level strong{font-size:13px;font-weight:950}.yn-level small{font-size:11px;line-height:1.25;color:inherit;opacity:.83;text-align:center}
@@ -157,7 +157,7 @@
 .qp-summary .party-result-word strong{font-size:17px;font-weight:850;letter-spacing:normal;line-height:1.45}
 .qp-summary .party-result-word{overflow-wrap:anywhere}
 @media(max-width:650px){
- .yn-levels{grid-template-columns:1fr 1fr 1fr;gap:6px}
+ .yn-levels{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
  .yn-level{min-height:82px;padding:8px 5px}.yn-level strong{font-size:12px}.yn-level small{font-size:10px}
  .qp-header{margin-top:10px}.qp-vote-grid{display:flex;flex-direction:column;gap:0}
  .qp-choice{min-height:173px;padding:16px 18px;border-radius:18px}
@@ -384,3 +384,9 @@
  .qp-multi-options .qp-choice-text{font-size:18px}
 }
 @media(prefers-reduced-motion:reduce){.qp-choice{transition:none}}
+
+/* Selector unificado de dos intensidades (Yo nunca / ¿Qué prefieres?) */
+.yn-levels .yn-level{min-width:0;min-height:82px;line-height:1.25}
+.yn-levels .yn-level strong{font-size:clamp(13px,2.7vw,16px);text-wrap:balance}
+.yn-levels .yn-level small{font-size:11px;line-height:1.3}
+@media(max-width:380px){.yn-levels .yn-level{padding:9px 7px;min-height:90px}.yn-levels .yn-level strong{font-size:13px}}
