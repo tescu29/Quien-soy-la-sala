@@ -135,8 +135,8 @@ async function handleClick(btn){
  const action=btn.dataset.action;
  if(action==='help'){state.help=!state.help;render();return}
  if(state.help)return;
- if(action==='share'){try{await window.GroupHub?.ensure();if(navigator.share)await navigator.share({title:'Impostor · ¿Una partidita?',url:link()});else await copy(link())}catch{}return}
- if(action==='copy'){await window.GroupHub?.ensure();await copy(window.GroupHub?.groupCode||state.code);return}
+ if(action==='share'){window.GroupHub?.shareInvite(link());return}
+ if(action==='copy'){window.GroupHub?.copyCode(state.code);return}
  if(action==='leave'){if(!confirm('¿Quieres salir de la sala?'))return;await run(async()=>{try{await rpc('im_leave',auth())}catch(e){console.warn('No se pudo notificar la salida',e)}resetLocal()});return}
  if(!state.room)return;
  const r=state.room,host=r.me===r.host;
