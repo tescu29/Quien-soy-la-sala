@@ -11,14 +11,14 @@ const CATS=[
 ];
 const esc=s=>String(s??'').replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
 function rnd(n){if(n<=1)return 0;const a=new Uint32Array(1),limit=Math.floor(4294967296/n)*n;do{crypto.getRandomValues(a)}while(a[0]>=limit);return a[0]%n;}
-function initial(){return {phase:'setup',count:5,players:[],categories:CATS.map(c=>c.id),word:'',impostor:-1,turn:0,first:0,voteIndex:0,votes:[],help:false,seen:[]};}
-function load(){try{const s=JSON.parse(sessionStorage.getItem(store)||'null');if(s&&Array.isArray(s.players)&&Number.isInteger(s.count)&&s.count>=3&&s.count<=10&&Array.isArray(s.categories)){s.phase=s.phase==='reveal'?'pass':s.phase==='vote'?'vote-pass':s.phase;return {...initial(),...s,help:false}}}catch{}return initial();}
+function initial(){return {phase:'setup',count:5,players:[],word:'',impostor:-1,turn:0,first:0,voteIndex:0,votes:[],help:false,seen:[]};}
+function load(){try{const s=JSON.parse(sessionStorage.getItem(store)||'null');if(s&&Array.isArray(s.players)&&Number.isInteger(s.count)&&s.count>=3&&s.count<=10){s.phase=s.phase==='reveal'?'pass':s.phase==='vote'?'vote-pass':s.phase;return {...initial(),...s,help:false}}}catch{}return initial();}
 let s=load();
 function save(){const copy={...s,phase:s.phase==='reveal'?'pass':s.phase==='vote'?'vote-pass':s.phase,help:false};try{sessionStorage.setItem(store,JSON.stringify(copy))}catch{}}
 function set(changes){s={...s,...changes};save();render();}
 function names(){return Array.from({length:s.count},(_,i)=>(s.players[i]||'').trim().slice(0,20)||'Jugador '+(i+1));}
 function newRound(){
- const pool=CATS.filter(c=>s.categories.includes(c.id)).flatMap(c=>c.terms);
+ const pool=CATS.flatMap(c=>c.terms);
  if(pool.length===0)return;
  const recent=new Set(s.seen||[]),filtered=pool.filter(w=>!recent.has(w)),choices=filtered.length?filtered:pool;
  const word=choices[rnd(choices.length)],players=names();
@@ -33,7 +33,7 @@ function setup(){
  '<section class="party-panel party-settings"><div class="party-label-row"><h2>¿Cuántos sois?</h2><span class="party-count">'+count+'/10</span></div><div class="party-stepper"><button type="button" data-action="minus" '+(count<=3?'disabled':'')+' aria-label="Quitar jugador">−</button><strong>'+count+'</strong><button type="button" data-action="plus" '+(count>=10?'disabled':'')+' aria-label="Añadir jugador">+</button></div>'+
  '<div class="party-label-row imp-name-heading"><h2>¿Quién juega?</h2><span class="party-count">'+count+' nombres</span></div><p class="imp-names-hint">Escribe los nombres directamente, o deja el nombre predeterminado.</p>'+
  '<div class="party-name-list imp-name-grid">'+Array.from({length:count},(_,i)=>'<label class="imp-player-field"><span class="imp-player-number">'+(i+1)+'</span><input class="party-name-input" data-index="'+i+'" aria-label="Nombre del jugador '+(i+1)+'" maxlength="20" value="'+esc(s.players[i]||'')+'" placeholder="Jugador '+(i+1)+'" autocomplete="off" autocapitalize="words" spellcheck="false"></label>').join('')+'</div>'+
- '<h2>Elegid temáticas</h2><div class="party-categories">'+CATS.map(c=>'<button type="button" class="party-topic '+(s.categories.includes(c.id)?'active':'')+'" data-action="cat" data-id="'+c.id+'" aria-pressed="'+s.categories.includes(c.id)+'"><span class="party-topic-icon">'+c.icon+'</span><span>'+c.name+'</span><span class="party-check">'+(s.categories.includes(c.id)?'✓':'+')+'</span></button>').join('')+'</div>'+
+
  '<button type="button" class="party-button party-primary party-start" data-action="start">Empezar partida <span>→</span></button><p class="party-caption">3–10 personas · 1 impostor · sin crear salas</p></section></main>';
 }
 function privacyScreen(){
@@ -72,7 +72,6 @@ app.addEventListener('click',e=>{
  if(action==='help'){set({help:!s.help});return;}
  if(s.help)return;
  if(action==='plus'||action==='minus'){set({count:Math.max(3,Math.min(10,s.count+(action==='plus'?1:-1)))});return;}
- if(action==='cat'){const id=b.dataset.id;if(!CATS.some(c=>c.id===id))return;const c=s.categories.includes(id)?s.categories.filter(x=>x!==id):[...s.categories,id];if(c.length)set({categories:c});return;}
  if(action==='start'&&s.phase==='setup'){newRound();return;}
  if(action==='show'&&s.phase==='pass'){set({phase:'reveal'});return;}
  if(action==='hide'&&s.phase==='reveal'){set(s.turn===s.count-1?{phase:'talk'}:{phase:'pass',turn:s.turn+1});return;}
