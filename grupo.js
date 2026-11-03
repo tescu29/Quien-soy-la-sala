@@ -71,6 +71,13 @@ async function activateTarget(state,m){
   localStorage.setItem(pendingKey,gameCode);
   saveNative(game,gameCode,m);
  }
+ if(game==='quien'){
+  // ¿Quién soy? requiere inicializar todas sus categorías antes de jugar.
+  // Equivale a la configuración de una sala creada desde su pantalla normal.
+  await rpc('update_settings',{p_code:gameCode,p_token:m.token,p_difficulty:'mixta',
+   p_categories:['historia','ciencia','musica','cine','deporte','arte','politica','exploradores',
+    'videojuegos','ficcion','mitologia','influencers']});
+ }
  await rpc('gu_activate',{p_code:code,p_token:m.token,p_game_code:gameCode});
  localStorage.removeItem(pendingKey);
  saveNative(game,gameCode,m);
