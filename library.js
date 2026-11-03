@@ -19,7 +19,7 @@ if(view==='quien'){
  if(impMode==='movil'){
   startScript('impostor.js?v=19').catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar Impostor. Comprueba tu conexión.</main>');
  }else if(impMode==='sala'||params.has('codigo')){
-  startScript('impostor-sala.js?v=19').catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar el modo salas de Impostor. Comprueba tu conexión.</main>');
+  startScript('impostor-sala.js?v=23').catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar el modo salas de Impostor. Comprueba tu conexión.</main>');
  }else{
   root.innerHTML=`<div class="party-app imp-mode-app">
    <header class="party-nav"><div class="party-container party-nav-inner"><a class="party-brand" href="${location.pathname}"><span class="party-brand-icon">✦</span>¿Una partidita<span class="party-brand-question">?</span></a><span class="imp-mode-header">Juegos entre amigos</span></div></header>
@@ -36,7 +36,7 @@ if(view==='quien'){
  startScript('yonunca.js?v=22').catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar Yo nunca. Comprueba tu conexión.</main>');
 }else if(view==='queprefieres'){
  document.title='¿Qué prefieres? · ¿Una partidita?';
- startScript('queprefieres-sala.js?v=22').catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar la sala de ¿Qué prefieres?. Comprueba tu conexión.</main>');
+ startScript('queprefieres-sala.js?v=23').catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar la sala de ¿Qué prefieres?. Comprueba tu conexión.</main>');
 }else{
  document.title='¿Una partidita? · Juegos para jugar juntos';
  root.innerHTML=`<div class="library">
