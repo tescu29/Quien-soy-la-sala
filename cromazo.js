@@ -103,8 +103,8 @@ async function action(button){
  if(command==='rules'){state.showRules=true;render();return}
  if(command==='back'){state.showRules=false;render();return}
  if(command==='cancel-color'){state.pending=null;render();return}
- if(command==='copy'){await window.GroupHub?.ensure();return copy(window.GroupHub?.groupCode||state.code)}
- if(command==='share'){try{await window.GroupHub?.ensure();if(navigator.share)await navigator.share({title:'Cromazo · ¿Una partidita?',url:roomLink()});else await copy(roomLink())}catch{}return}
+ if(command==='copy'){window.GroupHub?.copyCode(state.code);return}
+ if(command==='share'){window.GroupHub?.shareInvite(roomLink());return}
  if(command==='leave'){
   if(!confirm('¿Abandonar esta sala?'))return;
   return run(async()=>{try{await rpc('cp_leave',auth())}catch(e){console.warn(e)}
