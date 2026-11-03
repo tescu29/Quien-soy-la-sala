@@ -116,18 +116,18 @@ END $$;
 
 CREATE OR REPLACE FUNCTION public.gu_status(p_code text,p_token text) RETURNS jsonb
 LANGUAGE plpgsql SECURITY DEFINER SET search_path=public,extensions AS $$
-DECLARE party public.gu_parties%ROWTYPE; token_hash text;
+DECLARE party public.gu_parties%ROWTYPE; member_digest text;
 BEGIN
  SELECT * INTO party FROM public.gu_parties WHERE code=upper(trim(p_code));
  IF party.id IS NULL THEN RAISE EXCEPTION 'No se encuentra el grupo'; END IF;
- token_hash:=encode(extensions.digest(coalesce(p_token,''),'sha256'),'hex');
- IF NOT EXISTS(SELECT 1 FROM public.gu_members
-    WHERE party_id=party.id AND token_hash=token_hash) THEN
+ member_digest:=encode(extensions.digest(coalesce(p_token,''),'sha256'),'hex');
+ IF NOT EXISTS(SELECT 1 FROM public.gu_members gm
+    WHERE gm.party_id=party.id AND gm.token_hash=member_digest) THEN
   RAISE EXCEPTION 'No tienes acceso a este grupo';
  END IF;
  RETURN jsonb_build_object('code',party.code,'game',party.active_game,
   'game_code',party.active_code,'phase',party.phase,'target_game',party.target_game,
-  'version',party.version,'is_host',token_hash=party.host_token_hash);
+  'version',party.version,'is_host',member_digest=party.host_token_hash);
 END $$;
 
 -- Solo se devuelve destino de una invitación cuyo código ya se conoce.
