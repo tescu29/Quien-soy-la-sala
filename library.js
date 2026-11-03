@@ -2,24 +2,27 @@
 // ¿Una partidita? — selector de juegos compartiendo identidad visual.
 // Los enlaces antiguos ?sala=... continúan abriendo directamente ¿Quién soy?.
 const params=new URLSearchParams(location.search);
-const view=params.has('cartas')||params.get('juego')==='cromazo'?'cromazo':params.has('sala')||params.get('juego')==='quien'?'quien':params.get('juego')==='impostor'?'impostor':params.get('juego')==='yonunca'?'yonunca':params.get('juego')==='queprefieres'?'queprefieres':'biblioteca';
+const view=params.has('grupo')?'grupo':params.has('cartas')||params.get('juego')==='cromazo'?'cromazo':params.has('sala')||params.get('juego')==='quien'?'quien':params.get('juego')==='impostor'?'impostor':params.get('juego')==='yonunca'?'yonunca':params.get('juego')==='queprefieres'?'queprefieres':'biblioteca';
 const root=document.getElementById('app');
 const startScript=src=>new Promise((resolve,reject)=>{
  const script=document.createElement('script');script.src=src;script.onload=resolve;script.onerror=()=>reject(new Error('No se pudo cargar '+src));document.head.appendChild(script);
 });
-if(view==='quien'){
+if(view==='grupo'){
+ document.title='Sala del grupo · ¿Una partidita?';
+ startScript('grupo.js?v=25').catch(()=>root.innerHTML='<main class="loading-root">No se pudo abrir el enlace de grupo.</main>');
+}else if(view==='quien'){
  document.title='¿Quién soy? · ¿Una partidita?';
- startScript('characters.js?v=14').then(()=>startScript('app.js?v=14')).catch(e=>root.innerHTML='<main class="loading-root">Error cargando ¿Quién soy?. Vuelve a abrir el enlace.</main>');
+ startScript('grupo-hub.js?v=25').then(()=>startScript('characters.js?v=14')).then(()=>startScript('app.js?v=25')).catch(e=>root.innerHTML='<main class="loading-root">Error cargando ¿Quién soy?. Vuelve a abrir el enlace.</main>');
 }else if(view==='cromazo'){
  document.title='Cromazo · ¿Una partidita?';
- startScript('cromazo.js?v=14').catch(e=>root.innerHTML='<main class="loading-root">Error cargando Cromazo. Vuelve a abrir el enlace.</main>');
+ startScript('grupo-hub.js?v=25').then(()=>startScript('cromazo.js?v=25')).catch(e=>root.innerHTML='<main class="loading-root">Error cargando Cromazo. Vuelve a abrir el enlace.</main>');
 }else if(view==='impostor'){
  document.title='Impostor · ¿Una partidita?';
  const impMode=params.get('modo');
  if(impMode==='movil'){
   startScript('impostor.js?v=19').catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar Impostor. Comprueba tu conexión.</main>');
  }else if(impMode==='sala'||params.has('codigo')){
-  startScript('impostor-sala.js?v=23').catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar el modo salas de Impostor. Comprueba tu conexión.</main>');
+  startScript('grupo-hub.js?v=25').then(()=>startScript('impostor-sala.js?v=25')).catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar el modo salas de Impostor. Comprueba tu conexión.</main>');
  }else{
   root.innerHTML=`<div class="party-app imp-mode-app">
    <header class="party-nav"><div class="party-container party-nav-inner"><a class="party-brand" href="${location.pathname}"><span class="party-brand-icon">✦</span>¿Una partidita<span class="party-brand-question">?</span></a><span class="imp-mode-header">Juegos entre amigos</span></div></header>
@@ -36,7 +39,7 @@ if(view==='quien'){
  startScript('yonunca.js?v=22').catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar Yo nunca. Comprueba tu conexión.</main>');
 }else if(view==='queprefieres'){
  document.title='¿Qué prefieres? · ¿Una partidita?';
- startScript('queprefieres-sala.js?v=23').catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar la sala de ¿Qué prefieres?. Comprueba tu conexión.</main>');
+ startScript('grupo-hub.js?v=25').then(()=>startScript('queprefieres-sala.js?v=25')).catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar la sala de ¿Qué prefieres?. Comprueba tu conexión.</main>');
 }else{
  document.title='¿Una partidita? · Juegos para jugar juntos';
  root.innerHTML=`<div class="library">
