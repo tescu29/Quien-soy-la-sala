@@ -87,3 +87,39 @@ button.cm-card:not(:disabled){cursor:pointer}
 .cm-rule-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:24px}
 @media(max-width:700px){.cm-entry-options,.cm-columns,.cm-game-columns,.cm-rule-grid{grid-template-columns:1fr}.cm-hero-mini{height:140px}.cm-panel{padding:18px}.cm-entry-head{margin-bottom:23px}.cm-page{padding-top:15px}.cm-room-head{padding:15px}.cm-room-code{font-size:31px}.cm-board{padding:18px 10px}.cm-table{gap:14px;margin:24px 0 10px}.cm-card{width:66px;min-width:66px;height:99px;font-size:25px}.cm-deck{min-width:72px;width:72px;height:104px;border-width:4px}.cm-hand{gap:7px}.cm-board .cm-pile .cm-card{width:73px;min-width:73px;height:109px}.cm-game-columns{gap:13px}}
 @media(prefers-reduced-motion:reduce){.cm-card{transition:none}}
+
+
+/* Cromazo · cartas de los rivales visibles antes de la mesa, sin revelar sus manos */
+.cm-rivals{padding:15px 17px 17px;margin:0 0 17px;background:#eaf2ef;border:1px solid #cbded8;border-radius:18px}
+.cm-rivals-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:11px}
+.cm-rivals-header h2{margin:0;font-size:15px;font-weight:950;letter-spacing:-.025em;color:#244d52}
+.cm-rivals-header>span{font-size:10px;font-weight:750;color:#76928b;white-space:nowrap}
+.cm-rivals-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.cm-rival{display:flex;align-items:center;gap:9px;min-width:0;min-height:63px;padding:9px;border:1px solid #d8e5df;border-radius:13px;background:#fff}
+.cm-rival-avatar{display:grid;place-items:center;flex-shrink:0;width:34px;height:34px;border-radius:10px;background:#edf3ee;color:#41716a;font-size:15px;font-weight:950}
+.cm-rival-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.cm-rival-info strong{font-size:12px;font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2}
+.cm-rival-info small{font-size:10px;font-weight:800;color:#728989;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:12px}
+.cm-rival-counter{flex-shrink:0;display:flex;align-items:center;justify-content:center;gap:6px;min-width:51px;padding:7px 8px;border-radius:10px;background:#e8f2ec;color:#2c7564;font-variant-numeric:tabular-nums}
+.cm-rival-counter b{font-size:21px;line-height:1;font-weight:950}
+.cm-rival-card-icon{font-size:15px;font-weight:900;line-height:1}
+.cm-rival-turn{border-color:#f3d6a2;background:#fffbf3}
+.cm-rival-turn .cm-rival-avatar{background:#ffe1b2;color:#835621}
+.cm-rival-last{border-color:#f4b4a0;background:#fff5f1}
+.cm-rival-last .cm-rival-counter{background:#ff9279;color:#fff}
+.cm-rival-last .cm-rival-info small{color:#b9523d}
+.cm-rival-out{opacity:.68}
+.cm-rival-out .cm-rival-counter{background:#e5e9e7;color:#617773}
+@media(max-width:430px){
+ .cm-rivals{padding:12px;margin-bottom:14px}
+ .cm-rivals-header{margin-bottom:9px}
+ .cm-rivals-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+ .cm-rival{min-height:57px;gap:6px;padding:7px}
+ .cm-rival-avatar{width:29px;height:29px;border-radius:8px;font-size:13px}
+ .cm-rival-info strong{font-size:11px}
+ .cm-rival-info small{font-size:9px}
+ .cm-rival-counter{min-width:39px;gap:4px;padding:6px 5px}
+ .cm-rival-counter b{font-size:18px}
+ .cm-rival-card-icon{font-size:12px}
+}
+@media(max-width:345px){.cm-rivals-header>span{display:none}.cm-rival-avatar{display:none}}
