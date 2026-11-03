@@ -71,7 +71,7 @@ function entry(){
  error()+'<p class="party-caption">Sin registro · 3–10 jugadores · Cada persona ve únicamente su papel</p></main>';
 }
 function roomBar(r){
- return '<section class="imp-room-header"><div><span>CÓDIGO DE LA SALA</span><strong>'+clean(r.code)+'</strong></div><div class="imp-room-actions"><button data-action="copy">Copiar código</button><button data-action="share">Compartir enlace</button></div></section>';
+ return '<section class="imp-room-header"><div><span>CÓDIGO DE LA SALA</span><strong>'+clean(window.GroupHub?.displayCode(r.code)||r.code)+'</strong></div><div class="imp-room-actions"><button data-action="copy">Copiar código</button><button data-action="share">Compartir enlace</button></div></section>';
 }
 function playerList(r){
  return '<div class="imp-roster">'+r.players.map((p,i)=>'<div class="imp-roster-player"><span class="imp-avatar">'+clean(p.name.slice(0,1).toUpperCase())+'</span><span class="imp-roster-name">'+clean(p.name)+(p.id===r.me?' <small>(tú)</small>':'')+'</span><span class="imp-player-badge '+(p.ready||p.voted?'done':'')+'">'+(p.host?'★ Anfitrión':r.status==='reveal'?(p.ready?'✓ Listo':'Sin ver'):r.status==='vote'?(p.voted?'✓ Votó':'Sin votar'):p.online?'●':'○')+'</span></div>').join('')+'</div>';
