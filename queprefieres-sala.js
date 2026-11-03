@@ -175,7 +175,7 @@ async function click(button){
  if(s.help)return;
  if(type==='copy'){window.GroupHub?.copyCode(s.code);return;}
  if(type==='share'){window.GroupHub?.shareInvite(url());return;}
- if(type==='leave'){if(!confirm('¿Quieres abandonar la sala?'))return;await act(async()=>{try{await rpc('qp_leave',auth())}finally{leaveLocal()}});return;}
+ if(type==='leave'){if(!await window.PartyDialogs.confirm({title:'¿Salir de la sala?',detail:'Dejarás de participar en ¿Qué prefieres? desde este móvil.',confirmText:'Sí, salir',cancelText:'Seguir jugando',tone:'danger'}))return;await act(async()=>{try{await rpc('qp_leave',auth())}finally{leaveLocal()}});return;}
  const r=s.room;if(!r)return;
  if(type==='level'&&r.status==='lobby'&&r.me===r.host&&levels.some(l=>l.id===button.dataset.level)){
   await act(async()=>{s.room=await changeLevel(button.dataset.level)});return;
@@ -190,7 +190,7 @@ async function click(button){
   await act(async()=>{s.room=await rpc('qp_next',auth())});return;
  }
  if(type==='skip'&&r.status==='voting'&&(r.me===r.reader||r.me===r.host)){
-  if(!confirm('¿Cambiar el dilema y reiniciar los votos de esta ronda?'))return;
+  if(!await window.PartyDialogs.confirm({title:'¿Cambiar de dilema?',detail:'Se mostrará otro dilema y se reiniciarán los votos de esta ronda.',confirmText:'Cambiar dilema',cancelText:'Mantener el actual'}))return;
   await act(async()=>{s.room=await rpc('qp_skip',auth())});return;
  }
 }
