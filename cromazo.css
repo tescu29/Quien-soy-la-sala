@@ -1,0 +1,89 @@
+/* Cromazo: juego de cartas móvil con la identidad de ¿Una partidita? */
+.cm-app{min-height:100vh;background:#f4f5f1;color:#183446}
+.cm-wrap{max-width:1080px;margin:0 auto;padding-left:clamp(17px,4vw,35px);padding-right:clamp(17px,4vw,35px)}
+.cm-nav{background:#0c2534;color:#fff;border-bottom:1px solid rgba(255,255,255,.12)}
+.cm-nav-inner{height:70px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.cm-brand{display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-weight:950;color:#fff;font-size:clamp(17px,4vw,23px);letter-spacing:-.055em;white-space:nowrap}
+.cm-logo{background:#ff9079;color:#0c2534;border-radius:10px;width:34px;height:34px;display:grid;place-items:center;font-size:22px;transform:rotate(-8deg)}
+.cm-pink{color:#ff9079}.cm-nav-actions{display:flex;gap:7px}
+.cm-text-btn{background:transparent;border:0;color:inherit;padding:9px;font-size:13px;font-weight:800;border-radius:8px}
+.cm-text-btn:hover{background:rgba(255,255,255,.1)}
+.cm-page{padding-top:24px;padding-bottom:55px}
+.cm-entry{padding-top:20px;padding-bottom:60px}
+.cm-back{display:inline-block;text-decoration:none;border:0;background:transparent;color:#54717a;font-weight:800;font-size:13px;padding:7px 0;margin:0 0 17px;cursor:pointer}
+.cm-back-button{display:block}
+.cm-entry-head{text-align:center;max-width:620px;margin:0 auto 30px}
+.cm-entry-head h1{font-size:clamp(49px,8vw,75px);font-weight:950;letter-spacing:-.07em;margin:4px 0 3px;line-height:1.1}
+.cm-entry-head p{font-size:16px;color:#607781;margin:4px 0 0}
+.cm-eyebrow{font-size:10px;font-weight:950;color:#be6551;letter-spacing:.16em}
+.cm-hero-mini{height:160px;max-width:340px;margin:0 auto 4px;display:flex;justify-content:center;align-items:center;position:relative;isolation:isolate}
+.cm-artcard{position:absolute;display:grid;place-items:center;height:128px;width:87px;border:5px solid #fff;border-radius:15px;color:#fff;font-size:57px;font-weight:950;box-shadow:8px 9px 0 rgba(0,0,0,.1)}
+.cm-art-red{background:#ea6e6b;transform:translateX(-57px) rotate(-20deg)}.cm-art-blue{background:#5c7ad1;z-index:2}.cm-art-yellow{background:#d7b653;transform:translateX(57px) rotate(20deg);font-size:35px}
+.cm-entry-options{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+.cm-panel{background:#fff;border:1px solid #d8e0df;box-shadow:0 6px 22px rgba(12,37,52,.04);padding:23px;border-radius:19px;min-width:0}
+.cm-panel h2{font-size:21px;letter-spacing:-.035em;line-height:1.25;margin:7px 0 17px}
+.cm-panel p{color:#647981;font-size:14px;line-height:1.65}
+.cm-panel label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.07em;font-weight:850;color:#38515e;margin:13px 0 7px}
+.cm-panel input{display:block;width:100%;padding:11px 13px;min-height:49px;border:1px solid #cad7d7;border-radius:11px;background:#fff;color:#1e3945;outline:none}
+.cm-panel input:focus{border-color:#487e92}
+.cm-button{display:flex;align-items:center;justify-content:center;gap:6px;min-height:47px;border:0;border-radius:12px;font-weight:900;text-align:center;cursor:pointer;padding:12px 18px;text-decoration:none}
+.cm-button:active:not(:disabled){transform:scale(.98)}
+.cm-button:disabled{opacity:.48;cursor:not-allowed}
+.cm-entry-options .cm-button{width:100%;margin-top:21px}
+.cm-primary{color:#162d37;background:#ff9079}.cm-primary:hover:not(:disabled){background:#ffaa94}
+.cm-secondary{color:#fff;background:#0c2534}.cm-secondary:hover:not(:disabled){background:#245365}
+.cm-light{color:#264a58;background:#e9f1ee}
+.cm-footer{background:#0c2534;color:#9db9c0;text-align:center;padding:17px;font-size:12px}
+.cm-error{background:#ffe8e1;color:#973b2f;border:1px solid #e9afa4;border-radius:12px;padding:14px;margin:15px 0;font-weight:750;font-size:13px}
+.cm-room-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:15px;background:#0c2534;border-radius:17px;color:#fff;padding:18px 22px;margin-bottom:26px}
+.cm-room-head .cm-eyebrow{color:#a9d9d1}.cm-room-code{font-size:37px;line-height:1.2;font-weight:950;letter-spacing:.15em;margin:3px 0 0}
+.cm-room-buttons{display:flex;gap:8px;flex-wrap:wrap}
+.cm-outline{border-radius:10px;color:#fff;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.24);padding:9px 13px;font-size:13px;font-weight:850}
+.cm-page-intro{margin-bottom:25px}.cm-page-intro h1,.cm-page>h1{font-size:clamp(29px,5vw,41px);line-height:1.12;font-weight:950;letter-spacing:-.045em;margin:9px 0}
+.cm-page-intro p{color:#607781;margin:0}
+.cm-columns{display:grid;grid-template-columns:1.05fr .95fr;gap:19px;align-items:start}
+.cm-capacity{float:right;padding:5px 9px;border-radius:99px;background:#edf1f1;color:#577177;font-size:12px;letter-spacing:normal}
+.cm-players{display:grid;gap:1px}.cm-player{display:flex;gap:11px;align-items:center;min-width:0;border-top:1px solid #e7eceb;padding:11px 3px}
+.cm-avatar{width:43px;height:43px;background:#e7eeea;display:grid;place-items:center;border-radius:13px;font-weight:900;font-size:20px;flex-shrink:0}
+.cm-player-data{min-width:0;flex:1}.cm-player-data strong{display:block;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;font-size:14px}.cm-player-data small{color:#71848b;font-size:12px}
+.cm-player.cm-active .cm-avatar{background:#ffd4a9}
+.cm-turn-dot{padding:4px 8px;border-radius:99px;background:#fff0d9;color:#936221;font-size:11px;font-weight:900}
+.cm-note{background:#eaf1ed;border-radius:12px;padding:14px;color:#637980;font-size:14px;margin-bottom:12px}
+.cm-panel .cm-button{width:100%;margin-top:13px}
+.cm-board{border-radius:23px;background:radial-gradient(circle at 50% -40%,#2e6876,#0f3546 68%,#0c2534);color:#fff;padding:24px;margin-bottom:19px;box-shadow:0 13px 30px rgba(8,35,47,.13)}
+.cm-status{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:11px;font-weight:850;letter-spacing:.07em;color:#a8d5d5}
+.cm-board h1{font-weight:950;font-size:clamp(26px,4vw,35px);letter-spacing:-.04em;line-height:1.2;margin:14px 0 5px;text-align:center}
+.cm-board p{text-align:center;color:#b9d0d6;font-size:13px;margin:0}
+.cm-table{display:flex;align-items:center;justify-content:center;gap:clamp(13px,4vw,65px);margin:29px 0 12px}
+.cm-pile{display:flex;flex-direction:column;gap:9px;align-items:center}.cm-pile>span,.cm-current>span{font-size:10px;letter-spacing:.1em;font-weight:850;color:#a7c9cf}
+.cm-current{display:flex;flex-direction:column;align-items:center;gap:9px}.cm-current strong{font-size:13px}
+.cm-color-disc{width:48px;height:48px;border-radius:50%;border:5px solid #fff;box-shadow:0 0 0 6px rgba(255,255,255,.07)}
+.cm-disc-r{background:#ed6b6b}.cm-disc-b{background:#637ad9}.cm-disc-g{background:#50a997}.cm-disc-y{background:#e4b94f}
+.cm-card{position:relative;width:76px;min-width:76px;height:113px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:4px solid #fff;border-radius:13px;color:#fff;box-shadow:4px 5px 0 rgba(0,0,0,.15);font-size:28px;font-weight:950;user-select:none;overflow:hidden;transition:transform .11s}
+.cm-card:before{content:"";position:absolute;inset:9px;border:2px solid rgba(255,255,255,.46);border-radius:12px 7px;transform:rotate(-13deg);pointer-events:none}
+.cm-card:disabled{opacity:1}
+.cm-card-small{position:absolute;top:5px;left:6px;font-size:13px;line-height:1}.cm-card-small-bottom{top:auto;left:auto;bottom:5px;right:6px;transform:rotate(180deg)}
+.cm-card-symbol{position:relative;z-index:1;text-shadow:1px 2px rgba(0,0,0,.1)}
+.cm-r{background:#ea6668}.cm-b{background:#5778d4}.cm-g{background:#41a690}.cm-y{background:#dfb447}.cm-w{background:#292f4c;background-image:linear-gradient(135deg,#ea6668 0% 24%,#5778d4 24% 50%,#41a690 50% 76%,#dfb447 76% 100%)}
+button.cm-card:not(:disabled){cursor:pointer}
+.cm-hand button.cm-card:hover:not(:disabled){transform:translateY(-10px);box-shadow:4px 14px 10px rgba(0,0,0,.17)}
+.cm-hand button.cm-card:disabled{filter:saturate(.72);opacity:.65;cursor:not-allowed}
+.cm-hand{display:flex;flex-wrap:wrap;gap:10px;padding:15px 0 6px;min-height:145px}
+.cm-my-hand{overflow:hidden}
+.cm-my-hand p{margin:0}.cm-game-columns{grid-template-columns:minmax(0,1.4fr) minmax(240px,.8fr)}
+.cm-deck{display:flex;align-items:center;flex-direction:column;justify-content:center;min-width:84px;width:84px;height:121px;padding:10px;background:repeating-linear-gradient(45deg,#133a4e 0 10px,#235369 10px 20px);border:5px solid #fff;border-radius:14px;color:#fff;box-shadow:4px 5px 0 rgba(0,0,0,.15);cursor:pointer}
+.cm-deck:disabled{opacity:.45;cursor:not-allowed}
+.cm-deck>span{font-size:31px;color:#ffc67a}.cm-deck b{font-size:15px}.cm-deck small{font-size:10px;text-align:center;line-height:1.2;color:#bdd2db}
+.cm-overlay{position:fixed;inset:0;z-index:60;background:rgba(5,20,29,.77);display:grid;place-items:center;padding:20px}
+.cm-color-modal{background:#fff;color:#183446;width:min(100%,380px);padding:25px;border-radius:20px;text-align:center;box-shadow:0 20px 90px rgba(0,0,0,.3)}
+.cm-color-modal h2{font-size:26px;margin:0 0 7px}.cm-color-modal p{color:#637b82;margin:0 0 20px}
+.cm-color-modal .cm-text-btn{color:#183446;margin-top:15px}
+.cm-color-options{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.cm-color-option{color:#fff;border:4px solid #f2f2f2;border-radius:14px;min-height:74px;font-weight:950;font-size:17px}
+.cm-victory{text-align:center;border-radius:22px;background:#0d3547;padding:36px 22px;color:#fff;margin-bottom:18px}
+.cm-victory h1{font-size:clamp(31px,6vw,52px);font-weight:950;letter-spacing:-.05em;margin:12px 0}.cm-victory p{color:#c2d6db}
+.cm-victory .cm-button{max-width:300px;margin:20px auto 0}
+.cm-victory .cm-note{max-width:400px;margin:15px auto}
+.cm-rule-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:24px}
+@media(max-width:700px){.cm-entry-options,.cm-columns,.cm-game-columns,.cm-rule-grid{grid-template-columns:1fr}.cm-hero-mini{height:140px}.cm-panel{padding:18px}.cm-entry-head{margin-bottom:23px}.cm-page{padding-top:15px}.cm-room-head{padding:15px}.cm-room-code{font-size:31px}.cm-board{padding:18px 10px}.cm-table{gap:14px;margin:24px 0 10px}.cm-card{width:66px;min-width:66px;height:99px;font-size:25px}.cm-deck{min-width:72px;width:72px;height:104px;border-width:4px}.cm-hand{gap:7px}.cm-board .cm-pile .cm-card{width:73px;min-width:73px;height:109px}.cm-game-columns{gap:13px}}
+@media(prefers-reduced-motion:reduce){.cm-card{transition:none}}
