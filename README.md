@@ -4,6 +4,25 @@ Biblioteca de juegos sociales para jugar con amigos sin instalar apps ni registr
 
 **Flujo:** abrir el enlace → elegir juego → jugar. Los juegos multijugador requieren crear o unirse a una sala; los de un móvil no necesitan ese paso. Los enlaces de invitación llevan directamente a cada sala.
 
+## Sala universal entre juegos
+
+La **sala pertenece al grupo**, no a un juego. Se aplica a las cuatro modalidades que crean sala: **¿Quién soy?, Cromazo, Impostor (crear sala) y ¿Qué prefieres?**.
+
+- Se crea una sala nativa **una sola vez** de cara a los usuarios; el gestor `grupo-hub.js` la registra como grupo universal con un **código de invitación permanente** y enlace `/?grupo=ABC123`.
+- Al terminar una ronda/partida, aparecen **fichas con los otros tres juegos**. Solo el anfitrión puede elegir. Impostor requiere 3 jugadores; los demás 2.
+- El servidor (`gu_open`) valida que la ronda esté terminada y que quien cambia sea el anfitrión.
+- Tras cambiar, todos los navegadores reciben el aviso. El anfitrión crea automáticamente la sala interna del nuevo juego; los demás **entran automáticamente con su nombre y su token propio**, sin repetir formularios ni enviar enlaces nuevos.
+- Aunque los motores tengan códigos internos diferentes, la invitación y el código **visible del grupo** permanecen, y puede cambiarse de juego cuantas veces se quiera.
+- El enlace permanente también funciona para invitados que se incorporan después del cambio, llevándolos al juego actualmente activo. Los nuevos participantes deberán escribir su nombre una sola vez para entrar.
+- La sala anterior se conserva en sus tablas; no se trasladan manos, personajes ni votos entre juegos. Sí se mantiene el grupo. Se pueden jugar nuevas rondas en cada juego mediante sus controles habituales.
+- La transición tiene recuperación de errores y de creación interrumpida en el navegador del anfitrión. Es necesario que esté conectado para preparar el nuevo juego; los demás ven una pantalla de espera.
+
+**Código**: `grupo-hub.js` controla la sala desde los cuatro clientes; `grupo.js` resuelve la invitación permanente y crea/une a los participantes; `MIGRACION_SALA_UNIVERSAL.sql` crea `gu_parties`, `gu_links`, `gu_members` y RPC `gu_attach`, `gu_status`, `gu_public`, `gu_open`, `gu_activate`. La migración se ejecutó sobre Supabase.
+
+**Verificación**: se comprobó la sintaxis de los clientes y se simularon creación y seguimiento de la sala, selección de juego, creación automática de la sala interna y unión automática de otro móvil con identidad guardada. Sigue pendiente una prueba end-to-end real que recorra los cuatro juegos y valide los RPC contra Supabase, porque se ha alcanzado temporalmente el límite del conector de consultas.
+
+Las antiguas migraciones `MIGRACION_SALA_COMPARTIDA.sql` y `MIGRACION_SALA_ENLACE.sql` eran una integración previa limitada a Impostor y ¿Qué prefieres?; el cliente actual usa únicamente el sistema universal `gu_*`.
+
 ## Juegos
 
 ### ¿Quién soy?
@@ -101,12 +120,15 @@ No se ha verificado todavía una publicación pública funcional en esa direcci�
 - `/?juego=yonunca` — Yo nunca, partida en un móvil.
 - `/?juego=queprefieres` — ¿Qué prefieres?, crear o unirse a sala.
 - `/?juego=queprefieres&codigo=ABC123` — entrar directamente en sala de ¿Qué prefieres?.
+- `/?grupo=ABC123` — invitación permanente al grupo, independientemente del juego activo.
 
 Las URLs se resuelven respecto a la ruta de GitHub Pages del repositorio.
 
 ## Archivos
 
 - `index.html` — entrada HTML y política CSP.
+- `grupo-hub.js`, `grupo.js` — sala universal, cambio entre juegos e invitación permanente.
+- `MIGRACION_SALA_UNIVERSAL.sql` — esquema y seguridad del grupo compartido.
 - `library.js`, `library.css` — biblioteca común.
 - `app.js`, `characters.js`, `styles.css` — juego «¿Quién soy?» existente.
 - `cromazo.js`, `cromazo.css` — interfaz, salas y jugadas de Cromazo.
@@ -134,6 +156,7 @@ Las URLs se resuelven respecto a la ruta de GitHub Pages del repositorio.
 - Prueba SQL transaccional de Cromazo con dos usuarios, creación y acceso a sala, reparto de siete cartas, privacidad de manos en `cp_state`, salto para dos personas, penalización +2, robo y cambio de turno, denegación de +4 ilegal y victoria. Se ejecutó con `ROLLBACK`, sin dejar partidas de prueba.
 - Pruebas funcionales simuladas de las dos intensidades adultas de Yo nunca y de ¿Qué prefieres? con cinco y diez votantes, porcentajes 60/40, salto, resumen, siguiente dilema, recuperación de sesión, y comprobación de las cinco rutas de la biblioteca.
 - **Aplicado**: backend privado de Impostor en Supabase; pendiente verificar con pruebas SQL automatizadas y una sesión completa en varios dispositivos. La prueba SQL transaccional todavía no pudo ejecutarse por un límite temporal de consultas del conector.
+- **Pendiente**: prueba de grupo transversal real con cuatro juegos, varios navegadores y mismo enlace antes de considerarlo validado para publicación.
 - **Pendiente**: prueba end-to-end del modo ¿Qué prefieres? con varios navegadores reales, comprobando paso de lector, bloqueo del voto del lector y resultados finales.
 - **Pendiente**: prueba end-to-end con dos navegadores/móviles reales en una URL publicada para los juegos con sala; accesibilidad y aspecto visual de los cuatro juegos en dispositivos reales, despliegue de Pages y migración de límite de ¿Quién soy?. No se debe considerar el lanzamiento validado para producción hasta completarlas.
 
