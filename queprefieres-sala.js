@@ -173,8 +173,8 @@ async function click(button){
  const type=button.dataset.action;
  if(type==='rules'){s.help=!s.help;render();return;}
  if(s.help)return;
- if(type==='copy'){await window.GroupHub?.ensure();await copy(window.GroupHub?.groupCode||s.code);return;}
- if(type==='share'){try{await window.GroupHub?.ensure();if(navigator.share)await navigator.share({title:'¿Qué prefieres? · ¿Una partidita?',url:url()});else await copy(url())}catch{}return;}
+ if(type==='copy'){window.GroupHub?.copyCode(s.code);return;}
+ if(type==='share'){window.GroupHub?.shareInvite(url());return;}
  if(type==='leave'){if(!confirm('¿Quieres abandonar la sala?'))return;await act(async()=>{try{await rpc('qp_leave',auth())}finally{leaveLocal()}});return;}
  const r=s.room;if(!r)return;
  if(type==='level'&&r.status==='lobby'&&r.me===r.host&&levels.some(l=>l.id===button.dataset.level)){
