@@ -9,7 +9,7 @@ const state={code:'',token:'',name:localStorage.getItem(profileKey)||'',room:nul
 const names={r:'Coral',b:'Azul',g:'Menta',y:'Dorado',w:'Comodín'};
 const labels={skip:'Salto',reverse:'Giro',draw2:'+2',wild:'★',wild4:'+4'};
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const roomLink=()=>location.origin+location.pathname+'?cartas='+encodeURIComponent(state.code);
+const roomLink=()=>window.GroupHub?.inviteUrl()||location.origin+location.pathname+'?cartas='+encodeURIComponent(state.code);
 const secret=()=>Array.from(crypto.getRandomValues(new Uint8Array(32)),b=>b.toString(16).padStart(2,'0')).join('');
 const sessionKey=c=>'cromazo:room:'+c;
 let timer;
@@ -95,6 +95,7 @@ function render(){
  if(!state.code){app.innerHTML=entry();return}
  if(!state.room){app.innerHTML='<div class="cm-app">'+baseHeader()+'<main class="cm-wrap cm-page"><h1>Conectando con la sala…</h1>'+error()+'</main></div>';return}
  app.innerHTML=state.room.status==='lobby'?lobby(state.room):table(state.room);
+ if(state.room.status==='ended')app.innerHTML+=window.GroupHub?.menu('cromazo',state.room.me===state.room.host,state.room.players.length)||'';
 }
 async function copy(value){try{await navigator.clipboard.writeText(value);notice('¡Copiado!')}catch{window.prompt('Copia este enlace:',value)}}
 async function action(button){
@@ -102,8 +103,8 @@ async function action(button){
  if(command==='rules'){state.showRules=true;render();return}
  if(command==='back'){state.showRules=false;render();return}
  if(command==='cancel-color'){state.pending=null;render();return}
- if(command==='copy')return copy(state.code);
- if(command==='share'){try{if(navigator.share)await navigator.share({title:'Cromazo · ¿Una partidita?',url:roomLink()});else await copy(roomLink())}catch{}return}
+ if(command==='copy'){await window.GroupHub?.ensure();return copy(window.GroupHub?.groupCode||state.code)}
+ if(command==='share'){try{await window.GroupHub?.ensure();if(navigator.share)await navigator.share({title:'Cromazo · ¿Una partidita?',url:roomLink()});else await copy(roomLink())}catch{}return}
  if(command==='leave'){
   if(!confirm('¿Abandonar esta sala?'))return;
   return run(async()=>{try{await rpc('cp_leave',auth())}catch(e){console.warn(e)}
@@ -150,5 +151,6 @@ async function init(){
 }
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')refresh(true)});
 window.addEventListener('online',()=>refresh(true));
+window.GroupHub?.attach('cromazo',()=>({code:state.code,token:state.token,name:state.name}));
 init();
 })();
