@@ -312,7 +312,7 @@ DECLARE r public.im_rooms%ROWTYPE;
 BEGIN
  SELECT * INTO r FROM public.im_rooms WHERE code=upper(trim(p_code)) FOR UPDATE;
  IF NOT FOUND THEN RAISE EXCEPTION 'Sala no encontrada'; END IF;
- IF public.im_auth(p_code,p_token)<>r.host_id THEN RAISE EXCEPTION 'Solo el anfitrión puede elegir temáticas'; END IF;
+ IF public.im_auth(p_code,p_token) IS DISTINCT FROM r.host_id THEN RAISE EXCEPTION 'Solo el anfitrión puede elegir temáticas'; END IF;
  IF r.status<>'lobby' THEN RAISE EXCEPTION 'Las temáticas solo se cambian antes de empezar'; END IF;
  IF p_categories IS NULL OR cardinality(p_categories)<1 OR cardinality(p_categories)>5
     OR NOT(p_categories <@ ARRAY['lugares','comida','ocio','objetos','pop']::text[])
@@ -327,7 +327,7 @@ DECLARE r public.im_rooms%ROWTYPE; total integer; imp uuid; starter uuid; secret
 BEGIN
  SELECT * INTO r FROM public.im_rooms WHERE code=upper(trim(p_code)) FOR UPDATE;
  IF NOT FOUND THEN RAISE EXCEPTION 'Sala no encontrada'; END IF;
- IF public.im_auth(p_code,p_token)<>r.host_id THEN RAISE EXCEPTION 'Solo el anfitrión puede repartir'; END IF;
+ IF public.im_auth(p_code,p_token) IS DISTINCT FROM r.host_id THEN RAISE EXCEPTION 'Solo el anfitrión puede repartir'; END IF;
  IF r.status<>'lobby' THEN RAISE EXCEPTION 'La partida ya está comenzada'; END IF;
  SELECT count(*) INTO total FROM public.im_players WHERE room_id=r.id;
  IF total NOT BETWEEN 3 AND 10 THEN RAISE EXCEPTION 'Se necesitan entre 3 y 10 jugadores'; END IF;
@@ -366,7 +366,7 @@ DECLARE r public.im_rooms%ROWTYPE; votes integer;
 BEGIN
  SELECT * INTO r FROM public.im_rooms WHERE code=upper(trim(p_code)) FOR UPDATE;
  IF NOT FOUND THEN RAISE EXCEPTION 'Sala no encontrada'; END IF;
- IF public.im_auth(p_code,p_token)<>r.host_id THEN RAISE EXCEPTION 'Solo el anfitrión puede cambiar de fase'; END IF;
+ IF public.im_auth(p_code,p_token) IS DISTINCT FROM r.host_id THEN RAISE EXCEPTION 'Solo el anfitrión puede cambiar de fase'; END IF;
  IF NOT ((r.status='reveal' AND p_next='debate') OR
          (r.status='debate' AND p_next='vote') OR
          (r.status='vote' AND p_next='result')) THEN RAISE EXCEPTION 'Cambio de fase no permitido'; END IF;
@@ -405,7 +405,7 @@ DECLARE r public.im_rooms%ROWTYPE;
 BEGIN
  SELECT * INTO r FROM public.im_rooms WHERE code=upper(trim(p_code)) FOR UPDATE;
  IF NOT FOUND THEN RAISE EXCEPTION 'Sala no encontrada'; END IF;
- IF public.im_auth(p_code,p_token)<>r.host_id THEN RAISE EXCEPTION 'Solo el anfitrión puede preparar otra partida'; END IF;
+ IF public.im_auth(p_code,p_token) IS DISTINCT FROM r.host_id THEN RAISE EXCEPTION 'Solo el anfitrión puede preparar otra partida'; END IF;
  IF r.status<>'result' THEN RAISE EXCEPTION 'La ronda todavía no ha terminado'; END IF;
  UPDATE public.im_players SET ready=false,vote_target=null WHERE room_id=r.id;
  UPDATE public.im_rooms SET status='lobby',word=null,impostor_id=null,opening_id=null,
