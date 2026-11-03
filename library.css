@@ -37,3 +37,19 @@
 .library-footer{margin-top:auto;padding:18px;text-align:center;border-top:1px solid rgba(255,255,255,.1);font-size:12px;color:#7896a1}
 @media(max-width:700px){.library-nav .library-wrap{height:65px}.library-nav-note{display:none}.library-intro{padding:48px 0 33px}.library-grid{grid-template-columns:1fr;gap:16px}.game-art{height:205px}.game-tile-bottom{padding:18px}.art-card{transform-origin:center bottom}.art-question{width:123px;height:146px;font-size:110px}.art-card{height:142px;width:102px;font-size:55px}.art-card-red{transform:translate(-65px,8px) rotate(-22deg)}.art-card-yellow{transform:translate(60px,7px) rotate(21deg);font-size:38px}.library-footnote{margin:28px 0 40px}}
 @media(prefers-reduced-motion:reduce){.game-tile{transition:none}}
+
+/* Tarjetas de los nuevos juegos, misma biblioteca y estética */
+.impostor-art{background:radial-gradient(circle at 48% 55%,#755b9f 0%,#50416f 55%,#332e55 100%)}
+.spy-aura{position:absolute;width:245px;height:245px;border:23px solid rgba(255,255,255,.08);border-radius:50%;transform:rotate(25deg)}
+.spy-icon{width:176px;height:188px;background:#e5d9ff;border-radius:24px;position:relative;transform:rotate(-7deg);box-shadow:13px 17px 0 rgba(16,12,46,.22);display:flex;justify-content:center;align-items:center;overflow:hidden}
+.spy-head{position:absolute;background:#654d94;border-radius:50%;width:78px;height:78px;top:26px;left:50%;transform:translateX(-50%)}
+.spy-body{position:absolute;width:132px;height:105px;border-radius:49% 49% 15px 15px;background:#654d94;top:118px;left:50%;transform:translateX(-50%)}
+.spy-question{position:absolute;top:29px;right:23px;z-index:2;font-size:52px;font-weight:950;color:#ffcf83;text-shadow:3px 3px #403264}
+.spy-star{position:absolute;top:24px;left:17%;font-size:40px;color:#fce6a4}
+.yonunca-art{background:radial-gradient(circle at 43% 44%,#d17d89,#bc637c 62%,#8e5477)}
+.yn-art-back,.yn-art-front{display:grid;place-items:center;position:absolute;line-height:1;font-weight:1000;letter-spacing:-.045em;border-radius:18px;box-shadow:11px 13px 0 rgba(69,24,46,.20)}
+.yn-art-back{font-size:70px;color:#ac3e64;background:#ffdccc;width:170px;height:154px;transform:translate(-47px,-19px) rotate(-14deg)}
+.yn-art-front{color:#fff;background:#eb8767;padding:20px 17px;font-size:50px;transform:translate(48px,51px) rotate(10deg)}
+.yn-art-confetti{font-size:34px;position:absolute;color:#fff3cf}
+.yn-confetti-one{right:12%;top:12%}.yn-confetti-two{left:17%;bottom:10%}
+@media(max-width:700px){.spy-icon{width:140px;height:147px}.spy-head{width:65px;height:65px;top:19px}.spy-body{width:112px;height:86px;top:94px}.spy-question{font-size:42px;top:19px;right:16px}.yn-art-back{font-size:52px;width:148px;height:133px}.yn-art-front{font-size:40px;padding:18px 15px}}
