@@ -179,3 +179,98 @@
 .imp-player-field:focus-within{border-color:#539b8c;background:#fff;box-shadow:0 0 0 2px rgba(63,154,131,.14)}
 @media(max-width:600px){.imp-name-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.imp-player-field{padding:6px 8px;gap:6px}.imp-player-number{width:25px;min-width:25px;height:28px}.imp-player-field input.party-name-input{font-size:14px;height:36px;min-height:36px}}
 @media(max-width:350px){.imp-name-grid{grid-template-columns:1fr}}
+
+
+/* Impostor: elegir modalidad con dos fichas a pantalla completa */
+.imp-mode-app{background:radial-gradient(circle at 50% 8%,#e7e1f7,#f5f6f3 45%)}
+.imp-mode-header{color:#afc5c5;font-size:12px;font-weight:800}
+.imp-mode-heading{margin-top:15px;margin-bottom:29px}
+.imp-mode-heading h1{font-size:clamp(35px,5.3vw,55px)}
+.imp-mode-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;max-width:900px;margin:0 auto}
+.imp-mode-card{display:flex;flex-direction:column;overflow:hidden;border-radius:22px;border:1px solid #dce3e2;background:#fff;box-shadow:0 10px 28px rgba(20,47,61,.08);text-decoration:none;color:#1b3a4c;transition:transform .16s,border-color .16s,box-shadow .16s}
+.imp-mode-card:hover{transform:translateY(-4px);border-color:#a88ec4;box-shadow:0 18px 35px rgba(20,47,61,.13)}
+.imp-mode-card:focus-visible{outline:3px solid #a88ec4;outline-offset:3px}
+.imp-mode-illustration{height:205px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;isolation:isolate}
+.imp-mode-one{background:radial-gradient(circle at center,#635c9f,#433b78)}
+.imp-mode-many{background:radial-gradient(circle at center,#448589,#1a5866)}
+.imp-mode-device{width:99px;height:151px;border:6px solid #f3f2ff;border-radius:20px;background:#cfc1f0;color:#615394;box-shadow:8px 10px 0 rgba(10,20,40,.22);display:grid;place-items:center;transform:rotate(-9deg)}
+.imp-mode-device span{font-size:79px;font-weight:950;line-height:1}
+.imp-mode-hand{position:absolute;right:22%;bottom:12%;font-size:43px;color:#ffcf94;transform:rotate(12deg)}
+.imp-device-left{position:absolute;left:calc(50% - 105px);top:35px;width:85px;height:132px;transform:rotate(-15deg);background:#f2c3bb;color:#985c75}
+.imp-device-left span{font-size:63px}
+.imp-device-right{position:absolute;right:calc(50% - 105px);top:35px;width:85px;height:132px;transform:rotate(13deg);background:#c2eadb;color:#227b73}
+.imp-device-right span{font-size:60px}
+.imp-mode-link{position:absolute;z-index:2;bottom:24px;font-size:28px;line-height:1;color:#e8fff4;background:rgba(9,49,53,.52);border-radius:40px;padding:4px 13px}
+.imp-mode-body{padding:21px 23px 23px;display:flex;flex-direction:column;flex:1}
+.imp-mode-body h2{font-size:clamp(24px,3.8vw,31px);margin:9px 0 7px;font-weight:950;letter-spacing:-.045em;line-height:1.14}
+.imp-mode-body p{font-size:14px;color:#66808a;line-height:1.55;margin:0 0 24px}
+.imp-mode-foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:7px;font-size:12px;color:#65818a;font-weight:850}
+.imp-mode-foot b{background:#ff9279;color:#1e3742;padding:9px 11px;border-radius:11px;white-space:nowrap}
+/* Impostor por salas */
+.imp-nav-actions{display:flex;gap:7px}
+.imp-online-error{padding:12px 14px;background:#ffe9e1;color:#923b2b;border:1px solid #ecb6a8;border-radius:11px;margin:16px 0;font-size:13px;font-weight:750}
+.imp-entry-grid{display:grid;grid-template-columns:1fr 1fr;align-items:start;gap:16px;max-width:890px;margin:0 auto}
+.imp-entry-grid .party-panel{padding:23px}
+.imp-entry-grid .party-panel h2{font-size:23px;font-weight:950;letter-spacing:-.04em;margin:8px 0 4px}
+.imp-entry-grid .party-panel p{font-size:13px;color:#748a8d;margin:0 0 20px;line-height:1.5}
+.imp-entry-grid label{display:block;font-weight:850;font-size:12px;letter-spacing:.04em;margin:13px 0 6px;color:#435d64}
+.imp-entry-grid input{display:block;width:100%;height:49px;border:1px solid #cedfda;border-radius:10px;padding:10px 12px;font-size:15px;color:#183c48;background:#fff}
+.imp-entry-grid #imp-code{letter-spacing:.2em;font-weight:950;font-size:19px;text-transform:uppercase}
+.imp-entry-grid .party-button{width:100%;margin-top:19px}
+.imp-room-header{background:#163748;color:white;border-radius:19px;padding:20px 22px;display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;margin-bottom:26px}
+.imp-room-header>div>span{color:#b1d7d7;display:block;font-size:11px;letter-spacing:.11em;font-weight:900}
+.imp-room-header>div>strong{display:block;font-size:clamp(30px,5vw,43px);font-weight:950;letter-spacing:.14em;line-height:1.2;margin-top:5px}
+.imp-room-actions{display:flex;flex-wrap:wrap;gap:8px}
+.imp-room-actions button{min-height:41px;border-radius:9px;padding:9px 12px;color:white;font-size:12px;font-weight:850;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.26)}
+.imp-room-actions button:hover{background:rgba(255,255,255,.19)}
+.imp-online-heading{margin:7px 0 23px}
+.imp-online-heading h1{font-weight:950;font-size:clamp(30px,5vw,41px);letter-spacing:-.05em;line-height:1.15;margin:7px 0}
+.imp-online-heading p{color:#65808a;margin:0;font-size:15px}
+.imp-lobby-grid{display:grid;grid-template-columns:1fr 1fr;gap:17px;align-items:start}
+.imp-lobby-grid .party-panel h2{font-size:22px;margin:0 0 18px;letter-spacing:-.035em}
+.imp-roster{display:grid;gap:4px}
+.imp-roster-player{display:flex;align-items:center;gap:10px;border-top:1px solid #e5ebe8;padding:10px 0;min-width:0}
+.imp-avatar{display:grid;place-items:center;flex-shrink:0;width:41px;height:41px;border-radius:13px;background:#e6eee9;color:#356c64;font-weight:950;font-size:18px}
+.imp-roster-name{min-width:0;flex:1;font-size:14px;font-weight:850;color:#244453;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}
+.imp-roster-name small{font-size:11px;color:#899b9d}
+.imp-player-badge{font-size:10px;font-weight:950;color:#8b9a9c;border-radius:9px;background:#f0f4f2;padding:6px 8px;white-space:nowrap}
+.imp-player-badge.done{background:#e6f5ec;color:#328065}
+.imp-online-topics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.imp-online-topics .party-topic{min-height:96px}
+.imp-online-topics .party-topic:disabled{opacity:1;cursor:default}
+.imp-hint{background:#eff6f1;color:#5f7779;border-radius:11px;padding:12px 13px;font-size:13px;line-height:1.5;margin:14px 0 0}
+.imp-action-wide{width:100%;margin-top:20px}
+.imp-role-panel{min-height:300px;display:flex;flex-direction:column;justify-content:center}
+.imp-role-hidden{text-align:center}
+.imp-role-hidden>span,.imp-role-symbol{display:grid;place-items:center;width:100px;height:100px;background:#eee6f9;border-radius:25px;color:#6b5390;font-size:72px;font-weight:950;margin:0 auto 17px}
+.imp-role-hidden h2{margin:10px 0;font-size:28px!important}
+.imp-role-hidden p,.imp-role-private p{font-size:14px;color:#73838a;line-height:1.6;text-align:center}
+.imp-role-hidden .party-button,.imp-role-private .party-button{width:100%;margin-top:17px}
+.imp-role-private{text-align:center;padding:12px 3px}
+.imp-role-private h2{font-size:clamp(28px,5vw,40px)!important;line-height:1.1;font-weight:950;letter-spacing:-.05em;overflow-wrap:anywhere}
+.imp-role-private .imp-role-symbol{background:#ddf5e7;color:#257f69}
+.imp-role-private.is-impostor .imp-role-symbol{background:#efe2fb;color:#664886}
+.imp-talk{max-width:690px}
+.imp-secret-recall{border:1px solid #dce9e6;background:#f2f7f4;color:#466c6b;padding:17px;border-radius:13px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:22px 0;font-size:13px}
+.imp-secret-recall button{border:1px solid #cbdad7;background:white;border-radius:8px;padding:9px 10px;color:#315e60;font-weight:850;font-size:12px}
+.imp-voting{max-width:700px}
+.imp-vote-status{max-width:700px;margin:18px auto}
+.imp-vote-status h2{font-size:20px;font-weight:950;margin:0 0 10px}
+.imp-vote-status .party-button{width:100%;margin-top:18px}
+.imp-voted{max-width:670px}
+.imp-voted>strong{font-weight:950;color:#367e74}
+@media(max-width:710px){
+ .imp-mode-grid,.imp-entry-grid,.imp-lobby-grid{grid-template-columns:1fr;gap:14px}
+ .imp-mode-illustration{height:166px}
+ .imp-mode-body{padding:17px 19px 20px}
+ .imp-mode-body p{margin-bottom:12px}
+ .imp-mode-device{width:84px;height:131px}.imp-mode-device span{font-size:69px}
+ .imp-device-left,.imp-device-right{top:27px;width:74px;height:118px}
+ .imp-device-left{left:calc(50% - 91px)}.imp-device-right{right:calc(50% - 91px)}
+ .imp-room-header{padding:16px;margin-bottom:20px}
+ .imp-room-actions{width:100%}.imp-room-actions button{flex:1}
+ .imp-lobby-grid .party-panel{padding:18px}
+ .imp-online-topics{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:350px){.imp-mode-footer{font-size:11px}.imp-online-topics{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.imp-mode-card{transition:none}}
