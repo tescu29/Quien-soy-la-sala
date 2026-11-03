@@ -117,3 +117,53 @@
  .yn-card{min-height:345px}
 }
 @media(prefers-reduced-motion:reduce){.party-app *{scroll-behavior:auto}}
+
+
+/* Yo nunca: intensidad y contenido adulto */
+.yn-levels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.yn-level{display:flex;flex-direction:column;justify-content:center;gap:5px;align-items:center;background:#f4f7f5;border:2px solid #dfe8e4;border-radius:13px;min-height:76px;padding:9px 7px;color:#355360}
+.yn-level.active{background:#fff0e9;border-color:#df7865;color:#8e463d}
+.yn-level strong{font-size:13px;font-weight:950}.yn-level small{font-size:11px;line-height:1.25;color:inherit;opacity:.83;text-align:center}
+.yn-adult-note{font-size:12px;line-height:1.5;color:#8c6862;background:#fff5ed;border-radius:11px;padding:11px 13px;margin:7px 0 17px}
+.yn-heat{display:inline-block;margin:20px auto 0;border-radius:30px;font-weight:950;font-size:10px;letter-spacing:.13em;color:#ffc0a4;padding:6px 11px;border:1px solid rgba(255,198,173,.35);background:rgba(255,150,100,.13)}
+/* ¿Qué prefieres? — cartas A/B grandes, claras y táctiles */
+.qp-hero-icon{background:#e2eaf9;color:#445fbb;font-size:28px;letter-spacing:-.06em}
+.qp-header{text-align:center;max-width:680px;margin:18px auto 20px}
+.qp-header h1{font-size:clamp(30px,6vw,49px);line-height:1.12;font-weight:950;letter-spacing:-.055em;margin:10px auto}
+.qp-header p{font-size:14px;color:#66808a;line-height:1.6}
+.qp-vote-grid{max-width:900px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) 44px minmax(0,1fr);gap:9px;align-items:stretch}
+.qp-choice{display:flex;flex-direction:column;align-items:stretch;text-align:left;justify-content:space-between;border:2px solid transparent;border-radius:23px;padding:22px 20px 20px;min-height:270px;color:white;cursor:pointer;box-shadow:0 10px 24px rgba(15,32,53,.14);transition:transform .13s,border-color .13s}
+.qp-choice:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.75)}
+.qp-choice-a{background:radial-gradient(circle at 100% 0%,#5089b5,#31547e 70%,#26476f)}
+.qp-choice-b{background:radial-gradient(circle at 0% 10%,#a76e97,#714f87 70%,#624879)}
+.qp-letter{width:58px;height:58px;border:2px solid rgba(255,255,255,.45);border-radius:16px;background:rgba(255,255,255,.16);display:grid;place-items:center;font-size:29px;font-weight:950;box-shadow:3px 4px 0 rgba(0,0,0,.08)}
+.qp-choice-text{font-size:clamp(20px,2.9vw,26px);font-weight:950;line-height:1.25;letter-spacing:-.025em;margin:23px 0;overflow-wrap:anywhere}
+.qp-pick{align-self:start;padding:10px 14px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.28);border-radius:12px;font-size:13px;font-weight:900}
+.qp-versus{display:grid;place-items:center;align-self:center;width:43px;height:43px;background:#ffffff;color:#536475;border:1px solid #d7e4e7;border-radius:50%;font-size:18px;font-weight:950;z-index:2;box-shadow:0 3px 12px rgba(0,0,0,.07)}
+.qp-progress{max-width:580px;margin:25px auto 6px;text-align:center;color:#64808a;font-size:12px;font-weight:900}
+.qp-progress-rail{width:100%;height:9px;border-radius:100px;background:#dbe6e6;margin-top:10px;overflow:hidden}
+.qp-progress-rail span{height:100%;display:block;background:#ff9079;border-radius:100px;transition:width .15s}
+.qp-skip{margin:23px auto 0}
+.qp-result-list{display:grid;gap:12px;margin:20px auto 18px;text-align:left}
+.qp-result-card{display:flex;justify-content:space-between;gap:16px;align-items:center;border-radius:14px;padding:15px;min-height:90px;border:1px solid #dce4e5;background:#f8faf9}
+.qp-result-card>div{display:flex;align-items:start;gap:12px;min-width:0}
+.qp-result-card>div>span{font-size:18px;font-weight:950;display:grid;place-items:center;width:38px;height:38px;border-radius:10px;flex-shrink:0;color:white}
+.qp-result-card strong{font-size:14px;line-height:1.4;overflow-wrap:anywhere}
+.qp-result-card>b{white-space:nowrap;font-size:22px;font-variant-numeric:tabular-nums}
+.qp-result-card b small{font-size:12px;opacity:.7}
+.qp-result-a>div>span{background:#3b6997}.qp-result-b>div>span{background:#8b6299}
+.qp-result-bar{height:13px;background:#916aa2;border-radius:99px;overflow:hidden;margin-bottom:20px}
+.qp-result-bar>span{display:block;height:100%;background:#4b7eac;transition:width .15s}
+.qp-summary .party-result-word strong{font-size:17px;font-weight:850;letter-spacing:normal;line-height:1.45}
+.qp-summary .party-result-word{overflow-wrap:anywhere}
+@media(max-width:650px){
+ .yn-levels{grid-template-columns:1fr 1fr 1fr;gap:6px}
+ .yn-level{min-height:82px;padding:8px 5px}.yn-level strong{font-size:12px}.yn-level small{font-size:10px}
+ .qp-header{margin-top:10px}.qp-vote-grid{display:flex;flex-direction:column;gap:0}
+ .qp-choice{min-height:173px;padding:16px 18px;border-radius:18px}
+ .qp-choice-text{font-size:22px;margin:12px 0}
+ .qp-letter{width:39px;height:39px;border-radius:11px;font-size:22px}
+ .qp-versus{margin:-15px auto;position:relative;flex-shrink:0}
+ .qp-pick{font-size:12px;padding:7px 11px}.qp-progress{margin-top:20px}
+ .qp-result-card{padding:11px;gap:9px}.qp-result-card>div{gap:8px}.qp-result-card>b{font-size:18px}
+}
