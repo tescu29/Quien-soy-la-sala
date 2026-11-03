@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS public.qp_rooms (
  round_no integer NOT NULL DEFAULT 0,
  reader_id uuid,
  dilemma_id text,
- intensity text NOT NULL DEFAULT 'picante' CHECK (intensity IN ('suave','picante','sinfiltro')),
+ intensity text NOT NULL DEFAULT 'sinmiedo' CHECK (intensity IN ('suave','sinmiedo')),
  recent_ids text[] NOT NULL DEFAULT '{}'::text[],
  version integer NOT NULL DEFAULT 1,
  created_at timestamptz NOT NULL DEFAULT now(),
@@ -53,9 +53,7 @@ REVOKE ALL ON FUNCTION public.qp_auth(text,text) FROM PUBLIC,anon,authenticated;
 CREATE OR REPLACE FUNCTION public.qp_pick(p_intensity text,p_recent text[]) RETURNS text
 LANGUAGE sql SECURITY DEFINER SET search_path=public,extensions AS $$
  SELECT d.id FROM public.qp_dilemmas d
- WHERE (CASE WHEN p_intensity='suave' THEN d.level=1
-             WHEN p_intensity='sinfiltro' THEN d.level=3
-             ELSE d.level>=2 END)
+ WHERE (CASE WHEN p_intensity='suave' THEN d.level=1 ELSE d.level>=2 END)
  ORDER BY (d.id=ANY(coalesce(p_recent,'{}'::text[]))),random()
  LIMIT 1
 $$;
@@ -150,7 +148,7 @@ BEGIN
  IF NOT FOUND THEN RAISE EXCEPTION 'Sala no encontrada'; END IF;
  IF public.qp_auth(p_code,p_token) IS DISTINCT FROM r.host_id THEN RAISE EXCEPTION 'Solo el anfitrión puede modificar la sala'; END IF;
  IF r.status<>'lobby' THEN RAISE EXCEPTION 'La partida ya ha comenzado'; END IF;
- IF p_intensity NOT IN ('suave','picante','sinfiltro') OR p_intensity IS NULL THEN RAISE EXCEPTION 'Intensidad no válida'; END IF;
+ IF p_intensity NOT IN ('suave','sinmiedo') OR p_intensity IS NULL THEN RAISE EXCEPTION 'Intensidad no válida'; END IF;
  UPDATE public.qp_rooms SET intensity=p_intensity,version=version+1,updated_at=now() WHERE id=r.id;
  RETURN public.qp_state(p_code,p_token);
 END $$;
