@@ -4,6 +4,16 @@ Biblioteca de juegos sociales para jugar con amigos sin instalar apps ni registr
 
 **Flujo:** abrir el enlace → elegir juego → jugar. Los juegos multijugador requieren crear o unirse a una sala; los de un móvil no necesitan ese paso. Los enlaces de invitación llevan directamente a cada sala.
 
+### Incidencia: `party_id` ambiguo
+
+Detectado en dispositivo real al pulsar «Cambiar de juego» en ¿Quién soy?: PostgreSQL devolvió `column reference "party_id" is ambiguous`. La causa es una variable PL/pgSQL innecesaria `party_id uuid` declarada dentro de `gu_attach`, que colisiona con la columna del índice del `INSERT ... ON CONFLICT (party_id,token_hash)`.
+
+- **Código fuente corregido** en `MIGRACION_SALA_UNIVERSAL.sql`.
+- **Hotfix incremental listo**: `HOTFIX_SALA_PARTY_ID.sql`, que redefine únicamente `public.gu_attach` sin esa variable.
+- **PENDIENTE DE APLICACIÓN EN LA BASE DE DATOS REAL**: el conector SQL de Lovable alcanzó el límite temporal de consultas y el agente Lovable no admite mensajes al no tener créditos disponibles. No afirmar que la incidencia está resuelta para los usuarios hasta ejecutar ese SQL y probar la transferencia.
+- El cliente `grupo-hub.js` muestra mientras tanto el error dentro de la página, sin diálogo modal del navegador, y no abandona el juego actual si falla el cambio.
+- Prueba de interfaz simulada superada; prueba end-to-end del procedimiento almacenado pendiente.
+
 ## Sala universal entre juegos
 
 La **sala pertenece al grupo**, no a un juego. Se aplica a las cuatro modalidades que crean sala: **¿Quién soy?, Cromazo, Impostor (crear sala) y ¿Qué prefieres?**.
