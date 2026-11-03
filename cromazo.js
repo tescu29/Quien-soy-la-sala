@@ -49,7 +49,7 @@ function players(room,mode){
  return '<div class="cm-players">'+room.players.map(p=>'<div class="cm-player '+(p.id===room.turn&&mode==='play'?'cm-active':'')+'"><span class="cm-avatar">'+esc(p.name.slice(0,1).toUpperCase())+'</span><div class="cm-player-data"><strong>'+esc(p.name)+(p.id===room.me?' (tú)':'')+'</strong><small>'+ (p.host?'Anfitrión · ':'')+(mode==='play'?p.cards+' cartas':p.id===room.me?'Conectado':'En la sala')+'</small></div>'+(p.id===room.turn&&mode==='play'?'<span class="cm-turn-dot">Turno</span>':'')+'</div>').join('')+'</div>';
 }
 function roomHead(room){
- return '<div class="cm-room-head"><div><span class="cm-eyebrow">SALA COMPARTIDA</span><div class="cm-room-code">'+esc(room.code)+'</div></div><div class="cm-room-buttons"><button data-action="copy" class="cm-outline">Copiar código</button><button data-action="share" class="cm-outline">Compartir enlace</button></div></div>';
+ return '<div class="cm-room-head"><div><span class="cm-eyebrow">SALA COMPARTIDA</span><div class="cm-room-code">'+esc(window.GroupHub?.displayCode(room.code)||room.code)+'</div></div><div class="cm-room-buttons"><button data-action="copy" class="cm-outline">Copiar código</button><button data-action="share" class="cm-outline">Compartir enlace</button></div></div>';
 }
 function lobby(room){
  const host=room.me===room.host;
