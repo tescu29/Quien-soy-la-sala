@@ -1,6 +1,6 @@
 # ¿Una partidita?
 
-Biblioteca de juegos sociales para jugar con amigos sin instalar apps ni registrarse. «¿Quién soy?» y Cromazo se juegan desde distintos móviles conectados a una sala; Impostor y Yo nunca se juegan **pasando un único móvil** al grupo.
+Biblioteca de juegos sociales para jugar con amigos sin instalar apps ni registrarse. «¿Quién soy?» y Cromazo se juegan desde distintos móviles conectados a una sala; Impostor, Yo nunca y ¿Qué prefieres? se juegan **pasando un único móvil** al grupo.
 
 **Flujo:** abrir el enlace → elegir juego → jugar. Los juegos multijugador requieren crear o unirse a una sala; los de un móvil no necesitan ese paso. Los enlaces de invitación llevan directamente a cada sala.
 
@@ -39,13 +39,27 @@ Juego social de identidades ocultas para **3–10 jugadores en un mismo móvil**
 ### Yo nunca
 Juego de conversación para **2–10 jugadores en un mismo móvil**, sin backend.
 
-- Más de 100 frases repartidas entre cinco temáticas: Amigos, Fiesta, Amor y citas, Internet y Vida caótica.
+- Más de 250 frases: las 110 originales y **150 nuevas para adultos** (70 Picante, 80 Sin filtro) repartidas entre cinco temáticas: Amigos, Fiesta, Amor y citas, Internet y Vida caótica.
 - Los participantes levantan la mano si han hecho lo que aparece en pantalla.
 - Contador **opcional** de respuestas afirmativas, para no obligar a nadie a usar su móvil.
 - Control de siguiente/anterior sin repeticiones hasta agotar las cartas del conjunto seleccionado; resumen y reanudación.
-- No requiere bebidas ni pruebas físicas: basta con hablar.
+- Selector de intensidad **Tranquilo / Picante / Sin filtro**; **Picante** es el valor predeterminado. Tranquilo utiliza las frases originales; Picante selecciona las frases adultas, y Sin filtro selecciona exclusivamente las 80 más comprometidas.
+- Las dos modalidades adultas están señalizadas como **18+**; se puede pasar cualquier pregunta sin necesidad de justificarse. No requiere bebidas ni pruebas físicas.
 
 Ambos juegos guardan el estado de la partida en `sessionStorage` del navegador utilizado. Si se cambia de navegador o de dispositivo, **no se transfiere la partida**.
+
+
+### ¿Qué prefieres?
+Juego de dilemas sociales para **2–10 personas en un solo móvil**, sin registro ni servidor.
+
+- Biblioteca de **180 dilemas**: 30 tranquilos, 75 picantes y 75 sin filtro, agrupados en Amor y sexo, Secretos, Entre amigos, Fiesta y ligues y Decisiones imposibles.
+- Selector **Tranquilo / Picante / Sin filtro**, con **Picante por defecto** y aviso 18+ para las dos modalidades adultas.
+- Dos opciones A/B presentadas en tarjetas visuales grandes. Cada jugador vota una, pasando el mismo móvil.
+- El resultado no se revela hasta que votan todos: recuento de A/B y porcentajes para abrir debate.
+- Se puede saltar cualquier dilema, ver resultados, pasar al siguiente, consultar el resumen y reiniciar la partida.
+- Las preguntas de una misma partida no se repiten hasta agotarse la selección; se conserva el estado si se recarga la misma pestaña.
+
+**Objetivo editorial:** las categorías adultas mezclan sexo y relaciones con secretos, tensión social, decisiones incómodas y situaciones difíciles. No hay obligación de revelar experiencias personales.
 
 ## Publicación
 
@@ -65,6 +79,7 @@ No se ha verificado todavía una publicación pública funcional en esa direcci�
 - `/?cartas=A3F9C0` — invitación directa a Cromazo.
 - `/?juego=impostor` — Impostor, partida en un móvil.
 - `/?juego=yonunca` — Yo nunca, partida en un móvil.
+- `/?juego=queprefieres` — ¿Qué prefieres?, partida en un móvil.
 
 Las URLs se resuelven respecto a la ruta de GitHub Pages del repositorio.
 
@@ -74,15 +89,16 @@ Las URLs se resuelven respecto a la ruta de GitHub Pages del repositorio.
 - `library.js`, `library.css` — biblioteca común.
 - `app.js`, `characters.js`, `styles.css` — juego «¿Quién soy?» existente.
 - `cromazo.js`, `cromazo.css` — interfaz, salas y jugadas de Cromazo.
-- `impostor.js`, `yonunca.js`, `party.css` — dos juegos sociales locales con identidad visual compartida.
+- `impostor.js`, `yonunca.js`, `queprefieres.js`, `party.css` — tres juegos sociales locales con identidad visual compartida.
 - `MIGRACION_LIMITE_10.sql` — migración pendiente del máximo real de plazas de ¿Quién soy?
 - `AUDITORIA_CATALOGO.md` — selección editorial de 332 personajes.
 
 ## Verificaciones realizadas
 
-- Sintaxis JavaScript comprobada para `app.js`, `library.js`, `cromazo.js`, `impostor.js` y `yonunca.js`.
+- Sintaxis JavaScript comprobada para `app.js`, `library.js`, `cromazo.js`, `impostor.js`, `yonunca.js` y `queprefieres.js`.
 - Pruebas funcionales de las interfaces locales con simulación de eventos: en Impostor, cinco revelaciones con un único impostor, pistas, votación de cinco personas, resultado y revancha; en Yo nunca, frase inicial, contador, siguiente, anterior, resumen y reanudación.
 - Prueba SQL transaccional de Cromazo con dos usuarios, creación y acceso a sala, reparto de siete cartas, privacidad de manos en `cp_state`, salto para dos personas, penalización +2, robo y cambio de turno, denegación de +4 ilegal y victoria. Se ejecutó con `ROLLBACK`, sin dejar partidas de prueba.
+- Pruebas funcionales simuladas de las dos intensidades adultas de Yo nunca y de ¿Qué prefieres? con cinco y diez votantes, porcentajes 60/40, salto, resumen, siguiente dilema, recuperación de sesión, y comprobación de las cinco rutas de la biblioteca.
 - **Pendiente**: prueba end-to-end con dos navegadores/móviles reales en una URL publicada para los juegos con sala; accesibilidad y aspecto visual de los cuatro juegos en dispositivos reales, despliegue de Pages y migración de límite de ¿Quién soy?. No se debe considerar el lanzamiento validado para producción hasta completarlas.
 
 ## Privacidad
