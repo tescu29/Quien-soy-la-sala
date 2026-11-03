@@ -10,9 +10,9 @@ Detectado en dispositivo real al pulsar «Cambiar de juego» en ¿Quién soy?: P
 
 - **Código fuente corregido** en `MIGRACION_SALA_UNIVERSAL.sql`.
 - **Hotfix incremental listo**: `HOTFIX_SALA_PARTY_ID.sql`, que redefine únicamente `public.gu_attach` sin esa variable.
-- **PENDIENTE DE APLICACIÓN EN LA BASE DE DATOS REAL**: el conector SQL de Lovable alcanzó el límite temporal de consultas y el agente Lovable no admite mensajes al no tener créditos disponibles. No afirmar que la incidencia está resuelta para los usuarios hasta ejecutar ese SQL y probar la transferencia.
-- El cliente `grupo-hub.js` muestra mientras tanto el error dentro de la página, sin diálogo modal del navegador, y no abandona el juego actual si falla el cambio.
-- Prueba de interfaz simulada superada; prueba end-to-end del procedimiento almacenado pendiente.
+- **APLICADO EN SUPABASE**: la actualización incremental se ejecutó correctamente. Después se comprobó que la definición instalada de `public.gu_attach` ya no declara `party_id uuid`, que conserva `ON CONFLICT (party_id,token_hash)` y que `gu_open` sigue disponible. Falta probar una transferencia de juego completa con varios dispositivos reales.
+- El cliente `grupo-hub.js` muestra posibles errores dentro de la página, sin diálogo modal del navegador, y no abandona el juego actual si falla el cambio. Además, los botones **Copiar código** y **Compartir enlace** ya no esperan ninguna petición al servidor antes de copiar/compartir; utilizan `navigator.clipboard`/Web Share y tienen respaldo de selección manual para navegadores embebidos.
+- Pruebas de interfaz simuladas superadas para compartir con Web Share y copiar con Clipboard API, `execCommand` o selección manual; la prueba end-to-end de cambio de juego entre varios dispositivos sigue pendiente.
 
 ## Sala universal entre juegos
 
