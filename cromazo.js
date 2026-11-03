@@ -106,7 +106,7 @@ async function action(button){
  if(command==='copy'){window.GroupHub?.copyCode(state.code);return}
  if(command==='share'){window.GroupHub?.shareInvite(roomLink());return}
  if(command==='leave'){
-  if(!confirm('¿Abandonar esta sala?'))return;
+  if(!await window.PartyDialogs.confirm({title:'¿Salir de la sala?',detail:'Dejarás de participar en Cromazo desde este móvil.',confirmText:'Sí, salir',cancelText:'Seguir jugando',tone:'danger'}))return;
   return run(async()=>{try{await rpc('cp_leave',auth())}catch(e){console.warn(e)}
    localStorage.removeItem(sessionKey(state.code));localStorage.removeItem('cromazo:last');state.code='';state.token='';state.room=null;state.pending=null;history.replaceState(null,'','?juego=cromazo');clearInterval(timer);});
  }
