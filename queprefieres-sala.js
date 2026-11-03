@@ -92,7 +92,7 @@ function entry(){
  error()+'<p class="party-caption">2–10 jugadores · Cada uno desde su móvil · Sin registros</p></main>';
 }
 function roomBar(r){
- return '<section class="imp-room-header"><div><span>CÓDIGO DE LA SALA</span><strong>'+esc(r.code)+'</strong></div><div class="imp-room-actions"><button data-action="copy">Copiar código</button><button data-action="share">Compartir enlace</button></div></section>';
+ return '<section class="imp-room-header"><div><span>CÓDIGO DE LA SALA</span><strong>'+esc(window.GroupHub?.displayCode(r.code)||r.code)+'</strong></div><div class="imp-room-actions"><button data-action="copy">Copiar código</button><button data-action="share">Compartir enlace</button></div></section>';
 }
 function people(r){
  return '<div class="imp-roster">'+r.players.map((p,i)=>
