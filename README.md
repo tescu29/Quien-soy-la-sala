@@ -29,16 +29,16 @@ El backend de Cromazo se ha desplegado en la base Supabase conectada al proyecto
 ### Impostor
 Al tocar Impostor aparecen **dos fichas de modalidad**:
 - **Un solo móvil:** juego local existente, para 3–10 personas pasando el mismo teléfono; sin conexión a Supabase.
-- **Crear sala:** cada participante accede desde su propio móvil, comparte un código o enlace y recibe su papel privado. De 3 a 10 jugadores, anfitrión, selección de temáticas, votación individual secreta, resultados sincronizados y revancha.
+- **Crear sala:** cada participante accede desde su propio móvil, comparte un código o enlace y recibe su papel privado. De 3 a 10 jugadores, anfitrión, palabras de todas las temáticas mezcladas automáticamente, votación individual secreta, resultados sincronizados y revancha.
 
 **Backend activado:** la migración `MIGRACION_IMPOSTOR_SALAS.sql` se ha ejecutado correctamente en Supabase. El código del cliente también está en `main`. Está pendiente validar una partida completa desde móviles/navegadores separados antes de afirmar que la experiencia de producción ha sido comprobada.
 
-El backend preparado crea `im_rooms`, `im_players`, `im_words` con **175 palabras** compartidas con la modalidad local, y las RPC `im_create`, `im_join`, `im_state`, `im_settings`, `im_start`, `im_ready`, `im_advance`, `im_vote`, `im_next` e `im_leave`. Por seguridad, el servidor guarda la palabra, el impostor y los votos privados; cada jugador recibe únicamente su papel hasta revelar resultados. Los cambios se sincronizan por consulta periódica cada 2,3 segundos.
+El backend crea `im_rooms`, `im_players`, `im_words` con **175 palabras** compartidas con la modalidad local, y las RPC `im_create`, `im_join`, `im_state`, `im_settings`, `im_start`, `im_ready`, `im_advance`, `im_vote`, `im_next` e `im_leave`. Por seguridad, el servidor guarda la palabra, el impostor y los votos privados; cada jugador recibe únicamente su papel hasta revelar resultados. Los cambios se sincronizan por consulta periódica cada 2,3 segundos.
 
 #### Un solo móvil
 Juego social de identidades ocultas para **3–10 jugadores en un mismo móvil**, sin conexión a Supabase.
 
-- Elegid el número de participantes y las temáticas (Lugares, Comida, Ocio, Objetos y Cultura pop).
+- Elegid cuántos sois y escribid los nombres si queréis. Las 175 palabras de lugares, comida, ocio, objetos y cultura pop aparecen **mezcladas automáticamente**.
 - Se reparte aleatoriamente una palabra común y **exactamente un impostor** que no la conoce.
 - Cada persona consulta su papel de forma privada antes de pasar el teléfono.
 - Tras el debate, todos votan individualmente y en secreto en el mismo dispositivo.
@@ -104,7 +104,8 @@ Las URLs se resuelven respecto a la ruta de GitHub Pages del repositorio.
 - `cromazo.js`, `cromazo.css` — interfaz, salas y jugadas de Cromazo.
 - `impostor.js` — Impostor en un solo móvil.
 - `impostor-sala.js` — Impostor en salas sincronizadas con Supabase.
-- `MIGRACION_IMPOSTOR_SALAS.sql` — migración SQL del servidor para Impostor (aplicada; conservar como documentación de infraestructura).
+- `MIGRACION_IMPOSTOR_SALAS.sql` — migración SQL del servidor para Impostor (versión base actualizada).
+- `MIGRACION_IMPOSTOR_TODO_MEZCLADO.sql` — actualización aplicada al Supabase existente para escoger palabras de cualquier temática, incluso en salas antiguas.
 - `yonunca.js`, `queprefieres.js`, `party.css` — juegos sociales locales y estilos comunes.
 - `MIGRACION_LIMITE_10.sql` — migración pendiente del máximo real de plazas de ¿Quién soy?
 - `AUDITORIA_CATALOGO.md` — selección editorial de 332 personajes.
