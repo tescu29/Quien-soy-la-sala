@@ -443,3 +443,20 @@
 .gu-copy-dialog-actions button:last-child{background:#173d4b;color:#fff;border-color:#173d4b}
 .gu-copy-dialog-actions button:focus-visible{outline:3px solid #619f90;outline-offset:2px}
 @media(max-width:360px){.gu-copy-dialog{padding:20px 15px}.gu-copy-dialog-actions button{font-size:12px}}
+
+/* Confirmaciones internas: misma identidad visual en todos los juegos */
+.party-confirm-overlay{position:fixed;inset:0;z-index:10020;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;background:rgba(9,28,39,.68);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
+.party-confirm-dialog{width:100%;max-width:400px;box-sizing:border-box;padding:29px 24px 23px;background:#fff;color:#173b4b;border:1px solid #dce6e1;border-radius:23px;box-shadow:0 25px 65px rgba(4,20,28,.25);font-family:inherit;text-align:center}
+.party-confirm-icon{width:64px;height:64px;margin:0 auto 16px;display:grid;place-items:center;border-radius:20px;background:#e9f3ef;color:#387d72;font-size:36px;line-height:1;font-weight:950}
+.party-confirm-danger .party-confirm-icon{background:#ffece6;color:#bb6751}
+.party-confirm-dialog h2{margin:0 0 9px;font:inherit;font-weight:950;font-size:clamp(23px,6vw,29px);line-height:1.15;letter-spacing:-.04em;color:#183e4e}
+.party-confirm-dialog p{font:inherit;font-size:14px;line-height:1.55;color:#6b8389;margin:0 0 22px}
+.party-confirm-dialog p[hidden]{display:none}
+.party-confirm-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.party-confirm-actions button{min-height:51px;border-radius:12px;padding:11px 12px;font-family:inherit;font-size:14px;line-height:1.25;font-weight:900;cursor:pointer;touch-action:manipulation}
+.party-confirm-cancel{border:1px solid #cbdcd7;background:#f0f6f2;color:#285b59}
+.party-confirm-accept{border:1px solid #1c5e60;background:#205e61;color:#fff}
+.party-confirm-danger .party-confirm-accept{background:#bc624d;border-color:#bc624d}
+.party-confirm-actions button:focus-visible{outline:3px solid #91c5b4;outline-offset:3px}
+@media(max-width:370px){.party-confirm-overlay{padding:13px}.party-confirm-dialog{padding:24px 17px 17px}.party-confirm-actions button{font-size:12px;padding:10px 6px}}
+@media(prefers-reduced-motion:reduce){.party-confirm-overlay{scroll-behavior:auto}}
