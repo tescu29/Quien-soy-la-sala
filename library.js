@@ -15,7 +15,7 @@ if(view==='grupo'){
  startScript('grupo-hub.js?v=29').then(()=>startScript('characters.js?v=14')).then(()=>startScript('app.js?v=30')).catch(e=>root.innerHTML='<main class="loading-root">Error cargando ¿Quién soy?. Vuelve a abrir el enlace.</main>');
 }else if(view==='cromazo'){
  document.title='Cromazo · ¿Una partidita?';
- startScript('grupo-hub.js?v=26').then(()=>startScript('cromazo.js?v=30')).catch(e=>root.innerHTML='<main class="loading-root">Error cargando Cromazo. Vuelve a abrir el enlace.</main>');
+ startScript('grupo-hub.js?v=26').then(()=>startScript('cromazo.js?v=31')).catch(e=>root.innerHTML='<main class="loading-root">Error cargando Cromazo. Vuelve a abrir el enlace.</main>');
 }else if(view==='impostor'){
  document.title='Impostor · ¿Una partidita?';
  const impMode=params.get('modo');
