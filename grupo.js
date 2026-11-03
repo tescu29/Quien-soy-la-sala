@@ -105,6 +105,7 @@ async function step(){
   const status=m?await rpc('gu_status',{p_code:code,p_token:m.token}):
    await rpc('gu_public',{p_code:code});
   if(!status||!map[status.game])throw Error('No se reconoce el juego de esta sala.');
+  failed='';
   if(status.phase==='switching'){
    if(m&&status.is_host){
     active=true;await activateTarget(status,m);
