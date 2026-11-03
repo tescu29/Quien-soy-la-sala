@@ -8,7 +8,7 @@ const profileKey='cromazo:nick';
 const state={code:'',token:'',name:localStorage.getItem(profileKey)||'',room:null,busy:false,error:'',loading:false,pending:null,showRules:false};
 const names={r:'Coral',b:'Azul',g:'Menta',y:'Dorado',w:'Comodín'};
 const labels={skip:'Salto',reverse:'Giro',draw2:'+2',wild:'★',wild4:'+4'};
-const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','"':'&quot;'}[c]));
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const roomLink=()=>location.origin+location.pathname+'?cartas='+encodeURIComponent(state.code);
 const secret=()=>Array.from(crypto.getRandomValues(new Uint8Array(32)),b=>b.toString(16).padStart(2,'0')).join('');
 const sessionKey=c=>'cromazo:room:'+c;
