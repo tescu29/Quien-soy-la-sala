@@ -50,8 +50,35 @@ async function refresh(force=false){
  }catch(e){
   if(state.code===code){state.error=e.message;render();}
  }finally{state.loading=false;}
+ if(state.code===code)await checkSharedGame();
 }
 function startPolling(){clearInterval(poll);poll=setInterval(()=>{if(document.visibilityState==='visible')refresh()},2300)}
+
+/* Sala compartida: mismos jugadores y código al pasar a ¿Qué prefieres?.
+   La transferencia la valida el servidor; el cliente solo conserva su propio token. */
+function moveToGame(game){
+ if(game!=='queprefieres'||!state.code||!state.token)return;
+ localStorage.setItem('queprefieres:sala:'+state.code,JSON.stringify({name:state.name,token:state.token}));
+ location.assign(location.pathname+'?juego=queprefieres&codigo='+encodeURIComponent(state.code));
+}
+async function checkSharedGame(){
+ if(!state.code||!state.token)return;
+ try{
+  const status=await rpc('gp_status',auth());
+  if(status&&status.game==='queprefieres')moveToGame('queprefieres');
+ }catch(e){
+  // Si la migración todavía no se ha activado, el resto de Impostor
+  // continúa funcionando sin bloquearse.
+  if(!/PGRST|No se pudo|404|Failed to fetch/i.test(e.message))console.warn('No se ha comprobado el cambio de juego',e);
+ }
+}
+function gameChangeCard(r){
+ const host=r.me===r.host;
+ return '<section class="gp-change-panel"><div class="gp-change-copy"><span class="party-step">CAMBIAR DE JUEGO</span><h2>¿Una más… pero a otra cosa?</h2><p>Continuáis en la misma sala, con los mismos jugadores y código.</p></div>'+
+ (host?'<button class="party-button party-secondary gp-change-button" type="button" data-action="change-game" data-game="queprefieres" '+(state.busy?'disabled':'')+'>¿Qué prefieres? <span>→</span></button>':
+ '<p class="gp-change-wait">El anfitrión puede cambiar el juego para todos.</p>')+'</section>';
+}
+
 function header(){
  return '<header class="party-nav"><div class="party-container party-nav-inner"><a class="party-brand" href="'+location.pathname+'"><span class="party-brand-icon">✦</span>¿Una partidita<span class="party-brand-question">?</span></a><div class="imp-nav-actions"><button class="party-link-btn" data-action="help">Reglas</button>'+(state.code?'<button class="party-link-btn" data-action="leave">Salir</button>':'')+'</div></div></header>';
 }
@@ -121,7 +148,7 @@ function results(r){
  return header()+'<main class="party-container party-main">'+top()+roomBar(r)+error()+
  '<section class="party-center party-outcome '+(groupWin?'party-won':'party-lost')+'"><span class="party-step">RONDA '+r.round+' · RESULTADOS</span><div class="party-talk-icon">'+(groupWin?'★':'?')+'</div><h1>'+(groupWin?'¡Habéis pillado al impostor!':'¡El impostor se ha librado!')+'</h1><p>El impostor era <strong>'+clean(imp?.name||'quien ha abandonado')+'</strong>.</p><div class="party-result-word"><span>LA PALABRA ERA</span><strong>'+clean(outcome.word)+'</strong></div><h2>Votaciones</h2><div class="party-results">'+votes.slice().sort((a,b)=>b.count-a.count).map(p=>'<div class="party-result-row"><span>'+clean(p.name)+(p.id===outcome.impostor?' <b>(impostor)</b>':'')+'</span><strong>'+Number(p.count||0)+'</strong></div>').join('')+'</div>'+
  (r.me===r.host?'<button class="party-button party-primary" data-action="again" '+(state.busy?'disabled':'')+'>Otra ronda con el grupo →</button>':'<p class="imp-hint">El anfitrión puede preparar otra ronda.</p>')+
- '</section></main>';
+ '</section>'+gameChangeCard(r)+'</main>';
 }
 function render(){
  let view;if(state.help)view=rules();else if(!state.code)view=entry();else if(!state.room)view=header()+'<main class="party-container party-main">'+top()+error()+'<div class="party-panel">Conectando con la sala…</div></main>';
@@ -138,6 +165,11 @@ async function handleClick(btn){
  if(action==='leave'){if(!confirm('¿Quieres salir de la sala?'))return;await run(async()=>{try{await rpc('im_leave',auth())}catch(e){console.warn('No se pudo notificar la salida',e)}resetLocal()});return}
  if(!state.room)return;
  const r=state.room,host=r.me===r.host;
+ if(action==='change-game'&&host&&r.status==='result'&&btn.dataset.game==='queprefieres'){
+  if(!confirm('¿Cambiar a ¿Qué prefieres? para todo el grupo? Se conservarán los jugadores y el código.'))return;
+  await run(async()=>{await rpc('gp_change',{...auth(),p_game:'queprefieres'});moveToGame('queprefieres')});
+  return;
+ }
  if(action==='start'&&host&&r.status==='lobby'){await run(async()=>{state.room=await rpc('im_start',auth());state.showRole=false});return;}
  if(action==='toggle-role'){state.showRole=!state.showRole;render();return}
  if(action==='ready'&&r.status==='reveal'){await run(async()=>{state.room=await rpc('im_ready',auth());state.showRole=false});return;}
