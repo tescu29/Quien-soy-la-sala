@@ -52,8 +52,8 @@ Juego de conversación para **2–10 jugadores en un mismo móvil**, sin backend
 - Los participantes levantan la mano si han hecho lo que aparece en pantalla.
 - Contador **opcional** de respuestas afirmativas, para no obligar a nadie a usar su móvil.
 - Control de siguiente/anterior sin repeticiones hasta agotar las cartas del conjunto seleccionado; resumen y reanudación.
-- Selector de intensidad **Tranquilo / Picante / Sin filtro**; **Picante** es el valor predeterminado. Tranquilo utiliza las frases originales; Picante selecciona las frases adultas, y Sin filtro selecciona exclusivamente las 80 más comprometidas.
-- Las dos modalidades adultas están señalizadas como **18+**; se puede pasar cualquier pregunta sin necesidad de justificarse. No requiere bebidas ni pruebas físicas.
+- Selector de intensidad **Tranquilo / Sin miedo al éxito**; **Sin miedo al éxito** es el valor predeterminado. Tranquilo utiliza las 110 frases originales; Sin miedo al éxito mezcla las 150 frases adultas (70 picantes y 80 especialmente fuertes).
+- La modalidad **Sin miedo al éxito** está señalizada como **18+**; se puede pasar cualquier pregunta sin necesidad de justificarse. No requiere bebidas ni pruebas físicas.
 
 Los juegos de un solo móvil guardan el estado de la partida en `sessionStorage` del navegador utilizado. Las salas multijugador guardan su estado en Supabase.
 
@@ -62,7 +62,7 @@ Los juegos de un solo móvil guardan el estado de la partida en `sessionStorage`
 **Multijugador en sala** para **2–10 personas**, cada una desde su móvil, sin registro ni instalación.
 
 - **180 dilemas originales**: 30 tranquilos, 75 picantes y 75 sin filtro, conservados del modo anterior.
-- Selección de intensidad en la sala: **Tranquilo / Picante / Sin filtro**. Picante por defecto; las dos últimas están marcadas como contenido 18+.
+- Selección de intensidad en la sala: **Tranquilo / Sin miedo al éxito**. Esta última está seleccionada por defecto, marcada como contenido 18+ e incluye los 150 dilemas adultos (75 picantes y 75 sin filtro).
 - La primera persona que entra en la sala **lee en voz alta el primer dilema y no vota**. El resto del grupo elige A o B desde sus teléfonos.
 - Las decisiones individuales no se muestran antes de acabar la votación. Cuando todos los que deben votar han elegido, aparecen el recuento y los porcentajes.
 - El lector (o el anfitrión, como respaldo) pulsa **«Siguiente turno»** y se asigna el dilema siguiente al segundo jugador, luego al tercero, etc., en orden de entrada.
@@ -74,6 +74,8 @@ Los juegos de un solo móvil guardan el estado de la partida en `sessionStorage`
 **Backend**: tablas `qp_rooms`, `qp_players`, `qp_dilemmas`; RPC `qp_create`, `qp_join`, `qp_state`, `qp_settings`, `qp_start`, `qp_vote`, `qp_next`, `qp_skip`, `qp_leave`. Las tablas tienen RLS activa sin acceso directo público y cada jugador tiene un token privado. Migraciones `MIGRACION_QUE_PREFIERES_SALAS.sql` y `MIGRACION_QUE_PREFIERES_DILEMAS.sql` aplicadas en la instancia de Supabase. También están aplicados los parches `MIGRACION_QUE_PREFIERES_SALIDAS.sql` (abandono de salas) y `MIGRACION_QUE_PREFIERES_ORDEN.sql` (anfitrión siempre lector 1; orden de entrada del resto).
 
 El archivo `queprefieres.js` antiguo se conserva como referencia del juego de un solo móvil, pero **la ruta pública usa `queprefieres-sala.js`**.
+
+**Compatibilidad temporal:** mientras no se aplique la última migración, el cliente muestra solo dos niveles y traduce «Sin miedo al éxito» al valor anterior `picante` si el servidor rechaza el nuevo identificador. El contenido utilizado es el mismo conjunto de preguntas de nivel 2 y 3. Las salas antiguas configuradas con el anterior `sinfiltro` se normalizan al nuevo nivel al iniciar desde el vestíbulo.
 
 ## Publicación
 
@@ -117,6 +119,7 @@ Las URLs se resuelven respecto a la ruta de GitHub Pages del repositorio.
 - `queprefieres.js` — versión anterior de un móvil, mantenida como referencia sin ruta pública.
 - `MIGRACION_QUE_PREFIERES_SALAS.sql`, `MIGRACION_QUE_PREFIERES_DILEMAS.sql` — backend y banco de 180 dilemas.
 - `MIGRACION_QUE_PREFIERES_SALIDAS.sql`, `MIGRACION_QUE_PREFIERES_ORDEN.sql` — parches incrementales de desconexión y rotación, ya aplicados.
+- `MIGRACION_QUE_PREFIERES_DOS_NIVELES.sql` — actualización incremental de Supabase para los dos niveles, **pendiente de ejecutar** por límite temporal del conector. La interfaz es compatible tanto con el servidor antiguo como con el nuevo.
 - `party.css` — estilos comunes.
 - `MIGRACION_LIMITE_10.sql` — migración pendiente del máximo real de plazas de ¿Quién soy?
 - `AUDITORIA_CATALOGO.md` — selección editorial de 332 personajes.
