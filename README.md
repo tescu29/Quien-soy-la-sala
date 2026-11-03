@@ -19,7 +19,7 @@ La **sala pertenece al grupo**, no a un juego. Se aplica a las cuatro modalidade
 
 **Código**: `grupo-hub.js` controla la sala desde los cuatro clientes; `grupo.js` resuelve la invitación permanente y crea/une a los participantes; `MIGRACION_SALA_UNIVERSAL.sql` crea `gu_parties`, `gu_links`, `gu_members` y RPC `gu_attach`, `gu_status`, `gu_public`, `gu_open`, `gu_activate`. La migración se ejecutó sobre Supabase.
 
-**Verificación**: se comprobó la sintaxis de los clientes y se simularon creación y seguimiento de la sala, selección de juego, creación automática de la sala interna y unión automática de otro móvil con identidad guardada. Sigue pendiente una prueba end-to-end real que recorra los cuatro juegos y valide los RPC contra Supabase, porque se ha alcanzado temporalmente el límite del conector de consultas.
+**Verificación**: se comprobó la sintaxis de los clientes y se simularon la inscripción al grupo, el cambio iniciado por el anfitrión y **ocho transiciones (anfitrión e invitado hacia cada uno de los cuatro juegos)**; se verificó la creación automática de sala interna, la configuración de ¿Quién soy?, la entrada automática del invitado y la conservación de su identidad. Sigue pendiente una prueba end-to-end real que recorra los cuatro juegos y valide los RPC contra Supabase, porque se ha alcanzado temporalmente el límite del conector de consultas.
 
 Las antiguas migraciones `MIGRACION_SALA_COMPARTIDA.sql` y `MIGRACION_SALA_ENLACE.sql` eran una integración previa limitada a Impostor y ¿Qué prefieres?; el cliente actual usa únicamente el sistema universal `gu_*`.
 
