@@ -64,6 +64,19 @@ async function tick(){
  }catch(e){failed=e.message||'Sin conexión con el grupo';}
  finally{working=false;}
 }
+function showSwitchError(message){
+ const panel=document.querySelector('.gu-picker');
+ if(!panel)return;
+ let banner=panel.querySelector('.gu-switch-error');
+ if(!banner){banner=document.createElement('p');banner.className='gu-switch-error';banner.setAttribute('role','alert');panel.prepend(banner);}
+ banner.textContent=message;
+}
+function readableError(e){
+ const msg=e?.message||'No se pudo cambiar de juego';
+ if(/party_id.*ambiguous|column reference.*ambiguous/i.test(msg))
+  return 'No se pudo cambiar de juego porque falta actualizar el servidor de salas. La partida actual sigue disponible.';
+ return msg;
+}
 async function switchGame(game){
  const current=GAMES.find(g=>g.id===game),me=get();
  if(!current||current.id===attached?.game||!me?.token)return;
@@ -76,7 +89,7 @@ async function switchGame(game){
   const result=await rpc('gu_open',{p_code:info.code,p_token:me.token,p_target:game});
   redirecting=true;
   location.assign(location.pathname+'?grupo='+encodeURIComponent(result.code));
- }catch(e){failed=e.message||'No se pudo cambiar de juego';alert(failed)}
+ }catch(e){failed=readableError(e);showSwitchError(failed)}
  finally{working=false;}
 }
 function menu(game,isHost,count){
