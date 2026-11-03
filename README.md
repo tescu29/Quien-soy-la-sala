@@ -1,6 +1,6 @@
 # ¿Una partidita?
 
-Biblioteca de juegos sociales para jugar con amigos sin instalar apps ni registrarse. «¿Quién soy?» y Cromazo se juegan desde distintos móviles conectados a una sala; Yo nunca y ¿Qué prefieres? se juegan **pasando un único móvil** al grupo. **Impostor permite elegir entre un móvil compartido y una sala multijugador**, donde cada persona juega desde su teléfono.
+Biblioteca de juegos sociales para jugar con amigos sin instalar apps ni registrarse. «¿Quién soy?», Cromazo y ¿Qué prefieres? se juegan desde distintos móviles conectados a una sala; Yo nunca se juega **pasando un único móvil** al grupo. **Impostor permite elegir entre un móvil compartido y una sala multijugador**, donde cada persona juega desde su teléfono.
 
 **Flujo:** abrir el enlace → elegir juego → jugar. Los juegos multijugador requieren crear o unirse a una sala; los de un móvil no necesitan ese paso. Los enlaces de invitación llevan directamente a cada sala.
 
@@ -59,16 +59,21 @@ Ambos juegos guardan el estado de la partida en `sessionStorage` del navegador u
 
 
 ### ¿Qué prefieres?
-Juego de dilemas sociales para **2–10 personas en un solo móvil**, sin registro ni servidor.
+**Multijugador en sala** para **2–10 personas**, cada una desde su móvil, sin registro ni instalación.
 
-- Biblioteca de **180 dilemas**: 30 tranquilos, 75 picantes y 75 sin filtro, agrupados en Amor y sexo, Secretos, Entre amigos, Fiesta y ligues y Decisiones imposibles.
-- Selector **Tranquilo / Picante / Sin filtro**, con **Picante por defecto** y aviso 18+ para las dos modalidades adultas.
-- Dos opciones A/B presentadas en tarjetas visuales grandes. Cada jugador vota una, pasando el mismo móvil.
-- El resultado no se revela hasta que votan todos: recuento de A/B y porcentajes para abrir debate.
-- Se puede saltar cualquier dilema, ver resultados, pasar al siguiente, consultar el resumen y reiniciar la partida.
-- Las preguntas de una misma partida no se repiten hasta agotarse la selección; se conserva el estado si se recarga la misma pestaña.
+- **180 dilemas originales**: 30 tranquilos, 75 picantes y 75 sin filtro, conservados del modo anterior.
+- Selección de intensidad en la sala: **Tranquilo / Picante / Sin filtro**. Picante por defecto; las dos últimas están marcadas como contenido 18+.
+- La primera persona que entra en la sala **lee en voz alta el primer dilema y no vota**. El resto del grupo elige A o B desde sus teléfonos.
+- Las decisiones individuales no se muestran antes de acabar la votación. Cuando todos los que deben votar han elegido, aparecen el recuento y los porcentajes.
+- El lector (o el anfitrión, como respaldo) pulsa **«Siguiente turno»** y se asigna el dilema siguiente al segundo jugador, luego al tercero, etc., en orden de entrada.
+- El lector o anfitrión puede cambiar el dilema sin que nadie tenga que justificarse; esto reinicia los votos de la ronda.
+- Los jugadores usan el código/enlace compartible y pueden recuperar su sala desde el mismo navegador.
+- Los votos se validan en Supabase: el lector **no puede votar**, nadie puede votar dos veces y no se permite cerrar la votación hasta que todos los votantes activos hayan respondido.
+- Los dilemas no se repiten mientras queden otros disponibles en la intensidad seleccionada.
 
-**Objetivo editorial:** las categorías adultas mezclan sexo y relaciones con secretos, tensión social, decisiones incómodas y situaciones difíciles. No hay obligación de revelar experiencias personales.
+**Backend**: tablas `qp_rooms`, `qp_players`, `qp_dilemmas`; RPC `qp_create`, `qp_join`, `qp_state`, `qp_settings`, `qp_start`, `qp_vote`, `qp_next`, `qp_skip`, `qp_leave`. Las tablas tienen RLS activa sin acceso directo público y cada jugador tiene un token privado. Migraciones `MIGRACION_QUE_PREFIERES_SALAS.sql` y `MIGRACION_QUE_PREFIERES_DILEMAS.sql` aplicadas en la instancia de Supabase.
+
+El archivo `queprefieres.js` antiguo se conserva como referencia del juego de un solo móvil, pero **la ruta pública usa `queprefieres-sala.js`**.
 
 ## Publicación
 
@@ -92,7 +97,8 @@ No se ha verificado todavía una publicación pública funcional en esa direcci�
 - `/?juego=impostor&modo=sala` — Crear o unirse a una sala de Impostor.
 - `/?juego=impostor&modo=sala&codigo=ABC123` — invitación directa a una sala de Impostor (cuando esté activado el backend).
 - `/?juego=yonunca` — Yo nunca, partida en un móvil.
-- `/?juego=queprefieres` — ¿Qué prefieres?, partida en un móvil.
+- `/?juego=queprefieres` — ¿Qué prefieres?, crear o unirse a sala.
+- `/?juego=queprefieres&codigo=ABC123` — entrar directamente en sala de ¿Qué prefieres?.
 
 Las URLs se resuelven respecto a la ruta de GitHub Pages del repositorio.
 
@@ -106,17 +112,22 @@ Las URLs se resuelven respecto a la ruta de GitHub Pages del repositorio.
 - `impostor-sala.js` — Impostor en salas sincronizadas con Supabase.
 - `MIGRACION_IMPOSTOR_SALAS.sql` — migración SQL del servidor para Impostor (versión base actualizada).
 - `MIGRACION_IMPOSTOR_TODO_MEZCLADO.sql` — actualización aplicada al Supabase existente para escoger palabras de cualquier temática, incluso en salas antiguas.
-- `yonunca.js`, `queprefieres.js`, `party.css` — juegos sociales locales y estilos comunes.
+- `yonunca.js` — juego local de un móvil.
+- `queprefieres-sala.js` — juego de lectura y votación multijugador, conectado a Supabase.
+- `queprefieres.js` — versión anterior de un móvil, mantenida como referencia sin ruta pública.
+- `MIGRACION_QUE_PREFIERES_SALAS.sql`, `MIGRACION_QUE_PREFIERES_DILEMAS.sql` — backend y banco de 180 dilemas.
+- `party.css` — estilos comunes.
 - `MIGRACION_LIMITE_10.sql` — migración pendiente del máximo real de plazas de ¿Quién soy?
 - `AUDITORIA_CATALOGO.md` — selección editorial de 332 personajes.
 
 ## Verificaciones realizadas
 
-- Sintaxis JavaScript comprobada para `app.js`, `library.js`, `cromazo.js`, `impostor.js`, `impostor-sala.js`, `yonunca.js` y `queprefieres.js`.
+- Sintaxis JavaScript comprobada para `app.js`, `library.js`, `cromazo.js`, `impostor.js`, `impostor-sala.js`, `yonunca.js` y `queprefieres.js`, `queprefieres-sala.js`.
 - Pruebas funcionales de las interfaces locales con simulación de eventos: en Impostor, cinco revelaciones con un único impostor, pistas, votación de cinco personas, resultado y revancha; en Yo nunca, frase inicial, contador, siguiente, anterior, resumen y reanudación.
 - Prueba SQL transaccional de Cromazo con dos usuarios, creación y acceso a sala, reparto de siete cartas, privacidad de manos en `cp_state`, salto para dos personas, penalización +2, robo y cambio de turno, denegación de +4 ilegal y victoria. Se ejecutó con `ROLLBACK`, sin dejar partidas de prueba.
 - Pruebas funcionales simuladas de las dos intensidades adultas de Yo nunca y de ¿Qué prefieres? con cinco y diez votantes, porcentajes 60/40, salto, resumen, siguiente dilema, recuperación de sesión, y comprobación de las cinco rutas de la biblioteca.
 - **Aplicado**: backend privado de Impostor en Supabase; pendiente verificar con pruebas SQL automatizadas y una sesión completa en varios dispositivos. La prueba SQL transaccional todavía no pudo ejecutarse por un límite temporal de consultas del conector.
+- **Pendiente**: prueba end-to-end del modo ¿Qué prefieres? con varios navegadores reales, comprobando paso de lector, bloqueo del voto del lector y resultados finales.
 - **Pendiente**: prueba end-to-end con dos navegadores/móviles reales en una URL publicada para los juegos con sala; accesibilidad y aspecto visual de los cuatro juegos en dispositivos reales, despliegue de Pages y migración de límite de ¿Quién soy?. No se debe considerar el lanzamiento validado para producción hasta completarlas.
 
 ## Privacidad
