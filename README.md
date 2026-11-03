@@ -31,7 +31,7 @@ Al tocar Impostor aparecen **dos fichas de modalidad**:
 - **Un solo móvil:** juego local existente, para 3–10 personas pasando el mismo teléfono; sin conexión a Supabase.
 - **Crear sala:** cada participante accede desde su propio móvil, comparte un código o enlace y recibe su papel privado. De 3 a 10 jugadores, anfitrión, selección de temáticas, votación individual secreta, resultados sincronizados y revancha.
 
-**Activación necesaria:** ejecutar `MIGRACION_IMPOSTOR_SALAS.sql` en el SQL Editor de la instancia Supabase ya conectada a la web. El código del cliente y la migración están subidos, pero **la migración aún NO se ha aplicado**, pues se agotó temporalmente la cuota de operaciones de base de datos del conector. Hasta aplicarla, el botón «Crear sala» muestra un mensaje de backend pendiente y no se puede jugar por varios teléfonos. No presentar este modo como plenamente desplegado hasta comprobar dos dispositivos reales.
+**Backend activado:** la migración `MIGRACION_IMPOSTOR_SALAS.sql` se ha ejecutado correctamente en Supabase. El código del cliente también está en `main`. Está pendiente validar una partida completa desde móviles/navegadores separados antes de afirmar que la experiencia de producción ha sido comprobada.
 
 El backend preparado crea `im_rooms`, `im_players`, `im_words` con **175 palabras** compartidas con la modalidad local, y las RPC `im_create`, `im_join`, `im_state`, `im_settings`, `im_start`, `im_ready`, `im_advance`, `im_vote`, `im_next` e `im_leave`. Por seguridad, el servidor guarda la palabra, el impostor y los votos privados; cada jugador recibe únicamente su papel hasta revelar resultados. Los cambios se sincronizan por consulta periódica cada 2,3 segundos.
 
@@ -104,7 +104,7 @@ Las URLs se resuelven respecto a la ruta de GitHub Pages del repositorio.
 - `cromazo.js`, `cromazo.css` — interfaz, salas y jugadas de Cromazo.
 - `impostor.js` — Impostor en un solo móvil.
 - `impostor-sala.js` — Impostor en salas sincronizadas con Supabase.
-- `MIGRACION_IMPOSTOR_SALAS.sql` — SQL necesario para activar salas de Impostor.
+- `MIGRACION_IMPOSTOR_SALAS.sql` — migración SQL del servidor para Impostor (aplicada; conservar como documentación de infraestructura).
 - `yonunca.js`, `queprefieres.js`, `party.css` — juegos sociales locales y estilos comunes.
 - `MIGRACION_LIMITE_10.sql` — migración pendiente del máximo real de plazas de ¿Quién soy?
 - `AUDITORIA_CATALOGO.md` — selección editorial de 332 personajes.
@@ -115,7 +115,7 @@ Las URLs se resuelven respecto a la ruta de GitHub Pages del repositorio.
 - Pruebas funcionales de las interfaces locales con simulación de eventos: en Impostor, cinco revelaciones con un único impostor, pistas, votación de cinco personas, resultado y revancha; en Yo nunca, frase inicial, contador, siguiente, anterior, resumen y reanudación.
 - Prueba SQL transaccional de Cromazo con dos usuarios, creación y acceso a sala, reparto de siete cartas, privacidad de manos en `cp_state`, salto para dos personas, penalización +2, robo y cambio de turno, denegación de +4 ilegal y victoria. Se ejecutó con `ROLLBACK`, sin dejar partidas de prueba.
 - Pruebas funcionales simuladas de las dos intensidades adultas de Yo nunca y de ¿Qué prefieres? con cinco y diez votantes, porcentajes 60/40, salto, resumen, siguiente dilema, recuperación de sesión, y comprobación de las cinco rutas de la biblioteca.
-- **Pendiente**: activar y probar el backend de salas de Impostor con su migración SQL, y después confirmar creación, ingreso, roles privados, votación y cambio de ronda en dispositivos separados.
+- **Aplicado**: backend privado de Impostor en Supabase; pendiente verificar con pruebas SQL automatizadas y una sesión completa en varios dispositivos. La prueba SQL transaccional todavía no pudo ejecutarse por un límite temporal de consultas del conector.
 - **Pendiente**: prueba end-to-end con dos navegadores/móviles reales en una URL publicada para los juegos con sala; accesibilidad y aspecto visual de los cuatro juegos en dispositivos reales, despliegue de Pages y migración de límite de ¿Quién soy?. No se debe considerar el lanzamiento validado para producción hasta completarlas.
 
 ## Privacidad
