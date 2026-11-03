@@ -12,7 +12,7 @@ if(view==='grupo'){
  startScript('grupo.js?v=27').catch(()=>root.innerHTML='<main class="loading-root">No se pudo abrir el enlace de grupo.</main>');
 }else if(view==='quien'){
  document.title='¿Quién soy? · ¿Una partidita?';
- startScript('grupo-hub.js?v=27').then(()=>startScript('characters.js?v=14')).then(()=>startScript('app.js?v=27')).catch(e=>root.innerHTML='<main class="loading-root">Error cargando ¿Quién soy?. Vuelve a abrir el enlace.</main>');
+ startScript('grupo-hub.js?v=28').then(()=>startScript('characters.js?v=14')).then(()=>startScript('app.js?v=27')).catch(e=>root.innerHTML='<main class="loading-root">Error cargando ¿Quién soy?. Vuelve a abrir el enlace.</main>');
 }else if(view==='cromazo'){
  document.title='Cromazo · ¿Una partidita?';
  startScript('grupo-hub.js?v=26').then(()=>startScript('cromazo.js?v=27')).catch(e=>root.innerHTML='<main class="loading-root">Error cargando Cromazo. Vuelve a abrir el enlace.</main>');
