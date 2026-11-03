@@ -24,7 +24,7 @@ function persist(){localStorage.setItem(session(s.code),JSON.stringify({name:s.n
 function enter(code,name,sessionToken){
  s.code=code;s.name=name;s.token=sessionToken;s.room=null;s.error='';
  history.replaceState(null,'','?juego=queprefieres&codigo='+encodeURIComponent(code));
- persist();poll();
+ persist();window.GroupHub?.ensure().catch(()=>{});poll();
 }
 function leaveLocal(){
  if(s.code)localStorage.removeItem(session(s.code));
