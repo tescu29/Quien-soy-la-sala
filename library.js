@@ -9,20 +9,20 @@ const startScript=src=>new Promise((resolve,reject)=>{
 });
 if(view==='grupo'){
  document.title='Sala del grupo · ¿Una partidita?';
- startScript('grupo.js?v=25').catch(()=>root.innerHTML='<main class="loading-root">No se pudo abrir el enlace de grupo.</main>');
+ startScript('grupo.js?v=26').catch(()=>root.innerHTML='<main class="loading-root">No se pudo abrir el enlace de grupo.</main>');
 }else if(view==='quien'){
  document.title='¿Quién soy? · ¿Una partidita?';
- startScript('grupo-hub.js?v=25').then(()=>startScript('characters.js?v=14')).then(()=>startScript('app.js?v=25')).catch(e=>root.innerHTML='<main class="loading-root">Error cargando ¿Quién soy?. Vuelve a abrir el enlace.</main>');
+ startScript('grupo-hub.js?v=26').then(()=>startScript('characters.js?v=14')).then(()=>startScript('app.js?v=26')).catch(e=>root.innerHTML='<main class="loading-root">Error cargando ¿Quién soy?. Vuelve a abrir el enlace.</main>');
 }else if(view==='cromazo'){
  document.title='Cromazo · ¿Una partidita?';
- startScript('grupo-hub.js?v=25').then(()=>startScript('cromazo.js?v=25')).catch(e=>root.innerHTML='<main class="loading-root">Error cargando Cromazo. Vuelve a abrir el enlace.</main>');
+ startScript('grupo-hub.js?v=26').then(()=>startScript('cromazo.js?v=26')).catch(e=>root.innerHTML='<main class="loading-root">Error cargando Cromazo. Vuelve a abrir el enlace.</main>');
 }else if(view==='impostor'){
  document.title='Impostor · ¿Una partidita?';
  const impMode=params.get('modo');
  if(impMode==='movil'){
   startScript('impostor.js?v=19').catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar Impostor. Comprueba tu conexión.</main>');
  }else if(impMode==='sala'||params.has('codigo')){
-  startScript('grupo-hub.js?v=25').then(()=>startScript('impostor-sala.js?v=25')).catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar el modo salas de Impostor. Comprueba tu conexión.</main>');
+  startScript('grupo-hub.js?v=26').then(()=>startScript('impostor-sala.js?v=26')).catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar el modo salas de Impostor. Comprueba tu conexión.</main>');
  }else{
   root.innerHTML=`<div class="party-app imp-mode-app">
    <header class="party-nav"><div class="party-container party-nav-inner"><a class="party-brand" href="${location.pathname}"><span class="party-brand-icon">✦</span>¿Una partidita<span class="party-brand-question">?</span></a><span class="imp-mode-header">Juegos entre amigos</span></div></header>
@@ -39,7 +39,7 @@ if(view==='grupo'){
  startScript('yonunca.js?v=22').catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar Yo nunca. Comprueba tu conexión.</main>');
 }else if(view==='queprefieres'){
  document.title='¿Qué prefieres? · ¿Una partidita?';
- startScript('grupo-hub.js?v=25').then(()=>startScript('queprefieres-sala.js?v=25')).catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar la sala de ¿Qué prefieres?. Comprueba tu conexión.</main>');
+ startScript('grupo-hub.js?v=26').then(()=>startScript('queprefieres-sala.js?v=26')).catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar la sala de ¿Qué prefieres?. Comprueba tu conexión.</main>');
 }else{
  document.title='¿Una partidita? · Juegos para jugar juntos';
  root.innerHTML=`<div class="library">
