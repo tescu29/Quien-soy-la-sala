@@ -101,11 +101,12 @@ function people(r){
  ).join('')+'</div>';
 }
 function lobby(r){
- const host=r.me===r.host,level=levels.find(d=>d.id===r.intensity)||levels[1],total=r.players.length;
+ const selected=r.intensity==='suave'?'suave':'sinmiedo';
+ const host=r.me===r.host,level=levels.find(d=>d.id===selected)||levels[1],total=r.players.length;
  return header()+'<main class="party-container party-main">'+top()+roomBar(r)+error()+
  '<section class="imp-online-heading"><span class="party-step">SALA DE ESPERA</span><h1>¿Ya estáis todos?</h1><p>Cuando empecéis, el primer jugador leerá y los demás votarán.</p></section>'+
  '<div class="imp-lobby-grid qp-lobby-grid"><section class="party-panel"><div class="party-label-row"><h2>Jugadores</h2><span class="party-count">'+total+'/10</span></div>'+people(r)+(total<2?'<p class="imp-hint">Invita al menos a otra persona.</p>':'')+'</section>'+
- '<section class="party-panel"><h2>Intensidad</h2><div class="yn-levels qp-level-picker">'+levels.map(l=>'<button class="yn-level '+(r.intensity===l.id?'active':'')+'" data-action="level" data-level="'+l.id+'" '+(!host||s.busy?'disabled':'')+' aria-pressed="'+(r.intensity===l.id)+'"><strong>'+l.name+'</strong><small>'+l.desc+'</small></button>').join('')+'</div>'+
+ '<section class="party-panel"><h2>Intensidad</h2><div class="yn-levels qp-level-picker">'+levels.map(l=>'<button class="yn-level '+(selected===l.id?'active':'')+'" data-action="level" data-level="'+l.id+'" '+(!host||s.busy?'disabled':'')+' aria-pressed="'+(selected===l.id)+'"><strong>'+l.name+'</strong><small>'+l.desc+'</small></button>').join('')+'</div>'+
  '<p class="yn-adult-note">'+(r.intensity==='suave'?'Preguntas para romper el hielo.':'Contenido adulto (18+). Podéis saltar cualquier dilema.')+'</p>'+
  (host?'<button class="party-button party-primary imp-action-wide" data-action="start" '+(total<2||s.busy?'disabled':'')+'>Empezar partida →</button>':'<p class="imp-hint">El anfitrión comienza cuando todos estén dentro. Intensidad: '+esc(level.name)+'.</p>')+
  '</section></div></main>';
@@ -156,6 +157,15 @@ function render(){
  let content;if(s.help)content=rules();else if(!s.code)content=entry();else if(!s.room)content=loading();else content=s.room.status==='lobby'?lobby(s.room):round(s.room);
  app.innerHTML='<div class="party-app qp-online-app">'+content+'</div>';
 }
+async function changeLevel(level){
+ try{return await rpc('qp_settings',{...auth(),p_intensity:level})}
+ catch(e){
+  // Compatibilidad temporal: el servidor anterior llama "picante" al conjunto completo 2+3.
+  // Únicamente reintentamos ante la validación antigua de intensidad.
+  if(level==='sinmiedo'&&/Intensidad no válida/.test(e.message))return rpc('qp_settings',{...auth(),p_intensity:'picante'});
+  throw e;
+ }
+}
 async function copy(value){try{await navigator.clipboard.writeText(value);toast('¡Copiado!')}catch{prompt('Copia el enlace',value)}}
 async function click(button){
  const type=button.dataset.action;
@@ -166,10 +176,10 @@ async function click(button){
  if(type==='leave'){if(!confirm('¿Quieres abandonar la sala?'))return;await act(async()=>{try{await rpc('qp_leave',auth())}finally{leaveLocal()}});return;}
  const r=s.room;if(!r)return;
  if(type==='level'&&r.status==='lobby'&&r.me===r.host&&levels.some(l=>l.id===button.dataset.level)){
-  await act(async()=>{s.room=await rpc('qp_settings',{...auth(),p_intensity:button.dataset.level})});return;
+  await act(async()=>{s.room=await changeLevel(button.dataset.level)});return;
  }
  if(type==='start'&&r.status==='lobby'&&r.me===r.host){
-  await act(async()=>{s.room=await rpc('qp_start',auth())});return;
+  await act(async()=>{if(r.intensity==='sinfiltro')s.room=await changeLevel('sinmiedo');s.room=await rpc('qp_start',auth())});return;
  }
  if(type==='vote'&&r.status==='voting'&&r.me!==r.reader&&!r.my_vote&&['A','B'].includes(button.dataset.choice)){
   await act(async()=>{s.room=await rpc('qp_vote',{...auth(),p_choice:button.dataset.choice})});return;
