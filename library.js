@@ -33,10 +33,10 @@ if(view==='quien'){
  }
 }else if(view==='yonunca'){
  document.title='Yo nunca · ¿Una partidita?';
- startScript('yonunca.js?v=15').catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar Yo nunca. Comprueba tu conexión.</main>');
+ startScript('yonunca.js?v=22').catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar Yo nunca. Comprueba tu conexión.</main>');
 }else if(view==='queprefieres'){
  document.title='¿Qué prefieres? · ¿Una partidita?';
- startScript('queprefieres-sala.js?v=21').catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar la sala de ¿Qué prefieres?. Comprueba tu conexión.</main>');
+ startScript('queprefieres-sala.js?v=22').catch(()=>root.innerHTML='<main class="loading-root">No se pudo cargar la sala de ¿Qué prefieres?. Comprueba tu conexión.</main>');
 }else{
  document.title='¿Una partidita? · Juegos para jugar juntos';
  root.innerHTML=`<div class="library">
