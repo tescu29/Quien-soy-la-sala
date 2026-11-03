@@ -400,3 +400,31 @@
 .gp-change-button:disabled{opacity:.45}
 .gp-change-wait{margin:0;font-size:12px;line-height:1.5;color:#79908b;max-width:210px}
 @media(max-width:590px){.gp-change-panel{padding:16px;flex-direction:column;align-items:stretch;gap:12px}.gp-change-button{width:100%;min-width:0}.gp-change-wait{max-width:none}}
+
+/* Sala universal: selector de juego tras acabar cualquier ronda multijugador */
+.gu-picker{box-sizing:border-box;max-width:920px;margin:20px auto 40px;padding:22px 24px;border:1px solid #cddfda;border-radius:22px;background:#fff;color:#183b49;box-shadow:0 12px 30px rgba(25,54,65,.08);font-family:inherit}
+.gu-picker-head{text-align:center;max-width:620px;margin:0 auto 20px}
+.gu-kicker{font-size:10px;font-weight:950;letter-spacing:.13em;color:#408978}
+.gu-picker h2{font-family:inherit;font-size:clamp(24px,4.1vw,32px);line-height:1.14;letter-spacing:-.045em;color:#1b4650;margin:8px 0}
+.gu-picker-head p{margin:0;font-size:13px;line-height:1.5;color:#657f84}
+.gu-game-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
+.gu-game-choice{appearance:none;min-width:0;text-align:left;border:1px solid #d8e6e1;background:#f3f8f6;border-radius:15px;padding:18px 16px;display:flex;flex-direction:column;gap:6px;cursor:pointer;color:#1c4853;min-height:145px}
+.gu-game-choice strong{font-family:inherit;font-size:18px;font-weight:950;letter-spacing:-.025em;line-height:1.16}
+.gu-game-choice>span{font-size:12px;color:#69838b}
+.gu-game-choice small{margin-top:auto;font-size:11px;font-weight:900;color:#327e75}
+.gu-game-choice:hover:not(:disabled){background:#e4f4ec;border-color:#84b4a6;transform:translateY(-1px)}
+.gu-game-choice:focus-visible{outline:3px solid #438d7f;outline-offset:3px}
+.gu-game-choice:disabled{opacity:.42;cursor:not-allowed}
+.gu-await-host{margin:0;text-align:center;background:#eff7f3;color:#4c756f;border-radius:13px;padding:19px;font-size:13px;font-weight:800;line-height:1.5}
+.gu-loading-card{max-width:540px;margin:45px auto 0;text-align:center;padding:37px 24px}
+.gu-landing-symbol{display:grid;place-items:center;margin:20px auto;width:80px;height:80px;border-radius:22px;background:#e6f4ec;color:#418475;font-size:45px;font-weight:950}
+.gu-loading-card h1{font-size:clamp(27px,5vw,37px);font-weight:950;letter-spacing:-.04em;color:#244955;margin:12px 0}
+.gu-loading-card p{font-size:14px;color:#657b80;line-height:1.55;margin:0 auto 22px}
+.gu-loading-card .party-button{max-width:260px;margin:0 auto}
+.gu-wait-dots{display:flex;align-items:center;justify-content:center;gap:7px}
+.gu-wait-dots span{width:8px;height:8px;border-radius:50%;background:#66a88c;animation:gu-bounce 1.2s infinite ease-in-out}
+.gu-wait-dots span:nth-child(2){animation-delay:.15s}
+.gu-wait-dots span:nth-child(3){animation-delay:.3s}
+@keyframes gu-bounce{0%,75%,100%{transform:translateY(0);opacity:.55}38%{transform:translateY(-7px);opacity:1}}
+@media(max-width:690px){.gu-picker{margin:17px 13px 25px;padding:17px}.gu-game-grid{grid-template-columns:1fr;gap:9px}.gu-game-choice{min-height:0;padding:14px 15px;gap:4px}.gu-game-choice strong{font-size:17px}.gu-game-choice small{margin-top:6px}.gu-picker-head{margin-bottom:14px}.gu-picker h2{font-size:25px}}
+@media(prefers-reduced-motion:reduce){.gu-wait-dots span{animation:none}.gu-game-choice{transition:none}}
