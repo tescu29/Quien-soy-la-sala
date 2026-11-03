@@ -48,6 +48,25 @@ function entry(){
 function players(room,mode){
  return '<div class="cm-players">'+room.players.map(p=>'<div class="cm-player '+(p.id===room.turn&&mode==='play'?'cm-active':'')+'"><span class="cm-avatar">'+esc(p.name.slice(0,1).toUpperCase())+'</span><div class="cm-player-data"><strong>'+esc(p.name)+(p.id===room.me?' (tú)':'')+'</strong><small>'+ (p.host?'Anfitrión · ':'')+(mode==='play'?p.cards+' cartas':p.id===room.me?'Conectado':'En la sala')+'</small></div>'+(p.id===room.turn&&mode==='play'?'<span class="cm-turn-dot">Turno</span>':'')+'</div>').join('')+'</div>';
 }
+function rivals(room){
+ // cp_state ya incluye la cantidad pública p.cards, nunca las cartas ajenas.
+ const opponents=room.players.filter(p=>p.id!==room.me);
+ if(!opponents.length)return '';
+ const names=opponents.map(p=>{
+  const count=Number(p.cards),valid=Number.isInteger(count)&&count>=0;
+  const urgent=valid&&count===1,finished=valid&&count===0;
+  const turn=p.id===room.turn&&room.status!=='ended';
+  const label=valid?count===1?'1 carta':count+' cartas':'Cartas sin datos';
+  return '<div class="cm-rival'+(urgent?' cm-rival-last':'')+(finished?' cm-rival-out':'')+(turn?' cm-rival-turn':'')+'" aria-label="'+esc(p.name)+': '+label+(turn?', su turno':'')+'">'+
+   '<span class="cm-rival-avatar" aria-hidden="true">'+esc(p.name.slice(0,1).toUpperCase())+'</span>'+
+   '<span class="cm-rival-info"><strong>'+esc(p.name)+'</strong><small>'+(finished?'Ha terminado':urgent?'¡Última carta!':turn?'Está jugando':'')+'</small></span>'+
+   '<span class="cm-rival-counter" aria-hidden="true"><span class="cm-rival-card-icon">▣</span><b>'+(valid?count:'—')+'</b></span>'+
+  '</div>';
+ }).join('');
+ return '<section class="cm-rivals" aria-label="Número de cartas de los demás jugadores">'+
+  '<div class="cm-rivals-header"><h2>Cartas de tus rivales</h2><span>En cada jugada</span></div>'+
+  '<div class="cm-rivals-grid">'+names+'</div></section>';
+}
 function roomHead(room){
  return '<div class="cm-room-head"><div><span class="cm-eyebrow">SALA COMPARTIDA</span><div class="cm-room-code">'+esc(window.GroupHub?.displayCode(room.code)||room.code)+'</div></div><div class="cm-room-buttons"><button data-action="copy" class="cm-outline">Copiar código</button><button data-action="share" class="cm-outline">Compartir enlace</button></div></div>';
 }
@@ -72,7 +91,7 @@ function table(room){
  const current=room.players.find(p=>p.id===room.turn);
  const result=room.status==='ended';
  const winner=room.players.find(p=>p.id===room.winner);
- return '<div class="cm-app">'+baseHeader()+'<main class="cm-wrap cm-page">'+homeLink()+roomHead(room)+error()+
+ return '<div class="cm-app">'+baseHeader()+'<main class="cm-wrap cm-page">'+homeLink()+roomHead(room)+error()+rivals(room)+
  (result?'<section class="cm-victory"><span class="cm-eyebrow">FIN DE LA RONDA '+room.round+'</span><h1>'+ (room.winner===room.me?'¡Has ganado!':'¡'+esc(winner?.name||'Alguien')+' ha ganado!')+'</h1><p>¿Echamos otra partida?</p>'+(room.host===room.me?'<button class="cm-button cm-primary" data-action="restart">Preparar otra ronda</button>':'<div class="cm-note">Esperando al anfitrión para volver a jugar.</div>')+'</section>':
  '<div class="cm-board"><div class="cm-status"><span>RONDA '+room.round+'</span><span>'+ (room.direction===1?'↻ Sentido horario':'↺ Sentido inverso')+'</span></div><h1>'+ (ownTurn?'¡Es tu turno!':'Juega '+esc(current?.name||'otro jugador'))+'</h1><p>'+esc(room.last||'Elige una carta para comenzar.')+'</p><div class="cm-table"><div class="cm-pile">'+cardHtml(room.pile)+'<span>Última carta</span></div><div class="cm-current"><span>COLOR ACTIVO</span><div class="cm-color-disc cm-disc-'+esc(room.color)+'"></div><strong>'+esc(names[room.color]||'')+'</strong></div><button class="cm-deck" data-action="draw" '+(ownTurn&&!state.busy?'':'disabled')+'><span>✦</span><b>Robar</b><small>1 carta y pasar</small></button></div></div>')+
  '<div class="cm-columns cm-game-columns"><section class="cm-panel cm-my-hand"><h2>Tu mano <span class="cm-capacity">'+room.hand.length+' cartas</span></h2><p>'+ (result?'Así terminó tu mano.':ownTurn?'Toca una carta que coincida por color o símbolo.':'Puedes preparar tu siguiente jugada.')+'</p><div class="cm-hand">'+room.hand.map(card=>cardHtml(card,{interactive:!result,playable:isPlayable(card,room)})).join('')+'</div></section><aside class="cm-panel"><h2>En la mesa</h2>'+players(room,'play')+'</aside></div>'+
