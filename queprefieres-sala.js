@@ -70,8 +70,35 @@ async function sync(force=false){
   }
  }catch(e){if(s.code===code){s.error=e.message||'No se pudo actualizar la sala';render()}}
  finally{s.loading=false}
+ if(s.code===code)await checkSharedGame();
 }
 function poll(){if(timer)clearInterval(timer);timer=setInterval(()=>{if(document.visibilityState==='visible')sync()},2000)}
+
+/* Handoff seguro a Impostor: el código y la identidad de cada jugador
+   se conservan; los demás tokens nunca se transmiten al navegador. */
+function moveToGame(game){
+ if(game!=='impostor'||!s.code||!s.token)return;
+ localStorage.setItem('impostor:sala:'+s.code,JSON.stringify({name:s.name,token:s.token}));
+ location.assign(location.pathname+'?juego=impostor&modo=sala&codigo='+encodeURIComponent(s.code));
+}
+async function checkSharedGame(){
+ if(!s.code||!s.token)return;
+ try{
+  const status=await rpc('gp_status',auth());
+  if(status&&status.game==='impostor')moveToGame('impostor');
+ }catch(e){
+  // El resto del juego no depende de que el hub esté disponible.
+  if(!/PGRST|No se pudo|404|Failed to fetch/i.test(e.message))console.warn('Estado de sala compartida no disponible',e);
+ }
+}
+function gameChangeCard(r){
+ const host=r.me===r.host,canSwitch=r.players.length>=3;
+ return '<section class="gp-change-panel"><div class="gp-change-copy"><span class="party-step">CAMBIAR DE JUEGO</span><h3>¿Otra partida diferente?</h3><p>Sin crear otra sala. Mismo código, mismos amigos.</p></div>'+
+ (host?'<button class="party-button party-secondary gp-change-button" type="button" data-action="change-game" data-game="impostor" '+(!canSwitch||s.busy?'disabled':'')+'>Impostor <span>→</span></button>':
+ '<p class="gp-change-wait">El anfitrión puede cambiar el juego para todos.</p>')+
+ (!canSwitch?'<p class="gp-change-wait">Impostor necesita al menos 3 jugadores.</p>':'')+'</section>';
+}
+
 function header(){
  return '<header class="party-nav"><div class="party-container party-nav-inner"><a class="party-brand" href="'+location.pathname+'"><span class="party-brand-icon">✦</span>¿Una partidita<span class="party-brand-question">?</span></a><div class="qp-room-head-actions"><button type="button" class="party-link-btn" data-action="rules">Reglas</button>'+(s.code?'<button type="button" class="party-link-btn" data-action="leave">Salir</button>':'')+'</div></div></header>';
 }
@@ -151,7 +178,7 @@ function result(r){
  '<p>Ahora podéis debatir por qué habéis elegido así.</p>'+
  (canNext?'<button class="party-button party-primary" data-action="next" '+(s.busy?'disabled':'')+'>Siguiente turno: '+esc(next?.name||'jugador siguiente')+' →</button>':
  '<p class="qp-next-waiting">Esperando a '+esc((people.find(p=>p.id===r.reader)||people.find(p=>p.id===r.host))?.name||'otro jugador')+' para cambiar de ronda.</p>')+
- '</section>';
+ '</section>'+gameChangeCard(r);
 }
 function render(){
  let content;if(s.help)content=rules();else if(!s.code)content=entry();else if(!s.room)content=loading();else content=s.room.status==='lobby'?lobby(s.room):round(s.room);
@@ -175,6 +202,11 @@ async function click(button){
  if(type==='share'){try{if(navigator.share)await navigator.share({title:'¿Qué prefieres? · ¿Una partidita?',url:url()});else await copy(url())}catch{}return;}
  if(type==='leave'){if(!confirm('¿Quieres abandonar la sala?'))return;await act(async()=>{try{await rpc('qp_leave',auth())}finally{leaveLocal()}});return;}
  const r=s.room;if(!r)return;
+ if(type==='change-game'&&r.status==='results'&&r.me===r.host&&button.dataset.game==='impostor'&&r.players.length>=3){
+  if(!confirm('¿Cambiar a Impostor para todo el grupo? Mantendréis el código y los jugadores.'))return;
+  await act(async()=>{await rpc('gp_change',{...auth(),p_game:'impostor'});moveToGame('impostor')});
+  return;
+ }
  if(type==='level'&&r.status==='lobby'&&r.me===r.host&&levels.some(l=>l.id===button.dataset.level)){
   await act(async()=>{s.room=await changeLevel(button.dataset.level)});return;
  }
