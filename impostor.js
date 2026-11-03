@@ -25,7 +25,7 @@ function newRound(){
  set({phase:'pass',players,word,impostor:rnd(players.length),turn:0,votes:[],voteIndex:0,first:rnd(players.length),seen:[...(s.seen||[]).slice(-14),word]});
 }
 function nav(){return '<header class="party-nav"><div class="party-container party-nav-inner"><a class="party-brand" href="'+location.pathname+'"><span class="party-brand-icon">✦</span>¿Una partidita<span class="party-brand-question">?</span></a><button class="party-link-btn" data-action="help">Cómo jugar</button></div></header>'}
-function top(){return '<div class="party-top"><a class="party-back" href="'+location.pathname+'">← Biblioteca</a><span class="party-top-tag">IMPOSTOR · UN MÓVIL</span></div>'}
+function top(){return '<div class="party-top"><a class="party-back" href="?juego=impostor">← Modos de juego</a><span class="party-top-tag">IMPOSTOR · UN MÓVIL</span></div>'}
 function rules(){return nav()+'<main class="party-container party-main">'+top()+'<section class="party-panel party-rules"><button class="party-back-btn" data-action="help">← Volver al juego</button><h1>Cómo jugar a Impostor</h1><p>Una persona no conoce la palabra secreta. Todos los demás reciben la misma palabra. Intentad descubrir quién está improvisando.</p><ol><li>Elegid cuántos jugadores sois y una o varias temáticas.</li><li>Pasad el móvil de uno en uno. Cada persona ve su papel y lo oculta antes de pasarlo.</li><li>Por turnos, decid una pista relacionada con la palabra. No la digáis directamente.</li><li>Votad en secreto desde el mismo móvil. Si el impostor es el único más votado, gana el grupo. En caso de empate o error, gana el impostor.</li></ol><button class="party-button party-primary" data-action="help">Entendido</button></section></main>'}
 function setup(){
  const count=s.count;
