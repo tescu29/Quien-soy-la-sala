@@ -38,7 +38,12 @@ Las antiguas migraciones `MIGRACION_SALA_COMPARTIDA.sql` y `MIGRACION_SALA_ENLAC
 ### ¿Quién soy?
 - Juego previo conservado, con su catálogo **332 personajes** auditados para público español de 20 a 35 años.
 - Seis temáticas visuales que agrupan las doce categorías internas; sin dificultad ni ejemplos de personajes en el selector.
-- Identidad oculta al jugador activo, visible para el resto; preguntas y turnos de hasta diez.
+- Identidad oculta al jugador activo, visible para el resto.
+- **Nueva regla preparada: 15 intentos por jugador**, consumiendo **1 intento por pregunta** y **3 por una pista sutil opcional**. Solo puede solicitarse una pista por turno y queda disponible únicamente en el móvil de quien adivina. No se permite solicitarla cuando queden 3 o menos intentos, para no terminar el turno antes de poder leerla.
+- Banco de **332 pistas individuales** (191 redactadas específicamente para personajes reconocibles y 141 pistas generales ajustadas a su categoría). Las pistas se guardan en `ts_character_hints` y no se exponen por lectura pública.
+- En el servidor las operaciones `ts_action` validan los costes y los 15 intentos, `ts_state` solo devuelve la pista al jugador activo tras descontarlos y `_ts_advance` restablece el uso para el siguiente turno.
+- **Activación pendiente**: el SQL `MIGRACION_QUIEN_SOY_15_INTENTOS_PISTA.sql` está subido a GitHub, pero NO se ha ejecutado en Supabase. La integración Lovable ha agotado temporalmente su cuota SQL. Hasta aplicarlo, la web detecta los `max_questions=10` del backend vigente y **mantiene el juego antiguo sin ofrecer la pista**, para evitar errores o descuentos ficticios. Al aplicar la migración, las pantallas cambian automáticamente a 15 intentos y habilitan la pista.
+- Las pruebas simuladas del frontend validan los 15 contadores, la pista desbloqueada, el bloqueo de una segunda pista, privacidad frente a otros jugadores y la compatibilidad con las 10 preguntas actuales; el backend SQL requiere validación real tras instalarlo.
 - Funciona con las RPC existentes de Supabase (create_room, join_room, ts_state, ts_start, ts_action, etc.).
 - El frontend muestra **10 plazas**. **Pendiente de aplicar** `MIGRACION_LIMITE_10.sql` al Supabase original: actualmente la función `join_room` del servidor todavía admite 12.
 
