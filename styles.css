@@ -73,7 +73,7 @@
 
 
 /* ¿Quién soy? · 15 intentos y pista de coste 3 */
-.questions-meter{grid-template-columns:repeat(15,minmax(0,1fr));gap:5px}
+.questions-meter.fifteen{grid-template-columns:repeat(15,minmax(0,1fr));gap:5px}
 .questions-meter i{min-width:0}
 .turn-hint-panel{margin-top:14px;border:1px solid #cce0d7;border-radius:17px;background:#fff;overflow:hidden}
 .turn-hint-label{font-size:10px;font-weight:950;letter-spacing:.12em;color:#387b6c}
