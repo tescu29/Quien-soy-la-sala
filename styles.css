@@ -70,3 +70,28 @@
   .topic-card .topic-icon{width:66px;height:66px;font-size:44px}
   .topic-card .topic-name{font-size:13px}
 }
+
+
+/* ¿Quién soy? · 15 intentos y pista de coste 3 */
+.questions-meter{grid-template-columns:repeat(15,minmax(0,1fr));gap:5px}
+.questions-meter i{min-width:0}
+.turn-hint-panel{margin-top:14px;border:1px solid #cce0d7;border-radius:17px;background:#fff;overflow:hidden}
+.turn-hint-label{font-size:10px;font-weight:950;letter-spacing:.12em;color:#387b6c}
+.turn-hint-offer{display:flex;gap:13px;align-items:center;justify-content:space-between;padding:18px}
+.turn-hint-offer h3{font-size:19px;line-height:1.2;letter-spacing:-.035em;margin:4px 0 5px;color:#234d57}
+.turn-hint-offer p{font-size:13px;line-height:1.5;margin:0;color:#627d81;max-width:420px}
+.turn-hint-offer p strong{font-weight:950;color:#ab6845}
+.turn-hint-button{flex-shrink:0;min-width:143px;border:1px solid #cce0d7}
+.turn-hint-button span{font-weight:950;background:#f5dcb1;color:#845725;border-radius:7px;padding:4px 6px;font-size:12px}
+.turn-hint-unlocked{padding:18px;background:linear-gradient(120deg,#e7f5ed,#fbf7e9)}
+.turn-hint-unlocked p{margin:9px 0 0;font-size:18px;font-weight:800;line-height:1.45;color:#2c5757}
+.turn-hint-warning{display:block;padding:0 18px 14px;font-size:12px;color:#a0714d;font-weight:800}
+@media(max-width:560px){
+ .questions-meter{gap:3px}
+ .questions-meter i{height:19px;border-radius:4px}
+ .turn-hint-offer{flex-direction:column;align-items:stretch;padding:15px;gap:12px}
+ .turn-hint-button{width:100%}
+ .turn-hint-unlocked{padding:16px}
+ .turn-hint-unlocked p{font-size:16px}
+}
+@media(max-width:360px){.questions-meter{gap:2px}.questions-meter i{height:16px}}
